@@ -1,0 +1,85 @@
+import {
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  ScrollView,
+  StatusBar
+} from 'react-native';
+import React from 'react';
+import {Colors} from '../../utils/Colors';
+import {moderateScale} from 'react-native-size-matters';
+import MainHeader from '../../components/Header/MainHeader';
+import ListHeader from '../../components/Header/ListHeader';
+import SongCard from '../../components/Card/SongCard';
+
+const ArtistDashboard = () => {
+  const PodCastsData = [
+    {
+      Song: 'Ghost',
+      Singer: 'Justin Bieber',
+      source: require('../../assets/image/song1.jpg'),
+    
+    },
+    {
+      Song: 'Shivers',
+      Singer: 'Ed Sheeran',
+      source: require('../../assets/image/song2.jpg'),
+    },
+    {
+      Song: 'Happier',
+      Singer: 'Olivia Radrigo',
+      source: require('../../assets/image/song3.jpg'),
+      Type:'last'
+    },
+  ];
+  return (
+    <SafeAreaView style={styles.container}>
+ <StatusBar backgroundColor={Colors.ThemeBlue} barStyle={'light-content'} />
+      <MainHeader
+        Notification={true}
+        Logo={true}
+        source={require('../../assets/image/home.png')}
+        Title={true}
+        Text="Dashboard"
+      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <ListHeader
+          Logo={true}
+          Text="LIVE NOW"
+          source={require('../../assets/image/line.png')}
+          Title="Live Stream"
+          //   onPress={() => navigation.navigate('PopularSong')}
+        />
+        <ListHeader Title="Pod Casts" UploadTrue={true} />
+        <FlatList
+          scrollEnabled={true}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={PodCastsData}
+          renderItem={({item}) => {
+            return <SongCard data={item} />;
+          }}
+        />
+        <ListHeader Title="Music Videos" UploadTrue={true} UploadVideo={true} />
+        <FlatList
+          scrollEnabled={true}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={PodCastsData}
+          renderItem={({item}) => {
+            return <SongCard data={item} />;
+          }}
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.ThemeBlue,
+    // paddingLeft: moderateScale(12),
+  },
+});
+export default ArtistDashboard;

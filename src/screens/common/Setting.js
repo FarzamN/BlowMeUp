@@ -1,0 +1,82 @@
+import {
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  StatusBar,
+  View,
+} from 'react-native';
+import React from 'react';
+
+import MainHeader from '../../components/Header/MainHeader';
+import SettingItem from '../../components/SettingItem';
+import CustomButton from '../../components/CustomButton';
+
+import {Colors} from '../../utils/Colors';
+import {moderateScale, verticalScale} from 'react-native-size-matters';
+import {useDispatch} from 'react-redux';
+import {USER_DETAILS} from '../../redux/reducer/Holder';
+
+const Setting = ({navigation}) => {
+  const Dispatch = useDispatch();
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor={Colors.ThemeBlue} />
+      <MainHeader
+        Notification={true}
+        Logo={true}
+        source={require('../../assets/image/settings.png')}
+        Title={true}
+        Text="Setting"
+        Container={{paddingRight: moderateScale(20)}}
+      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <SettingItem
+          onPress={() => navigation.navigate('Profile')}
+          Title="Profile"
+        />
+        <SettingItem
+          Title="Notification"
+          Notificatin={true}
+          onPress={() => navigation.navigate('Notifications')}
+        />
+        <SettingItem
+          Title="Manage Podcast/Music Videos"
+          onPress={() => navigation.navigate('Manage')}
+        />
+        <SettingItem Title="Start live streaming" />
+        <SettingItem
+          onPress={() => navigation.navigate('TermsAndConditions')}
+          Title="Terms and conditions"
+        />
+        <SettingItem Title="Privacy Policy" />
+        <SettingItem
+          onPress={() => navigation.navigate('LeaderBoard')}
+          Title="Leaderboard"
+        />
+        <SettingItem
+          onPress={() => navigation.navigate('ChangePassword')}
+          Title="Change Password"
+        />
+        <View style={{paddingRight: moderateScale(12)}}>
+          <CustomButton
+            onPress={() => Dispatch({type: USER_DETAILS, payload: null})}
+            title="Log Out"
+            containerStyle={{marginTop: verticalScale(25)}}
+          />
+        </View>
+        <View style={{height: verticalScale(10)}} />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.ThemeBlue,
+    paddingLeft: moderateScale(12),
+  },
+});
+
+export default Setting;
