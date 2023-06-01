@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ScrollView,
+  StatusBar
 } from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
@@ -13,10 +14,20 @@ import CustomButton from '../../../components/CustomButton';
 import {Colors} from '../../../utils/Colors';
 import {Font} from '../../../utils/font';
 import MainHeader from '../../../components/Header/MainHeader';
-const TermsAndConditions = ({navigation}) => {
+
+const TermsAndConditions = ({navigation,route}) => {
+  const Type = route.params.type
+
+    const onSubmit = () => {
+      if (Type == 'auth') {
+        navigation.goBack()
+      } else {
+        navigation.navigate('Setting')
+      }
+    }
   return (
     <SafeAreaView style={styles.Container}>
-      <View style={{paddingHorizontal: moderateScale(20)}}>
+      <View style={{marginTop:'10%'}}>
         <MainHeader
           Notification={false}
           BackArrow={true}
@@ -41,22 +52,22 @@ const TermsAndConditions = ({navigation}) => {
           <Text style={styles.accept}>Terms and Condition</Text>
           <Text style={styles.lorem}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&rsquo;s standard dummy
+            industry. Lorem Ipsum has been the industry&asp;s standard dummy
             text ever since the 1500s, when an unknown printer took a galley of
             type and scrambled it to make a type specimen book. It has survived
             not only five centuries, but also the leap into electronic
-            typesetting, remaining essentially unchanged. It was popularised in
+            typesetting, remaining essentially unchanged. It was popularized in
             the 1960s with the release of Letraset sheets containing Lorem Ipsum
             passages, and more recently with desktop publishing software like
             Aldus PageMaker including versions of Lorem Ipsum. A Terms and
             Conditions agreement acts as a legal contract between you (the
-            company) and the user. It's where you maintain your rights to
+            company) and the user. It&asp;s where you maintain your rights to
             exclude users from your app in the event that they abuse your
             website/app, set out the rules for using your service and note other
             important details and disclaimers. Your Terms and Conditions
             agreement will be uniquely yours. While some clauses are standard
             and commonly seen in pretty much every Terms and Conditions
-            agreement, it's up to you to set the rules and guidelines that the
+            agreement, it&asp;s up to you to set the rules and guidelines that the
             user must agree to. Terms and Conditions agreements are also known
             as Terms of Service or Terms of Use agreements. These terms are
             interchangeable, practically speaking. You can use this agreement
@@ -70,7 +81,7 @@ const TermsAndConditions = ({navigation}) => {
             service component, i.e. it connects with a server.
           </Text>
           <CustomButton
-            onPress={() => navigation.navigate('Setting')}
+            onPress={onSubmit}
             title="Accept and Continue"
             containerStyle={{
               width: '85%',
@@ -79,6 +90,7 @@ const TermsAndConditions = ({navigation}) => {
               padding: moderateScale(15),
             }}
           />
+          <View style={{height:verticalScale(15)}}/>
         </ScrollView>
       </View>
     </SafeAreaView>

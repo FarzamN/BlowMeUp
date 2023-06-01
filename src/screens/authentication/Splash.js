@@ -30,8 +30,8 @@ const Splash = ({navigation}) => {
       <ImageBackground
         source={require('../../assets/image/Bacground/splash.png')}
         resizeMode="cover"
-        style={{flex: 1,paddingTop:moderateVerticalScale(30)}}>
-        <View style={{flex: 1, marginTop: verticalScale(10)}}>
+        style={{flex: 1}}>
+        <View style={{flex: 1, marginTop: '15%'}}>
           <Image
             style={{alignSelf: 'center'}}
             source={require('../../assets/image/logo.png')}

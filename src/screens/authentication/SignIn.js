@@ -9,7 +9,8 @@ import {
   ScrollView,
   TouchableOpacity,
   ImageBackground,
-  StatusBar,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -26,6 +27,7 @@ import CustomButton from '../../components/CustomButton';
 import {useDispatch} from 'react-redux';
 import {USER_DETAILS} from '../../redux/reducer/Holder';
 import PasswordInput from '../../components/PasswordInput';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const SignIn = ({navigation}) => {
   const Dispatch = useDispatch();
@@ -36,17 +38,17 @@ const SignIn = ({navigation}) => {
   } = useForm({mode: 'all'});
 
   const Submit = data => {
-      Dispatch({type: USER_DETAILS, payload: data.email});
+    Dispatch({type: USER_DETAILS, payload: data.email});
   };
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <SafeAreaView style={styles.Container}>
-      <StatusBar backgroundColor="#454F5D" />
       <ImageBackground
         source={require('../../assets/image/Bacground/splash.png')}
         resizeMode="cover"
-        style={{flex: 1}}>
+        style={styles.Container}>
         <Image
-          style={{alignSelf: 'center'}}
+          style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <Text style={styles.SignUpText}>Sign In</Text>
@@ -66,6 +68,11 @@ const SignIn = ({navigation}) => {
               }}
               placeholder="Email Address"
             />
+             {errors.email && (
+              <Text style={GlobalStyle.error}>
+                {errors.email.message}
+              </Text>
+            )}
             <PasswordInput
               control={control}
               name="password"
@@ -84,10 +91,15 @@ const SignIn = ({navigation}) => {
               maxLength={20}
               placeholderTextColor={'#32323266'}
             />
+            {errors.password && (
+              <Text style={GlobalStyle.error}>
+                {errors.password.message}
+              </Text>
+            )}
             <Text
               onPress={() => navigation.navigate('FindAccount')}
               style={styles.Forget}>
-              Forget Password
+              Forget Password?
             </Text>
             <CustomButton
               onPress={handleSubmit(Submit)}
@@ -129,7 +141,7 @@ const SignIn = ({navigation}) => {
               styles.Row,
               {justifyContent: 'space-evenly', marginTop: '20%'},
             ]}>
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('TermsAndConditions',{type: 'auth'})}>
               <Text style={styles.Term}>Terms of use</Text>
             </TouchableOpacity>
 
@@ -150,6 +162,7 @@ const SignIn = ({navigation}) => {
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -209,5 +222,6 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
     color: Colors.White,
   },
+
 });
 export default SignIn;

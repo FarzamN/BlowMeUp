@@ -46,13 +46,13 @@ const Setting = ({navigation}) => {
         />
         <SettingItem Title="Start live streaming" />
         <SettingItem
-          onPress={() => navigation.navigate('TermsAndConditions')}
+          onPress={() => navigation.navigate('TermsAndConditions',{type: 'user'})}
           Title="Terms and conditions"
         />
         <SettingItem Title="Privacy Policy" />
         <SettingItem
           onPress={() => navigation.navigate('LeaderBoard')}
-          Title="Leaderboard"
+          Title="LeaderBoard"
         />
         <SettingItem
           onPress={() => navigation.navigate('ChangePassword')}

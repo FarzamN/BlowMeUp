@@ -8,6 +8,7 @@ import SignUp from '../screens/authentication/SignUp.js';
 import FindAccount from '../screens/authentication/FindAccount.js';
 import OTP from '../screens/authentication/OTP.js';
 import Reset from '../screens/authentication/Reset.js';
+import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions.js';
 
 // import UserNavigator from './UserNavigator';
 const AuthNavigator = () => {
@@ -23,7 +24,7 @@ const AuthNavigator = () => {
         <Stack.Screen name="FindAccount" component={FindAccount} />
         <Stack.Screen name="OTP" component={OTP} />
         <Stack.Screen name="Reset" component={Reset} />
-        {/* <Stack.Screen name="UserNavigator" component={UserNavigator} /> */}
+        <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
       </Stack.Navigator>
     </NavigationContainer>
   );

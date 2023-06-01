@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
-  StatusBar,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
@@ -14,7 +15,7 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
 import {useForm} from 'react-hook-form';
 import PasswordInput from '../../components/PasswordInput';
-
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 const Reset = ({navigation}) => {
   const {
     control,
@@ -36,14 +37,14 @@ const Reset = ({navigation}) => {
     }
   }
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <SafeAreaView style={styles.Container}>
-      <StatusBar backgroundColor="#1E2235" />
       <ImageBackground
         source={require('../../assets/image/Bacground/reset.png')}
         resizeMode="cover"
         style={{flex: 1}}>
         <Image
-          style={{alignSelf: 'center'}}
+         style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <View style={styles.MainBox}>
@@ -71,6 +72,11 @@ const Reset = ({navigation}) => {
             maxLength={20}
             placeholderTextColor={'#32323266'}
           />
+           {errors.password && (
+              <Text style={GlobalStyle.error}>
+                {errors.password.message}
+              </Text>
+            )}
           <PasswordInput
             control={control}
             name="confirm_password"
@@ -89,8 +95,12 @@ const Reset = ({navigation}) => {
             maxLength={20}
             placeholderTextColor={'#32323266'}
           />
+           {errors.password && (
+              <Text style={GlobalStyle.error}>
+                {errors.password.message}
+              </Text>
+            )}
           <CustomButton
-            // onPress={() => alert('jbdfjkb')}
             onPress={() => handleSubmit(onSubmit)}
             title="Confirm"
             containerStyle={styles.containerStyle}
@@ -99,6 +109,7 @@ const Reset = ({navigation}) => {
         </View>
       </ImageBackground>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({
@@ -137,6 +148,7 @@ const styles = StyleSheet.create({
     width: '85%',
     marginLeft: scale(10),
   },
+ 
 });
 
 export default Reset;

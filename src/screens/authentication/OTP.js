@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
-  StatusBar,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import React from 'react';
 import {Colors} from '../../utils/Colors';
@@ -14,6 +15,7 @@ import CustomInput from '../../components/CustomInput';
 import {scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
 import {Font} from '../../utils/font';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const Reset = ({route,navigation}) => {
   const Type = route.params.type
@@ -34,14 +36,14 @@ const Reset = ({route,navigation}) => {
     } else {console.log('Can not Navigate ===> ')}
    }
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <SafeAreaView style={styles.Container}>
-      <StatusBar backgroundColor="#413841" barStyle={'light-content'} />
       <ImageBackground
         source={require('../../assets/image/Bacground/otp.png')}
         resizeMode="cover"
-        style={{flex: 1}}>
+        style={styles.Container}>
         <Image
-          style={{alignSelf: 'center'}}
+          style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <View style={styles.MainBox}>
@@ -61,10 +63,15 @@ const Reset = ({route,navigation}) => {
             placeholder="Reset Password Code"
             maxLength={4}
           />
+          {errors.otp && (
+              <Text style={GlobalStyle.error}>
+                 {errors.otp.message}
+              </Text>
+            )}
           <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
             <CustomButton
               title="Confirm"
-              onPress={Submit}
+              onPress={handleSubmit(Submit)}
               containerStyle={styles.containerStyle}
               textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}}
             />
@@ -72,6 +79,7 @@ const Reset = ({route,navigation}) => {
         </View>
       </ImageBackground>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({

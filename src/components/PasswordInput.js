@@ -51,7 +51,7 @@ const PasswordInput = forwardRef((props, ref) => {
         fontSize={props.fontSize}
         maxLength={props.maxLength}
       />
-      <Text style={styles.Text} onPress={() => setPassword(!password)}>{password == true ?  'Hide' : 'Show'}</Text>
+      <Text style={styles.Text} onPress={() => setPassword(!password)}>{password == true ?  'HIDE' : 'SHOW'}</Text>
     </View>
   );
 });

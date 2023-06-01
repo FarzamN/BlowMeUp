@@ -5,7 +5,8 @@ import {
   SafeAreaView,
   Image,
   ImageBackground,
-  StatusBar,
+  TouchableWithoutFeedback,
+  Keyboard
 } from 'react-native';
 import React from 'react';
 import {useForm} from 'react-hook-form';
@@ -14,6 +15,7 @@ import {Font} from '../../utils/font';
 import {scale, verticalScale} from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const FindAccount = ({navigation}) => {
   const {
@@ -21,15 +23,19 @@ const FindAccount = ({navigation}) => {
     handleSubmit,
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
+
+  const onSubmit = () => {
+    navigation.navigate('OTP',{type: 'forgot'})
+  }
   return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     <SafeAreaView style={styles.Container}>
-      <StatusBar backgroundColor="#212939" />
       <ImageBackground
         source={require('../../assets/image/Bacground/find.png')}
         resizeMode="cover"
-        style={{flex: 1}}>
+        style={styles.Container}>
         <Image
-          style={{alignSelf: 'center'}}
+          style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <View style={styles.MainBox}>
@@ -51,6 +57,11 @@ const FindAccount = ({navigation}) => {
             }}
             placeholder="Email Address"
           />
+          {errors.email && (
+              <Text style={GlobalStyle.error}>
+                {errors.email.message}
+              </Text>
+            )}
           <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
             <CustomButton
               onPress={() => navigation.navigate('SignIn')}
@@ -59,7 +70,7 @@ const FindAccount = ({navigation}) => {
               textStyle={{color: Colors.ThemeBlue, fontSize: scale(14)}}
             />
             <CustomButton
-              onPress={() => navigation.navigate('OTP',{type: 'forgot'})}
+              onPress={handleSubmit(onSubmit)}
               title="Search"
               containerStyle={styles.containerStyle}
               textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}} 
@@ -68,6 +79,7 @@ const FindAccount = ({navigation}) => {
         </View>
       </ImageBackground>
     </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 
