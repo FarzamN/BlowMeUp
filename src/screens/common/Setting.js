@@ -21,16 +21,15 @@ const Setting = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
         Logo={true}
         source={require('../../assets/image/settings.png')}
         Title={true}
         Text="Setting"
-        Container={{paddingRight: moderateScale(20)}}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{paddingHorizontal:moderateScale(15)}}>
         <SettingItem
           onPress={() => navigation.navigate('Profile')}
           Title="Profile"
@@ -65,6 +64,7 @@ const Setting = ({navigation}) => {
             containerStyle={{marginTop: verticalScale(25)}}
           />
         </View>
+        </View>
         <View style={{height: verticalScale(10)}} />
       </ScrollView>
     </SafeAreaView>
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.ThemeBlue,
-    paddingLeft: moderateScale(12),
   },
 });
 

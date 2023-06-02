@@ -67,9 +67,7 @@ const styles = StyleSheet.create({
     height: '100%',
     color: Colors.White,
     fontFamily: Font.Gilroy500,
-    fontSize: scale(1),
     paddingHorizontal: moderateScale(20),
-    // textTransform: 'lowercase',
   },
   smallbox: {
     alignSelf: 'center',
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     width: '100%',
     paddingHorizontal: moderateScale(20),
-    height: verticalScale(55),
+    height: verticalScale(50),
     backgroundColor: 'transparent',
     borderWidth: scale(1),
     borderColor: Colors.White,

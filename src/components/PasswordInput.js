@@ -74,11 +74,11 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(20),
     width: '100%',
     paddingHorizontal: moderateScale(20),
-    height: verticalScale(55),
+    height: verticalScale(50),
     backgroundColor: 'transparent',
     borderWidth: scale(1),
     borderColor: Colors.White,
-    borderRadius: scale(25),
+    borderRadius: scale(20),
   },
   Text:{
     color:Colors.White,

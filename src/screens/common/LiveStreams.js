@@ -18,6 +18,7 @@ const LiveStreams = () => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
+      Type:'first'
     },
     {
       Song: 'Shivers',
@@ -28,7 +29,6 @@ const LiveStreams = () => {
       Song: 'Happier',
       Singer: 'Olivia Radrigo',
       source: require('../../assets/image/song3.jpg'),
-      Type:'last'
     },
   ];
   return (

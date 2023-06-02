@@ -13,7 +13,7 @@ import {Colors} from '../../utils/Colors';
 
 const StreamCard = ({data}) => {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={[styles.Container,{marginRight:data.Type === 'last' ? scale(10) : 0}]}>
+    <TouchableOpacity activeOpacity={0.8} style={[styles.Container,{marginLeft:data.Type === 'first' ? scale(10) : 0}]}>
       <ImageBackground
         resizeMode="cover"
         imageStyle={{borderRadius: scale(15)}}
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: scale(130),
     aspectRatio: 1 / 1,
     marginVertical: verticalScale(20),
-    marginLeft:scale(10)
+    marginRight:scale(10)
   },
   Image: {
     width: '100%',

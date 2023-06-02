@@ -148,7 +148,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.ThemeBlue,
-    paddingHorizontal: moderateScale(12),
   },
   Row: {
     flexDirection: 'row',

@@ -7,8 +7,9 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  PermissionsAndroid
 } from 'react-native';
-import React from 'react';
+import React,{useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -16,20 +17,64 @@ import CustomInput from '../../components/CustomInput';
 import {useForm} from 'react-hook-form';
 import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import PasswordInput from '../../components/PasswordInput';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 const SignUp = ({navigation}) => {
   const {
     control,
     handleSubmit,
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
+
+  const onSubmit = data => {
+      if (data.password == data.confirm_password) {
+        navigation.navigate('OTP',{type: 'register'})
+      } else {
+        console.log('Password is not matched')
+      }
+    }
+
+  const [saveimage, setsaveimage] = useState({});
+  const [show2, setShow2] = useState(true);
+
+
+  const photosave = () => {
+    let options = {
+      storageOptions: {
+        mediaType: 'photo',
+        path: 'image',
+        includeExtra: true,
+      },
+      selectionLimit: 1,
+    };
+
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        // console.log('User cancelled image picker')
+      } else if (res.error) {
+        // console.log('ImagePicker Error: ', res.error)
+      } else if (res.customButton) {
+        // console.log('User tapped custom button: ', res.customButton)
+        alert(res.customButton);
+      } else {
+        setsaveimage({
+          name: res.assets?.[0]?.fileName,
+          uri: res.assets?.[0]?.uri,
+          type: res.assets?.[0]?.type,
+        });
+        setShow2(false);
+      }
+    });
+  };
   return (
     <SafeAreaView style={styles.Container}>
       <ImageBackground
         source={require('../../assets/image/Bacground/signup.png')}
         resizeMode="cover"
-        style={{flex: 1}}>
+        style={styles.Container}>
         <Image
-          style={{alignSelf: 'center'}}
+         style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -50,6 +95,11 @@ const SignUp = ({navigation}) => {
               }}
               placeholder="User Name"
             />
+                {errors.name && (
+              <Text style={GlobalStyle.error}>
+                {errors.name.message}
+              </Text>
+            )}
             <CustomInput
               fontSize={scale(16)}
               MaterialIcons={true}
@@ -59,12 +109,19 @@ const SignUp = ({navigation}) => {
               keyboardType="email-address"
               name="email"
               rules={{
-                required: 'email is required',
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                message: 'Enter a valid email',
+                required: '*Email is required',
+                pattern: {
+                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                  message: 'Email is not valid',
+                },
               }}
               placeholder="Email Address"
             />
+             {errors.email && (
+              <Text style={GlobalStyle.error}>
+                {errors.email.message}
+              </Text>
+            )}
             <CustomInput
               FontAwesome={true}
               FontAwesome_Name="phone"
@@ -73,18 +130,25 @@ const SignUp = ({navigation}) => {
               keyboardType="numeric"
               name="phone_number"
               rules={{
-                required: 'phone_number is required',
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                message: 'Enter a valid phone number',
+                required: '*Password is required',
+                minLength: {
+                  value: 10,
+                  message: '*Phone Number is not valid',
+                },
+                maxLength: {
+                  value: 16,
+                  message: '*Phone Number is not valid',
+                },
               }}
               placeholder="Phone Number"
               fontSize={scale(16)}
             />
-            <CustomInput
-              fontSize={scale(16)}
-              Fontisto={true}
-              Fontisto_Name="unlocked"
-              size={scale(20)}
+                {errors.phone_number && (
+              <Text style={GlobalStyle.error}>
+                {errors.phone_number.message}
+              </Text>
+            )}
+           <PasswordInput
               control={control}
               name="password"
               rules={{
@@ -98,17 +162,18 @@ const SignUp = ({navigation}) => {
                   message: '*Password too long (maximum length is 16)',
                 },
               }}
-              secureTextEntry={true}
-              keyboardType="default"
               placeholder="Password"
-              maxLength={20}
+              maxLength={16}
               placeholderTextColor={'#32323266'}
-            />
-            <CustomInput
               fontSize={scale(16)}
-              Fontisto={true}
-              Fontisto_Name="unlocked"
-              size={scale(20)}
+            />
+            {errors.password && (
+              <Text style={GlobalStyle.error}>
+                {errors.password.message}
+              </Text>
+            )}
+            
+            <PasswordInput
               control={control}
               name="confirm_password"
               rules={{
@@ -122,14 +187,18 @@ const SignUp = ({navigation}) => {
                   message: '*Password too long (maximum length is 16)',
                 },
               }}
-              secureTextEntry={true}
-              keyboardType="default"
               placeholder="Confirm Password"
-              maxLength={20}
+              maxLength={16}
+              fontSize={scale(16)}
               placeholderTextColor={'#32323266'}
             />
+            {errors.confirm_password && (
+              <Text style={GlobalStyle.error}>
+                {errors.confirm_password.message}
+              </Text>
+            )}
             <TouchableOpacity
-            //  onPress={select}
+             onPress={() =>photosave()}
             style={styles.ImagePickerBox}>
               <FontAwesome
                 name="user-circle-o"
@@ -140,12 +209,13 @@ const SignUp = ({navigation}) => {
               <FontAwesome name="image" size={scale(20)} color={Colors.White} />
             </TouchableOpacity>
             <CustomButton
-              onPress={() => navigation.navigate('OTP',{type: 'register'})}
+              onPress={handleSubmit(onSubmit)}
               title="Register"
               containerStyle={styles.containerStyle}
               textStyle={{color: Colors.White, fontSize: scale(23)}}
             />
           </View>
+          <View style={{height:verticalScale(10)}}/>
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>

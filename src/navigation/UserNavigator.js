@@ -21,7 +21,8 @@ import Music from '../screens/common/HomeFolder/Music';
 import Profile from '../screens/common/SettingFolder/Profile.js';
 import LeaderBoard from '../screens/common/SettingFolder/LeaderBoard';
 import ChangePassword from '../screens/common/SettingFolder/ChangePassword';
-import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions.js';
+import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions';
+import SearchScreen from '../screens/common/SearchScreen';
 const UserNavigator = () => {
   const Tab = createBottomTabNavigator();
   return (
@@ -189,6 +190,12 @@ function AllDashboard() {
         component={Search}
         options={{animation: 'flip'}}
       />
+         <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        options={{animation: 'flip'}}
+      />
+      
       <Stack.Screen
         name="PopularSong"
         component={PopularSong}

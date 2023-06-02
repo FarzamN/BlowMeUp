@@ -4,12 +4,12 @@ import {
   View,
   SafeAreaView,
   ScrollView,
-  TextInput,
+  Pressable,
   FlatList,
   Image,
   StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {moderateScale, scale} from 'react-native-size-matters';
 import MainHeader from '../../components/Header/MainHeader';
@@ -20,7 +20,8 @@ import {verticalScale} from 'react-native-size-matters';
 import {Font} from '../../utils/font';
 import GenerationCard from '../../components/Card/GenerationCard';
 import LinearGradient from 'react-native-linear-gradient';
-const Search = () => {
+import {  } from '@react-native-material/core';
+const Search = ({navigation}) => {
   const GeneratoinItem = [
     {
       Text: 'Pop',
@@ -39,26 +40,22 @@ const Search = () => {
       source: require('../../assets/image/generation4.jpg'),
     },
   ];
+
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={false}
         Search={true}
         Title={true}
         Text="Search"
-        Container={{paddingRight: moderateScale(20)}}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.MainBox}>
-          <View style={styles.InputBox}>
+          <Pressable style={styles.InputBox} onPress={() => navigation.navigate('SearchScreen')}>
             <Feather name="search" color="#626262" size={scale(20)} />
-            <TextInput
-              style={styles.Input}
-              placeholderTextColor="#A9A9A9"
-              placeholder="Artists, Songs or Live Streams"
-            />
-          </View>
+            <Text style={styles.Input}>Artists, Songs or Live Streams</Text>
+          </Pressable>
+         
           <Text style={styles.TopGenres}>Top Genres</Text>
 
           <FlatList
@@ -128,7 +125,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.ThemeBlue,
-    paddingLeft: moderateScale(15),
   },
 
   InputBox: {
@@ -151,12 +147,11 @@ const styles = StyleSheet.create({
   Input: {
     marginLeft: scale(7),
     width: '100%',
-    color: Colors.Black,
+    color: '#A9A9A9',
     fontFamily: Font.Inter400,
   },
   MainBox: {
-    paddingRight: moderateScale(25),
-    paddingLeft: moderateScale(10),
+    paddingHorizontal: moderateScale(15),
   },
   TopGenres: {
     color: Colors.Yellow,

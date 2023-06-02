@@ -23,17 +23,19 @@ const Reset = ({navigation}) => {
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
 
+  // const onSubmit = data => {
+  //     if (data.password == data.confirm_password) {
+  //       navigation.navigate('SignIn')
+  //     } else {
+  //       alert('password is not matched')
+  //     }
+  // }
   const onSubmit = data => {
-    console.log('asdjkfhaskl')
-    navigation.navigate('SignIn')
-    if (data != null) {
-      if (data.password == data.confirm_password) {
-        navigation.navigate('SignIn')
-      } else {
-        alert('password is not matched')
-      }
+    if (data.password == data.confirm_password) {
+      navigation.navigate('SignIn')
+      console.log('first')
     } else {
-      alert('fill the data')
+      alert('Password is not matched')
     }
   }
   return (
@@ -69,7 +71,8 @@ const Reset = ({navigation}) => {
               },
             }}
             placeholder="New Password"
-            maxLength={20}
+            maxLength={16}
+            fontSize={scale(16)}
             placeholderTextColor={'#32323266'}
           />
            {errors.password && (
@@ -92,7 +95,8 @@ const Reset = ({navigation}) => {
               },
             }}
             placeholder="Confirm Password"
-            maxLength={20}
+            maxLength={16}
+            fontSize={scale(16)}
             placeholderTextColor={'#32323266'}
           />
            {errors.password && (
@@ -101,9 +105,9 @@ const Reset = ({navigation}) => {
               </Text>
             )}
           <CustomButton
-            onPress={() => handleSubmit(onSubmit)}
+            onPress={handleSubmit(onSubmit)}
             title="Confirm"
-            containerStyle={styles.containerStyle}
+            containerStyle={[GlobalStyle.CustomButtonRestyle,styles.containerStyle]}
             textStyle={{color: Colors.ThemeBlue}}
           />
         </View>
@@ -143,10 +147,7 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: Colors.White,
     borderColor: Colors.ThemeBlue,
-    borderRadius: scale(30),
     marginTop: '15%',
-    width: '85%',
-    marginLeft: scale(10),
   },
  
 });

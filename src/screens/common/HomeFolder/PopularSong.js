@@ -5,7 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
-  StatusBar,
+  View,
 } from 'react-native';
 import {Colors} from '../../../utils/Colors';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -92,33 +92,29 @@ const PopularSong = ({navigation}) => {
     },
   ];
   const [data, setData] = useState(params);
+  const [select, setSelect] = useState(1);
 
-  const handleChange = value => {
-    const newitem = data.map(val => {
-      if (val.id === value.id) {
-        return {...val, selected: !val.selected};
-      } else {
-        return val;
-      }
-    });
-    setData(newitem);
-  };
+  const handleChange = (item) => {
+    setSelect(item.id)
+  }
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={[
         styles.bubbleBox,
         {
-          backgroundColor: item.selected ? Colors.Main : Colors.White,
+          backgroundColor: select == item.id ? Colors.Main : Colors.White,
+          marginLeft: item.id == 1 ? scale(15) : 0
         },
       ]}
       activeOpacity={0.9}
       onPress={() => handleChange(item)}>
+    
       <Text
         style={[
           styles.bubbles,
           {
             fontSize: scale(14),
-            color: item.selected ? Colors.White : Colors.Black,
+            color: select == item.id ? Colors.White : Colors.Black,
           },
         ]}>
         {item.name}
@@ -127,13 +123,11 @@ const PopularSong = ({navigation}) => {
   );
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
         BackArrow={true}
         Title={true}
         Text="Popular Song"
-        Container={{paddingRight: moderateScale(20)}}
       />
       <FlatList
         horizontal
@@ -157,13 +151,11 @@ const PopularSong = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-    paddingLeft: moderateScale(12),
+    backgroundColor: Colors.ThemeBlue
   },
   bubbleBox: {
-    // flexWrap: 'wrap',
     borderRadius: scale(8),
-    marginHorizontal: scale(5),
+    marginRight: scale(6),
     paddingHorizontal: moderateScale(16),
     height: verticalScale(40),
     justifyContent: 'center',
@@ -171,7 +163,6 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
   bubbles: {
-    color: Colors.Black,
     textTransform: 'capitalize',
     fontFamily: Font.Inter400,
     fontSize: scale(14),

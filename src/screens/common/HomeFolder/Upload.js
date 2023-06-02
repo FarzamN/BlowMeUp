@@ -35,6 +35,9 @@ const Upload = () => {
             keyboardType="default"
             name="Title"
             placeholder="Title of the video"
+            Gapp={styles.Gapp}
+            style={styles.inputBoxRestyle}
+            fontSize={scale(16)}
           />
         </View>
         <View style={styles.Container}>
@@ -58,18 +61,20 @@ const Upload = () => {
                   color={Colors.White}
                 />
               }
-              dropdownStyles={{backgroundColor: Colors.Main}}
-              dropdownItemStyles={{backgroundColor: '#fff'}}
+              dropdownStyles={{backgroundColor: Colors.Main,borderWidth: scale(1),
+                borderColor: Colors.Main,}}
+              dropdownItemStyles={{backgroundColor: Colors.ThemeBlue,
+             }}
               boxStyles={{
                 backgroundColor: 'transparent',
                 height: verticalScale(50),
                 alignItems: 'center',
-                borderRadius: scale(23),
+                borderRadius:scale(20),
                 marginTop: verticalScale(20),
                 borderWidth: scale(1),
                 borderColor: Colors.White,
               }}
-              dropdownTextStyles={{color: Colors.Black}}
+              dropdownTextStyles={{color: Colors.White}}
               inputStyles={{
                 color: Colors.White,
                 fontSize: scale(13),
@@ -93,7 +98,7 @@ const Upload = () => {
           </View>
           <VideoPicker />
         </View>
-        <View style={{height: verticalScale(130)}} />
+        <View style={{height: verticalScale(110)}} />
       </ScrollView>
     </View>
   );
@@ -118,6 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginRight: scale(20),
   },
+  Gapp:{
+    paddingHorizontal: 0,
+  },
+  inputBoxRestyle:{
+    borderRadius:scale(20)
+  }
 });
 
 export default Upload;

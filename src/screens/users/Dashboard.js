@@ -23,6 +23,7 @@ const Dashboard = ({navigation}) => {
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
       onPress: () => navigation.navigate('PlayAll'),
+      Type:'first'
     },
     {
       Song: 'Shivers',
@@ -33,7 +34,6 @@ const Dashboard = ({navigation}) => {
       Song: 'Happier',
       Singer: 'Olivia Radrigo',
       source: require('../../assets/image/song3.jpg'),
-      Type:'last'
     },
   ];
   const GenreData = [
@@ -42,6 +42,7 @@ const Dashboard = ({navigation}) => {
       pop: 'Pop',
       lastGernText: 'Pop',
       source: require('../../assets/image/gradiant1.png'),
+      Type:'first'
     },
     {
       Genre: 'Genre',
@@ -54,7 +55,6 @@ const Dashboard = ({navigation}) => {
       pop: 'Country',
       lastGernText: 'Country',
       source: require('../../assets/image/gradiant3.png'),
-      Type:'last'
     },
   ];
   const RecentData = [
@@ -62,6 +62,7 @@ const Dashboard = ({navigation}) => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/Recent1.jpg'),
+      Type:'first'
     },
     {
       Song: 'Shivers',
@@ -72,7 +73,6 @@ const Dashboard = ({navigation}) => {
       Song: 'Happier',
       Singer: 'Olivia Radrigo',
       source: require('../../assets/image/Recent3.jpg'),
-      Type:'last'
     },
   ];
   return (

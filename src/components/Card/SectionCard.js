@@ -24,7 +24,7 @@ const SectionCard = ({data}) => {
   return (
     <View style={styles.Container}>
       <View style={styles.Row}>
-        <Image style={styles.Dp} source={data.Avatar} />
+        <Image style={styles.Dp} source={data.avatar} />
         <View style={styles.Active} />
         <View>
           <Text style={styles.Name}>{data.Name}</Text>

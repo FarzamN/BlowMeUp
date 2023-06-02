@@ -11,4 +11,16 @@ export const GlobalStyle = {
         fontFamily:Font.NunitoSans700,
         letterSpacing:-1.2
       },
+      CustomButtonRestyle: {
+        backgroundColor: 'transparent',
+        borderColor: Colors.White,
+        borderRadius: scale(30),
+        marginTop: verticalScale(30),
+        width: '85%',
+        height: verticalScale(50),
+      },
+      Row:{
+        flexDirection: 'row',
+        alignItems: 'center',
+      }
 }

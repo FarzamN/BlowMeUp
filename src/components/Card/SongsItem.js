@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
 import React from 'react';
 import {scale, verticalScale} from 'react-native-size-matters';
 import {Font} from '../../utils/font';
@@ -6,7 +6,8 @@ import {Colors} from '../../utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
 const SongsItem = ({data}) => {
   return (
-    <TouchableOpacity
+    <Pressable
+    android_ripple={{color: '#fff'}}
       onPress={data.onPress}
       activeOpacity={0.8}
       style={styles.Container}>
@@ -33,7 +34,7 @@ const SongsItem = ({data}) => {
       </View>
 
       <Entypo name="chevron-right" color={Colors.Yellow} size={scale(20)} />
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginRight: scale(25),
+    marginHorizontal: scale(15),
     marginBottom: 15,
   },
   ImageBox: {

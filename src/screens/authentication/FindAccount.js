@@ -46,16 +46,19 @@ const FindAccount = ({navigation}) => {
           <CustomInput
             MaterialIcons={true}
             MaterialIcons_Name="email"
-            size={scale(20)}
+            size={scale(21)}
             control={control}
             keyboardType="email-address"
             name="email"
             rules={{
-              required: 'email is required',
-              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-              message: 'Enter a valid email',
+              required: '*Email is required',
+              pattern: {
+                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                message: 'Email is not valid',
+              },
             }}
             placeholder="Email Address"
+            fontSize={scale(16)}
           />
           {errors.email && (
               <Text style={GlobalStyle.error}>
@@ -66,13 +69,13 @@ const FindAccount = ({navigation}) => {
             <CustomButton
               onPress={() => navigation.navigate('SignIn')}
               title="Cancel"
-              containerStyle={styles.containerStyle}
+                            containerStyle={[GlobalStyle.CustomButtonRestyle,styles.containerStyle]}
               textStyle={{color: Colors.ThemeBlue, fontSize: scale(14)}}
             />
             <CustomButton
               onPress={handleSubmit(onSubmit)}
               title="Search"
-              containerStyle={styles.containerStyle}
+              containerStyle={[GlobalStyle.CustomButtonRestyle,styles.containerStyle]}
               textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}} 
             />
           </View>
@@ -114,8 +117,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: Colors.White,
     borderColor: Colors.ThemeBlue,
-    borderRadius: scale(30),
-    marginTop: verticalScale(30),
     width: '30%',
     height: verticalScale(40),
     marginLeft: scale(10),

@@ -6,7 +6,6 @@ import {
   View,
   Image,
   ScrollView,
-  StatusBar
 } from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
@@ -19,15 +18,16 @@ const TermsAndConditions = ({navigation,route}) => {
   const Type = route.params.type
 
     const onSubmit = () => {
-      if (Type == 'auth') {
-        navigation.goBack()
-      } else {
-        navigation.navigate('Setting')
-      }
+      navigation.goBack()
+      // if (Type == 'auth') {
+      //   navigation.goBack()
+      // } else {
+      //   navigation.navigate('Setting')
+      // }
     }
   return (
     <SafeAreaView style={styles.Container}>
-      <View style={{marginTop:'10%'}}>
+      <View style={{marginTop: Type == 'auth' ? '10%' : 0}}>
         <MainHeader
           Notification={false}
           BackArrow={true}
@@ -90,7 +90,6 @@ const TermsAndConditions = ({navigation,route}) => {
               padding: moderateScale(15),
             }}
           />
-          <View style={{height:verticalScale(15)}}/>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
 
   lorem: {
     textAlign: 'center',
-    marginHorizontal: scale(20),
+    marginHorizontal: scale(15),
     marginTop: scale(10),
     color: Colors.White,
     fontSize: scale(12),
@@ -124,9 +123,9 @@ const styles = StyleSheet.create({
   },
 
   firstView: {
-    width: '90%',
+    width: '88%',
     height: '90%',
-    backgroundColor: Colors.ThemeBlue,
+    backgroundColor: Colors.Ash,
     borderRadius: scale(20),
     // justifyContent: 'center',
     alignSelf: 'center',

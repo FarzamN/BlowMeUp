@@ -8,7 +8,6 @@ import {
   Image,
   TouchableOpacity,
   StatusBar,
-  TextInput,
 } from 'react-native';
 import MainHeader from '../../../components/Header/MainHeader';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -77,15 +76,13 @@ const Profile = ({navigation}) => {
             {showInput == true ? (
               <CustomInput
               Hello={styles.CustomInputRestyle}
+              Gapp={styles.Gapp}
                 control={control}
                 keyboardType="default"
                 name="name"
-                rules={{
-                  required: 'email is required',
-                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                  message: 'Enter a valid email',
-                }}
                 placeholder="Enter Your Name"
+                defaultValue='Beverly Salas'
+                value='Beverly Salas'
               />
             ) : (
               <Text style={styles.Text}>Beverly Salas</Text>
@@ -105,48 +102,113 @@ const Profile = ({navigation}) => {
             )
           ) : null}
         </View>
+
         <View style={[styles.Row, styles.margins]}>
           <View style={styles.Row}>
-            <Zocial name="email" size={scale(20)} color={Colors.White} />
-            <Text style={styles.Text}>beverlysalas96@gmail.com</Text>
+          <Zocial name="email" size={scale(20)} color={Colors.White} />
+            {showInput == true ? (
+              <CustomInput
+              Hello={styles.CustomInputRestyle}
+              Gapp={styles.Gapp}
+                control={control}
+                keyboardType="email-address"
+                name="email"
+                placeholder="Enter Your Email"
+                defaultValue='beverlysalas96@gmail.com'
+                value='beverlysalas96@gmail.com'
+              />
+            ) : (
+              <Text style={styles.Text}>beverlysalas96@gmail.com</Text>
+            )}
           </View>
-          {!edit ? null : (
-            <TouchableOpacity activeOpacity={0.6}>
-              <FontAwesome5 name="edit" color={Colors.White} size={scale(20)} />
-            </TouchableOpacity>
-          )}
+          {showInput == false ? (
+            !edit ? null : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setShowInput(true)}>
+                <FontAwesome5
+                  name="edit"
+                  color={Colors.White}
+                  size={scale(20)}
+                />
+              </TouchableOpacity>
+            )
+          ) : null}
         </View>
+
         <View style={[styles.Row, styles.margins]}>
           <View style={styles.Row}>
-            <FontAwesome5
+          <FontAwesome5
               name="phone-alt"
               size={scale(20)}
               color={Colors.White}
             />
-            <Text style={styles.Text}>303-496-6102</Text>
+            {showInput == true ? (
+              <CustomInput
+              Hello={styles.CustomInputRestyle}
+              Gapp={styles.Gapp}
+                control={control}
+                keyboardType="number-pad"
+                name="Phone"
+                placeholder="Enter Phone Number"
+                defaultValue='303-496-6102'
+                value='303-496-6102'
+              />
+            ) : (
+              <Text style={styles.Text}>303-496-6102</Text>
+            )}
           </View>
-          {!edit ? null : (
-            <TouchableOpacity activeOpacity={0.6}>
-              <FontAwesome5 name="edit" color={Colors.White} size={scale(20)} />
-            </TouchableOpacity>
-          )}
+          {showInput == false ? (
+            !edit ? null : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setShowInput(true)}>
+                <FontAwesome5
+                  name="edit"
+                  color={Colors.White}
+                  size={scale(20)}
+                />
+              </TouchableOpacity>
+            )
+          ) : null}
         </View>
         <View style={[styles.Row, styles.margins]}>
           <View style={styles.Row}>
-            <Ionicons
+          <Ionicons
               name="md-location-sharp"
               size={scale(20)}
               color={Colors.White}
             />
-            <Text style={styles.Text}>
+            {showInput == true ? (
+              <CustomInput
+              Hello={styles.CustomInputRestyle}
+              Gapp={styles.Gapp}
+                control={control}
+                keyboardType="default"
+                name="address"
+                placeholder="Enter Your Address"
+                defaultValue='2140 Scheuvront Drive, Englewood, Colorado, United States.'
+                value='2140 Scheuvront Drive, Englewood, Colorado, United States.'
+              />
+            ) : (
+              <Text style={styles.Text}>
               2140 Scheuvront Drive, Englewood, Colorado, United States.
             </Text>
+            )}
           </View>
-          {!edit ? null : (
-            <TouchableOpacity activeOpacity={0.6}>
-              <FontAwesome5 name="edit" color={Colors.White} size={scale(20)} />
-            </TouchableOpacity>
-          )}
+          {showInput == false ? (
+            !edit ? null : (
+              <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => setShowInput(true)}>
+                <FontAwesome5
+                  name="edit"
+                  color={Colors.White}
+                  size={scale(20)}
+                />
+              </TouchableOpacity>
+            )
+          ) : null}
         </View>
         {!edit ? null : (
           <CustomButton
@@ -210,6 +272,10 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(-10),
     marginLeft:scale(15),
     paddingHorizontal: 0,
+    height: verticalScale(40),
+  },
+  Gapp:{
+    paddingHorizontal: moderateScale(5),
   }
 });
 export default Profile;

@@ -43,12 +43,11 @@ const Manage = () => {
         Title={true}
         Text="Manage Podcast/Music Videos"
         TextRestyle={styles.TextRestyle}
-        Container={{paddingRight: moderateScale(20)}}
       />
       <View
         style={[
           styles.Row,
-          {justifyContent: 'space-between', marginHorizontal: 20},
+          {justifyContent: 'space-between', marginHorizontal: scale(15),marginBottom:verticalScale(8)},
         ]}>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -63,7 +62,7 @@ const Manage = () => {
           <Text style={styles.ChangeText}>Videos</Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginHorizontal: scale(20)}}>
+      <View style={{marginHorizontal: scale(15)}}>
         {upload && <Upload />}
         {videos && <Video />}
       </View>
@@ -75,7 +74,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.ThemeBlue,
-    paddingLeft: moderateScale(12),
   },
   TextRestyle: {
     fontFamily: Font.Poppins500,

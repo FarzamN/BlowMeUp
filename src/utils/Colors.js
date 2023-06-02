@@ -16,5 +16,6 @@ export const Colors = {
   ThemeGreen: '#00821D',
   ThemeLightGreen: '#4BFF53',
   ThemeRed: '#820000',
-  Danger: '#990000'
+  Danger: '#990000',
+  Ash: '#141824',
 };

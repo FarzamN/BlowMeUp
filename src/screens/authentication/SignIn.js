@@ -55,6 +55,7 @@ const SignIn = ({navigation}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{paddingHorizontal: moderateScale(20)}}>
             <CustomInput
+            fontSize={scale(16)}
               MaterialIcons={true}
               MaterialIcons_Name="email"
               size={scale(20)}
@@ -62,9 +63,11 @@ const SignIn = ({navigation}) => {
               keyboardType="email-address"
               name="email"
               rules={{
-                required: 'email is required',
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                message: 'Enter a valid email',
+                required: '*Email is required',
+                pattern: {
+                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                  message: 'Email is not valid',
+                },
               }}
               placeholder="Email Address"
             />
@@ -74,6 +77,7 @@ const SignIn = ({navigation}) => {
               </Text>
             )}
             <PasswordInput
+            fontSize={scale(16)}
               control={control}
               name="password"
               rules={{
@@ -104,7 +108,7 @@ const SignIn = ({navigation}) => {
             <CustomButton
               onPress={handleSubmit(Submit)}
               title="Sign in"
-              containerStyle={styles.containerStyle}
+              containerStyle={GlobalStyle.CustomButtonRestyle}
               textStyle={{
                 color: Colors.White,
                 fontSize: scale(18),
@@ -186,14 +190,7 @@ const styles = StyleSheet.create({
     fontFamily: Font.Gilroy500,
     fontSize: scale(13),
   },
-  containerStyle: {
-    backgroundColor: 'transparent',
-    borderColor: Colors.White,
-    borderRadius: scale(30),
-    marginTop: verticalScale(30),
-    width: '85%',
-    height: verticalScale(50),
-  },
+
   Row: {
     flexDirection: 'row',
     alignItems: 'center',

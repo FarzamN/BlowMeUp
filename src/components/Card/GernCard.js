@@ -18,7 +18,7 @@ import {Colors} from '../../utils/Colors';
 
 const GernCard = ({data}) => {
   return (
-    <TouchableOpacity activeOpacity={0.8}  style={[styles.Container,{marginRight:data.Type === 'last' ? scale(10) : 0}]}>
+    <TouchableOpacity activeOpacity={0.8}  style={[styles.Container,{marginLeft:data.Type === 'first' ? scale(10) : 0}]}>
       <View style={[styles.MainBox, {backgroundColor: null}]}>
         <ImageBackground
           resizeMode="cover"
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     width: scale(130),
     aspectRatio: 1 / 1,
     marginVertical: verticalScale(20),
-    marginLeft:scale(10)
+    marginRight:scale(10)
   },
   MainBox: {
     flex: 1,
