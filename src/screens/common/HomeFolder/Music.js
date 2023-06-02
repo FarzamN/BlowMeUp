@@ -25,11 +25,6 @@ const H = Dimensions.get('window').height;
 
 const Music = () => {
   const {width, height} = useWindowDimensions();
-  useEffect(() => {
-    console.log('====================================');
-    console.log('width', width, 'height', height);
-    console.log('====================================');
-  }, [width, height]);
   const [playing, setPlaying] = useState(false);
   const [sound, setSound] = useState(null);
 

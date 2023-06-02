@@ -52,7 +52,6 @@ const PopularSong = ({navigation}) => {
       Playlist: 'Playlist',
       Name: 'Zarror',
       source: require('../../../assets/image/songitem1.jpg'),
-      onPress: () => navigation.navigate('Music'),
     },
     {
       SongName: 'Podcastery Jurnalisa',
@@ -141,7 +140,7 @@ const PopularSong = ({navigation}) => {
         showsVerticalScrollIndicator={false}
         data={SongData}
         renderItem={({item}) => {
-          return <SongsItem data={item} />;
+          return <SongsItem data={item} onPress={() => navigation.navigate('Music')} />;
         }}
       />
     </SafeAreaView>

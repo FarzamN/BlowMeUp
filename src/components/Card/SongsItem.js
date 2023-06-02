@@ -4,11 +4,11 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import {Font} from '../../utils/font';
 import {Colors} from '../../utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-const SongsItem = ({data}) => {
+const SongsItem = ({data,onPress}) => {
   return (
     <Pressable
     android_ripple={{color: '#fff'}}
-      onPress={data.onPress}
+      onPress={onPress}
       activeOpacity={0.8}
       style={styles.Container}>
       <View style={styles.Row}>
