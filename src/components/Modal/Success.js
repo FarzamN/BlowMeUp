@@ -1,12 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 import {Colors} from '../../utils/Colors';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {Font} from '../../utils/font';
 
-const Success = ({message, isVisible, onClose, status}) => {
+const Success = ({message, isVisible, onClose}) => {
   return (
     <Modal
       visible={isVisible}
@@ -17,13 +17,9 @@ const Success = ({message, isVisible, onClose, status}) => {
         <LottieView
           autoPlay
           style={{height: verticalScale(150), alignSelf: 'center'}}
-          source={
-            status
-              ? require('../../assets/lotti/success.json')
-              : require('../../assets/lotti/error.json')
-          }
+          source={require('../../assets/lotti/success.json')}
         />
-        <Text style={[styles.text, {color: status ? 'green' : '#EF4444'}]}>
+        <Text style={styles.text}>
           {message}
         </Text>
       </SafeAreaView>
@@ -42,8 +38,6 @@ const styles = StyleSheet.create({
   },
   buttons: {
     justifyContent: 'center',
-    // height: '35%',
-    // width: '60%',
     borderRadius: scale(10),
     backgroundColor: Colors.Main,
     alignSelf: 'center',
@@ -53,6 +47,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: moderateScale(20),
     fontFamily: Font.Gilroy600,
+    color: Colors.ThemeBlue
   },
 });
 export default Success;

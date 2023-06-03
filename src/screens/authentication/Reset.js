@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,104 +15,116 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
 import {useForm} from 'react-hook-form';
 import PasswordInput from '../../components/PasswordInput';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import Success from '../../components/Modal/Success';
+import Error from '../../components/Modal/Error';
 const Reset = ({navigation}) => {
+  const [successModal, setSuccessModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
   const {
     control,
     handleSubmit,
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
 
-  // const onSubmit = data => {
-  //     if (data.password == data.confirm_password) {
-  //       navigation.navigate('SignIn')
-  //     } else {
-  //       alert('password is not matched')
-  //     }
-  // }
   const onSubmit = data => {
     if (data.password == data.confirm_password) {
-      navigation.navigate('SignIn')
-      console.log('first')
+      setSuccessModal(true);
+      setTimeout(() => {
+        setSuccessModal(false);
+        navigation.navigate('SignIn');
+      }, 2000);
     } else {
-      alert('Password is not matched')
+      setErrorModal(true);
+      setTimeout(() => {
+        setErrorModal(false);
+      }, 2000);
     }
-  }
+  };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-    <SafeAreaView style={styles.Container}>
-      <ImageBackground
-        source={require('../../assets/image/Bacground/reset.png')}
-        resizeMode="cover"
-        style={{flex: 1}}>
-        <Image
-         style={{alignSelf: 'center', marginTop: '12%'}}
-          source={require('../../assets/image/logo.png')}
-        />
-        <View style={styles.MainBox}>
-          <Text style={styles.Find}>Reset Your Password</Text>
-          <Text style={styles.Search}>
-            Please enter your{' '}
-            <Text style={{color: Colors.Yellow}}>New Password.</Text> Password
-            must be on 8 characters
-          </Text>
-          <PasswordInput
-            control={control}
-            name="password"
-            rules={{
-              required: '*Password is required',
-              minLength: {
-                value: 8,
-                message: '*Password too short (minimum length is 8)',
-              },
-              maxLength: {
-                value: 16,
-                message: '*Password too long (maximum length is 16)',
-              },
-            }}
-            placeholder="New Password"
-            maxLength={16}
-            fontSize={scale(16)}
-            placeholderTextColor={'#32323266'}
+      <SafeAreaView style={styles.Container}>
+        <ImageBackground
+          source={require('../../assets/image/Bacground/reset.png')}
+          resizeMode="cover"
+          style={{flex: 1}}>
+          <Image
+            style={{alignSelf: 'center', marginTop: '12%'}}
+            source={require('../../assets/image/logo.png')}
           />
-           {errors.password && (
-              <Text style={GlobalStyle.error}>
-                {errors.password.message}
-              </Text>
+          <View style={styles.MainBox}>
+            <Text style={styles.Find}>Reset Your Password</Text>
+            <Text style={styles.Search}>
+              Please enter your{' '}
+              <Text style={{color: Colors.Yellow}}>New Password.</Text> Password
+              must be on 8 characters
+            </Text>
+            <PasswordInput
+              control={control}
+              name="password"
+              rules={{
+                required: '*Password is required',
+                minLength: {
+                  value: 8,
+                  message: '*Password too short (minimum length is 8)',
+                },
+                maxLength: {
+                  value: 16,
+                  message: '*Password too long (maximum length is 16)',
+                },
+              }}
+              placeholder="New Password"
+              maxLength={16}
+              fontSize={scale(16)}
+              placeholderTextColor={'#32323266'}
+            />
+            {errors.password && (
+              <Text style={GlobalStyle.error}>{errors.password.message}</Text>
             )}
-          <PasswordInput
-            control={control}
-            name="confirm_password"
-            rules={{
-              required: '*Password is required',
-              minLength: {
-                value: 8,
-                message: '*Password too short (minimum length is 8)',
-              },
-              maxLength: {
-                value: 16,
-                message: '*Password too long (maximum length is 16)',
-              },
-            }}
-            placeholder="Confirm Password"
-            maxLength={16}
-            fontSize={scale(16)}
-            placeholderTextColor={'#32323266'}
-          />
-           {errors.password && (
-              <Text style={GlobalStyle.error}>
-                {errors.password.message}
-              </Text>
+            <PasswordInput
+              control={control}
+              name="confirm_password"
+              rules={{
+                required: '*Password is required',
+                minLength: {
+                  value: 8,
+                  message: '*Password too short (minimum length is 8)',
+                },
+                maxLength: {
+                  value: 16,
+                  message: '*Password too long (maximum length is 16)',
+                },
+              }}
+              placeholder="Confirm Password"
+              maxLength={16}
+              fontSize={scale(16)}
+              placeholderTextColor={'#32323266'}
+            />
+            {errors.password && (
+              <Text style={GlobalStyle.error}>{errors.password.message}</Text>
             )}
-          <CustomButton
-            onPress={handleSubmit(onSubmit)}
-            title="Confirm"
-            containerStyle={[GlobalStyle.CustomButtonRestyle,styles.containerStyle]}
-            textStyle={{color: Colors.ThemeBlue}}
+            <CustomButton
+              onPress={handleSubmit(onSubmit)}
+              title="Confirm"
+              containerStyle={[
+                GlobalStyle.CustomButtonRestyle,
+                styles.containerStyle,
+              ]}
+              textStyle={{color: Colors.ThemeBlue}}
+            />
+          </View>
+          <Success
+            isVisible={successModal}
+            onClose={() => setSuccessModal(false)}
+            message={'Thanks for Password'}
           />
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+          <Error
+            isVisible={errorModal}
+            onClose={() => setErrorModal(false)}
+            message={'Password is not matched'}
+          />
+        </ImageBackground>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
@@ -149,7 +161,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.ThemeBlue,
     marginTop: '15%',
   },
- 
 });
 
 export default Reset;

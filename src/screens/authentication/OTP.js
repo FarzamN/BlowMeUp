@@ -23,12 +23,14 @@ import {GlobalStyle} from '../../Constants/GlobalStyle';
 import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 import Success from '../../components/Modal/Success';
+import Error from '../../components/Modal/Error';
 const windowHeight = Dimensions.get('window').height;
 const Reset = ({route, navigation}) => {
   const Type = route.params.type;
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
 
   useEffect(() => {
     const timer = time > 0 && setInterval(() => setTime(time - 1), 1000);
@@ -55,14 +57,25 @@ const Reset = ({route, navigation}) => {
     if (data.otp == OTP) {
       reset();
       if (Type == 'forgot') {
-        navigation.navigate('Reset');
+        setSuccessModal(true);
+        setTimeout(() => {
+          setSuccessModal(false);
+          navigation.navigate('Reset');
+        }, 2000);
       } else if (Type == 'register') {
-        navigation.navigate('SignIn');
+        setSuccessModal(true);
+        setTimeout(() => {
+          setSuccessModal(false);
+          navigation.navigate('SignIn');
+        }, 2000);
       } else {
         console.log('Can not Navigate ===> ');
       }
     } else {
-      alert('otp is not matcehd');
+      setErrorModal(true);
+      setTimeout(() => {
+        setErrorModal(false);
+      }, 2000);
     }
   };
   return (
@@ -163,10 +176,21 @@ const Reset = ({route, navigation}) => {
                   style={{height: verticalScale(150), alignSelf: 'center'}}
                   source={require('../../assets/lotti/otp.json')}
                 />
-                <Text style={styles.text}>Your OPT has been send{'\n'}Please wait for few second</Text>
+                <Text style={styles.text}>
+                  Your OPT has been send{'\n'}Please wait a few second
+                </Text>
               </SafeAreaView>
             </Modal>
-            <Success isVisible={successModal} onClose={() => setSuccessModal(false)} message={'Thanks for OPT'}/>
+            <Success
+              isVisible={successModal}
+              onClose={() => setSuccessModal(false)}
+              message={'Thanks for OPT'}
+            />
+            <Error
+              isVisible={errorModal}
+              onClose={() => setErrorModal(false)}
+              message={'Your OTP is not current'}
+            />
           </ScrollView>
         </ImageBackground>
       </SafeAreaView>

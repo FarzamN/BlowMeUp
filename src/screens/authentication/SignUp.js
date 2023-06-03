@@ -7,9 +7,9 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -18,9 +18,13 @@ import {useForm} from 'react-hook-form';
 import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PasswordInput from '../../components/PasswordInput';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Success from '../../components/Modal/Success';
+import Error from '../../components/Modal/Error';
 const SignUp = ({navigation}) => {
+  const [successModal, setSuccessModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
   const {
     control,
     handleSubmit,
@@ -28,16 +32,22 @@ const SignUp = ({navigation}) => {
   } = useForm({mode: 'all'});
 
   const onSubmit = data => {
-      if (data.password == data.confirm_password) {
-        navigation.navigate('OTP',{type: 'register'})
-      } else {
-        console.log('Password is not matched')
-      }
+    if (data.password == data.confirm_password) {
+      setSuccessModal(true);
+      setTimeout(() => {
+        setSuccessModal(false);
+        navigation.navigate('OTP', {type: 'register'});
+      }, 2000);
+    } else {
+      setErrorModal(true);
+      setTimeout(() => {
+        setErrorModal(false);
+      }, 2000);
     }
+  };
 
   const [saveimage, setsaveimage] = useState({});
   const [show2, setShow2] = useState(true);
-
 
   const photosave = () => {
     let options = {
@@ -74,7 +84,7 @@ const SignUp = ({navigation}) => {
         resizeMode="cover"
         style={styles.Container}>
         <Image
-         style={{alignSelf: 'center', marginTop: '12%'}}
+          style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -95,10 +105,8 @@ const SignUp = ({navigation}) => {
               }}
               placeholder="User Name"
             />
-                {errors.name && (
-              <Text style={GlobalStyle.error}>
-                {errors.name.message}
-              </Text>
+            {errors.name && (
+              <Text style={GlobalStyle.error}>{errors.name.message}</Text>
             )}
             <CustomInput
               fontSize={scale(16)}
@@ -117,10 +125,8 @@ const SignUp = ({navigation}) => {
               }}
               placeholder="Email Address"
             />
-             {errors.email && (
-              <Text style={GlobalStyle.error}>
-                {errors.email.message}
-              </Text>
+            {errors.email && (
+              <Text style={GlobalStyle.error}>{errors.email.message}</Text>
             )}
             <CustomInput
               FontAwesome={true}
@@ -143,12 +149,12 @@ const SignUp = ({navigation}) => {
               placeholder="Phone Number"
               fontSize={scale(16)}
             />
-                {errors.phone_number && (
+            {errors.phone_number && (
               <Text style={GlobalStyle.error}>
                 {errors.phone_number.message}
               </Text>
             )}
-           <PasswordInput
+            <PasswordInput
               control={control}
               name="password"
               rules={{
@@ -168,11 +174,9 @@ const SignUp = ({navigation}) => {
               fontSize={scale(16)}
             />
             {errors.password && (
-              <Text style={GlobalStyle.error}>
-                {errors.password.message}
-              </Text>
+              <Text style={GlobalStyle.error}>{errors.password.message}</Text>
             )}
-            
+
             <PasswordInput
               control={control}
               name="confirm_password"
@@ -198,8 +202,8 @@ const SignUp = ({navigation}) => {
               </Text>
             )}
             <TouchableOpacity
-             onPress={() =>photosave()}
-            style={styles.ImagePickerBox}>
+              onPress={() => photosave()}
+              style={styles.ImagePickerBox}>
               <FontAwesome
                 name="user-circle-o"
                 size={scale(23)}
@@ -215,7 +219,17 @@ const SignUp = ({navigation}) => {
               textStyle={{color: Colors.White, fontSize: scale(23)}}
             />
           </View>
-          <View style={{height:verticalScale(10)}}/>
+          <Success
+            isVisible={successModal}
+            onClose={() => setSuccessModal(false)}
+            message={'Thanks for your Effort'}
+          />
+          <Error
+            isVisible={errorModal}
+            onClose={() => setErrorModal(false)}
+            message={'Password is not matched'}
+          />
+          <View style={{height: verticalScale(10)}} />
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>

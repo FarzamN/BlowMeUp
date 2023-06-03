@@ -79,24 +79,25 @@ const Dashboard = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
-        Notification={true}
-        Logo={true}
+        Notification
+        Logo
         source={require('../../assets/image/home.png')}
-        Title={true}
+        Title
         Text="Dashboard"
+        // False
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ListHeader
-          Logo={true}
-          Icon={true}
+          Logo
+          Icon
           Text="More"
           source={require('../../assets/image/fire.png')}
           Title="Popular Song"
           onPress={() => navigation.navigate('PopularSong')}
         />
         <FlatList
-          scrollEnabled={true}
-          horizontal={true}
+          scrollEnabled
+          horizontal
           showsHorizontalScrollIndicator={false}
           data={PopularData}
           renderItem={({item}) => {

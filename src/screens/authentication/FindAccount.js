@@ -1,3 +1,4 @@
+import React,{useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,7 +9,6 @@ import {
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native';
-import React from 'react';
 import {useForm} from 'react-hook-form';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
@@ -16,8 +16,12 @@ import {scale, verticalScale} from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import Success from '../../components/Modal/Success';
+import Error from '../../components/Modal/Error';
 
 const FindAccount = ({navigation}) => {
+  const [successModal, setSuccessModal] = useState(false);
+  const [errorModal, setErrorModal] = useState(false);
   const {
     control,
     handleSubmit,
@@ -25,7 +29,11 @@ const FindAccount = ({navigation}) => {
   } = useForm({mode: 'all'});
 
   const onSubmit = () => {
-    navigation.navigate('OTP',{type: 'forgot'})
+    setSuccessModal(true);
+      setTimeout(() => {
+        setSuccessModal(false);
+        navigation.navigate('OTP',{type: 'forgot'})
+      }, 2000);
   }
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -80,6 +88,16 @@ const FindAccount = ({navigation}) => {
             />
           </View>
         </View>
+        <Success
+            isVisible={successModal}
+            onClose={() => setSuccessModal(false)}
+            message={'Thanks for your Email'}
+          />
+          <Error
+            isVisible={errorModal}
+            onClose={() => setErrorModal(false)}
+            message={'Password is not matched'}
+          />
       </ImageBackground>
     </SafeAreaView>
     </TouchableWithoutFeedback>

@@ -38,13 +38,14 @@ const MainHeader = props => {
               size={scale(20)}
               color={Colors.White}
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={require('../../assets/image/Bell_pin.png')}
-              style={{width: scale(20), height: scale(20)}}
-              resizeMode="contain"
+          </TouchableOpacity >
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+             <Ionicons
+              name="notifications-outline"
+              size={scale(20)}
+              color={Colors.White}
             />
+            <View style={[styles.Dot,{backgroundColor: props.False ? 'transparent' :'red'}]}/>
           </TouchableOpacity>
         </View>
       ) : null}
@@ -89,6 +90,7 @@ const styles = StyleSheet.create({
     fontFamily: Font.Poppins500,
     fontSize: scale(12),
   },
+  Dot:{width:scale(5),aspectRatio:1/1,position:'absolute',right:3,top:2,borderRadius:100}
 });
 
 export default MainHeader;
