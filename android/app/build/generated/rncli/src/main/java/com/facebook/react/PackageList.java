@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 // @react-native-async-storage/async-storage
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+// lottie-react-native
+import com.airbnb.android.react.lottie.LottiePackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
@@ -71,6 +73,7 @@ public class PackageList {
     return new ArrayList<>(Arrays.<ReactPackage>asList(
       new MainReactPackage(mConfig),
       new AsyncStoragePackage(),
+      new LottiePackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
       new SafeAreaContextPackage(),

@@ -10,22 +10,38 @@ import {
   Keyboard,
   TouchableOpacity,
   ScrollView,
+  Dimensions,
+  Pressable,
 } from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {useForm} from 'react-hook-form';
 import CustomInput from '../../components/CustomInput';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
 import {Font} from '../../utils/font';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
-
+import Modal from 'react-native-modal';
+import LottieView from 'lottie-react-native';
+import Success from '../../components/Modal/Success';
+const windowHeight = Dimensions.get('window').height;
 const Reset = ({route, navigation}) => {
   const Type = route.params.type;
   const [time, setTime] = useState(10);
+  const [otpResent, setOtpResent] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+
   useEffect(() => {
     const timer = time > 0 && setInterval(() => setTime(time - 1), 1000);
     return () => clearInterval(timer);
   }, [time]);
+
+  const OTPmodalState = () => {
+    setOtpResent(true);
+    setTimeout(() => {
+      setOtpResent(false);
+    }, 2000);
+  };
+
   const {
     control,
     handleSubmit,
@@ -87,13 +103,17 @@ const Reset = ({route, navigation}) => {
                 <CustomButton
                   title="Confirm"
                   onPress={handleSubmit(Submit)}
-                  containerStyle={[GlobalStyle.CustomButtonRestyle,styles.containerStyle]}
+                  containerStyle={[
+                    GlobalStyle.CustomButtonRestyle,
+                    styles.containerStyle,
+                  ]}
                   textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}}
                 />
               </View>
             </View>
             <>
-              <View style={{height: verticalScale(150)}} />
+              <View style={{height: windowHeight * 0.25}} />
+
               {time == 0 ? (
                 <TouchableOpacity
                   onPress={() => setTime(10)}
@@ -112,7 +132,8 @@ const Reset = ({route, navigation}) => {
                   <Text style={styles.Text}>Press to Resend Your OPT</Text>
                 </TouchableOpacity>
               ) : (
-                <View
+                <Pressable
+                  onPress={OTPmodalState}
                   style={[
                     styles.containerStyle,
                     {
@@ -126,11 +147,26 @@ const Reset = ({route, navigation}) => {
                     },
                   ]}>
                   <Text style={styles.Text}>
-                    You can Reset Your password in {time}
+                    You can Reset Your OTP in {time}
                   </Text>
-                </View>
+                </Pressable>
               )}
             </>
+            <Modal
+              visible={otpResent}
+              onBackButtonPress={() => setOtpResent(false)}
+              onBackdropPress={() => setOtpResent(false)}
+              style={styles.modal}>
+              <SafeAreaView style={styles.buttons}>
+                <LottieView
+                  autoPlay
+                  style={{height: verticalScale(150), alignSelf: 'center'}}
+                  source={require('../../assets/lotti/otp.json')}
+                />
+                <Text style={styles.text}>Your OPT has been send{'\n'}Please wait for few second</Text>
+              </SafeAreaView>
+            </Modal>
+            <Success isVisible={successModal} onClose={() => setSuccessModal(false)} message={'Thanks for OPT'}/>
           </ScrollView>
         </ImageBackground>
       </SafeAreaView>
@@ -174,6 +210,29 @@ const styles = StyleSheet.create({
   Text: {
     color: Colors.Black,
     fontFamily: Font.Gilroy500,
+  },
+  modal: {
+    justifyContent: 'center',
+    margin: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+  },
+  buttonIcon: {
+    alignSelf: 'center',
+  },
+  buttons: {
+    justifyContent: 'center',
+    // height: '35%',
+    // width: '60%',
+    borderRadius: scale(10),
+    backgroundColor: Colors.Main,
+    alignSelf: 'center',
+  },
+  text: {
+    color: '#EF4444',
+    fontSize: scale(16),
+    textAlign: 'center',
+    padding: moderateScale(20),
+    fontFamily: Font.Gilroy600,
   },
 });
 export default Reset;

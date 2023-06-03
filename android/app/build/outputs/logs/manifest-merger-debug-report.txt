@@ -10,6 +10,7 @@ MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.125.0] C:\Users\Dell\.
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\Dell\.gradle\caches\transforms-3\1de5dee59d1627955e42d3d6205f726e\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:8:1-18:12
 MERGED from [:react-native-vector-icons] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-async-storage_async-storage] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:lottie-react-native] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-image-picker] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-21:12
 MERGED from [:react-native-linear-gradient] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-safe-area-context] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-safe-area-context\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
@@ -34,6 +35,7 @@ MERGED from [com.facebook.fresco:memory-type-ashmem:2.6.0] C:\Users\Dell\.gradle
 MERGED from [com.facebook.fresco:imagepipeline:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\2cbebb8888325f7b1244a9c0b037b3ff\transformed\jetified-imagepipeline-2.6.0\AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:nativeimagetranscoder:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\056cd6cf716cc00f29e82fb5eb0e0d8c\transformed\jetified-nativeimagetranscoder-2.6.0\AndroidManifest.xml:2:1-9:12
 MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\62fcea25716e852e611a74dc9cb458b4\transformed\jetified-imagepipeline-base-2.6.0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.airbnb.android:lottie:5.1.1] C:\Users\Dell\.gradle\caches\transforms-3\773b3a3cc134fc0f4071520487fec5f1\transformed\jetified-lottie-5.1.1\AndroidManifest.xml:2:1-11:12
 MERGED from [com.google.android.material:material:1.1.0] C:\Users\Dell\.gradle\caches\transforms-3\2fd73835c5f88322cd819e21091ff8cf\transformed\material-1.1.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\Dell\.gradle\caches\transforms-3\2869819762abc67901fd58a9b84e0d6d\transformed\appcompat-1.4.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.sqlite:sqlite-framework:2.1.0] C:\Users\Dell\.gradle\caches\transforms-3\93d8acfd8e40425531632c8aedd9b90e\transformed\sqlite-framework-2.1.0\AndroidManifest.xml:17:1-24:12
@@ -98,6 +100,8 @@ uses-permission#android.permission.INTERNET
 ADDED from C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\android\app\src\main\AndroidManifest.xml:3:5-67
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\Dell\.gradle\caches\transforms-3\1de5dee59d1627955e42d3d6205f726e\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:15:5-67
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\Dell\.gradle\caches\transforms-3\1de5dee59d1627955e42d3d6205f726e\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:15:5-67
+MERGED from [:lottie-react-native] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-67
+MERGED from [:lottie-react-native] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-67
 	android:name
 		ADDED from C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\android\app\src\main\AndroidManifest.xml:3:22-64
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
@@ -114,6 +118,8 @@ MERGED from [com.facebook.react:react-android:0.71.6] C:\Users\Dell\.gradle\cach
 MERGED from [com.facebook.react:react-android:0.71.6] C:\Users\Dell\.gradle\caches\transforms-3\6e02e5c3d2d63bb559b93d7f1ebaf07e\transformed\jetified-react-android-0.71.6-debug\AndroidManifest.xml:9:5-20
 MERGED from [com.facebook.soloader:soloader:0.10.4] C:\Users\Dell\.gradle\caches\transforms-3\fda04c29f37516b0434cb97f63a52366\transformed\jetified-soloader-0.10.4\AndroidManifest.xml:11:5-20
 MERGED from [com.facebook.soloader:soloader:0.10.4] C:\Users\Dell\.gradle\caches\transforms-3\fda04c29f37516b0434cb97f63a52366\transformed\jetified-soloader-0.10.4\AndroidManifest.xml:11:5-20
+MERGED from [com.airbnb.android:lottie:5.1.1] C:\Users\Dell\.gradle\caches\transforms-3\773b3a3cc134fc0f4071520487fec5f1\transformed\jetified-lottie-5.1.1\AndroidManifest.xml:9:5-20
+MERGED from [com.airbnb.android:lottie:5.1.1] C:\Users\Dell\.gradle\caches\transforms-3\773b3a3cc134fc0f4071520487fec5f1\transformed\jetified-lottie-5.1.1\AndroidManifest.xml:9:5-20
 MERGED from [com.google.android.material:material:1.1.0] C:\Users\Dell\.gradle\caches\transforms-3\2fd73835c5f88322cd819e21091ff8cf\transformed\material-1.1.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.1.0] C:\Users\Dell\.gradle\caches\transforms-3\2fd73835c5f88322cd819e21091ff8cf\transformed\material-1.1.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.emoji2:emoji2:1.0.0] C:\Users\Dell\.gradle\caches\transforms-3\c1cd3487ee93faa69a46c921c06f102e\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:25:5-35:19
@@ -190,6 +196,8 @@ MERGED from [:react-native-vector-icons] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp
 MERGED from [:react-native-vector-icons] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-vector-icons\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-async-storage_async-storage] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-async-storage_async-storage] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:lottie-react-native] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:lottie-react-native] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\lottie-react-native\src\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-image-picker] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-image-picker] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-linear-gradient] C:\Users\Dell\Desktop\MShahbaz\BlowMeUp\node_modules\react-native-linear-gradient\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
@@ -238,6 +246,8 @@ MERGED from [com.facebook.fresco:nativeimagetranscoder:2.6.0] C:\Users\Dell\.gra
 MERGED from [com.facebook.fresco:nativeimagetranscoder:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\056cd6cf716cc00f29e82fb5eb0e0d8c\transformed\jetified-nativeimagetranscoder-2.6.0\AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\62fcea25716e852e611a74dc9cb458b4\transformed\jetified-imagepipeline-base-2.6.0\AndroidManifest.xml:5:5-7:41
 MERGED from [com.facebook.fresco:imagepipeline-base:2.6.0] C:\Users\Dell\.gradle\caches\transforms-3\62fcea25716e852e611a74dc9cb458b4\transformed\jetified-imagepipeline-base-2.6.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.airbnb.android:lottie:5.1.1] C:\Users\Dell\.gradle\caches\transforms-3\773b3a3cc134fc0f4071520487fec5f1\transformed\jetified-lottie-5.1.1\AndroidManifest.xml:5:5-7:41
+MERGED from [com.airbnb.android:lottie:5.1.1] C:\Users\Dell\.gradle\caches\transforms-3\773b3a3cc134fc0f4071520487fec5f1\transformed\jetified-lottie-5.1.1\AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.material:material:1.1.0] C:\Users\Dell\.gradle\caches\transforms-3\2fd73835c5f88322cd819e21091ff8cf\transformed\material-1.1.0\AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.material:material:1.1.0] C:\Users\Dell\.gradle\caches\transforms-3\2fd73835c5f88322cd819e21091ff8cf\transformed\material-1.1.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.4.1] C:\Users\Dell\.gradle\caches\transforms-3\2869819762abc67901fd58a9b84e0d6d\transformed\appcompat-1.4.1\AndroidManifest.xml:20:5-22:41

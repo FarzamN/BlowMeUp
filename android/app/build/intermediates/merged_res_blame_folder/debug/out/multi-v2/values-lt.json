@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.blowmeup.app-mergeDebugResources-27:/values-lt/values-lt.xml",
+            "outputFile": "com.blowmeup.app-mergeDebugResources-28:/values-lt/values-lt.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Dell\\.gradle\\caches\\transforms-3\\2869819762abc67901fd58a9b84e0d6d\\transformed\\appcompat-1.4.1\\res\\values-lt\\values-lt.xml",
