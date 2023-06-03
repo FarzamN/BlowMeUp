@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,6 +13,8 @@ import CustomButton from '../../../components/CustomButton';
 import {Colors} from '../../../utils/Colors';
 import {Font} from '../../../utils/font';
 import MainHeader from '../../../components/Header/MainHeader';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
 const TermsAndConditions = ({navigation,route}) => {
   const Type = route.params.type
@@ -25,6 +27,14 @@ const TermsAndConditions = ({navigation,route}) => {
       //   navigation.navigate('Setting')
       // }
     }
+    useFocusEffect(
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      useCallback(() => {
+        navigation.getParent()?.setOptions({
+          tabBarStyle: GlobalStyle.HideBar
+        })
+      }),
+    )
   return (
     <SafeAreaView style={styles.Container}>
       <View style={{marginTop: Type == 'auth' ? '10%' : 0}}>
@@ -86,8 +96,7 @@ const TermsAndConditions = ({navigation,route}) => {
             containerStyle={{
               width: '85%',
               alignSelf: 'center',
-              marginBottom: verticalScale(20),
-              padding: moderateScale(15),
+              marginBottom: verticalScale(20)
             }}
           />
         </ScrollView>

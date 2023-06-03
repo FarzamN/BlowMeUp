@@ -22,5 +22,14 @@ export const GlobalStyle = {
       Row:{
         flexDirection: 'row',
         alignItems: 'center',
+      },
+      showBar:{
+        display: 'flex',
+        backgroundColor: Colors.ThemeGrey,
+          height: verticalScale(60),
+          borderTopColor: Colors.ThemeGrey,
+      },
+      HideBar:{
+        display:'none'
       }
 }

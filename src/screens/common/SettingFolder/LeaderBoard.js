@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -15,7 +15,9 @@ import {Font} from '../../../utils/font';
 import Today from './Today';
 import Week from './Week';
 import Month from './Month';
-const LeaderBoard = () => {
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
+const LeaderBoard = ({navigation}) => {
   const [today, setToday] = useState(true);
   const [week, setWeek] = useState(false);
   const [month, setMonth] = useState(false);
@@ -24,6 +26,14 @@ const LeaderBoard = () => {
   const [weekColor, setWeekColor] = useState(Colors.ThemeBlue);
   const [monthColor, setMonthColor] = useState(Colors.ThemeBlue);
 
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   const HandleToday = () => {
     setToday(true);
     setWeek(false);

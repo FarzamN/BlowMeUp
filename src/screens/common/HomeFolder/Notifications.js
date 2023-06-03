@@ -7,7 +7,7 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -16,6 +16,8 @@ import {Colors} from '../../../utils/Colors';
 import {SwipeListView} from 'react-native-swipe-list-view';
 import Feather from 'react-native-vector-icons/Feather';
 import {Font} from '../../../utils/font';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
 const Notifications = ({navigation}) => {
   const DATA = [
     {
@@ -91,6 +93,14 @@ const Notifications = ({navigation}) => {
       source: require('../../../assets/image/dp2.png'),
     },
   ];
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   const Item = ({Name, Time, About, source}) => (
     <View style={[styles.Main, styles.Row]}>
       <View style={styles.ImageBox}>
@@ -113,7 +123,6 @@ const Notifications = ({navigation}) => {
         BackArrow={true}
         Title={true}
         Text="Notifications"
-        Container={{paddingRight: moderateScale(20)}}
       />
       <View
         style={{

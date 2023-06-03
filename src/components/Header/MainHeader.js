@@ -18,7 +18,7 @@ const MainHeader = props => {
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={styles.arrowBox}>
-            <Ionicons name="arrow-back" color={Colors.Main} size={scale(15)} />
+            <Ionicons name="arrow-back" color={Colors.Main} size={scale(18)} />
           </TouchableOpacity>
         ) : null}
         {props.Search ? (
@@ -39,7 +39,7 @@ const MainHeader = props => {
               color={Colors.White}
             />
           </TouchableOpacity >
-          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Alert')}>
              <Ionicons
               name="notifications-outline"
               size={scale(20)}

@@ -9,7 +9,7 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {moderateScale, scale} from 'react-native-size-matters';
 import MainHeader from '../../components/Header/MainHeader';
@@ -21,6 +21,8 @@ import {Font} from '../../utils/font';
 import GenerationCard from '../../components/Card/GenerationCard';
 import LinearGradient from 'react-native-linear-gradient';
 import {  } from '@react-native-material/core';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 const Search = ({navigation}) => {
   const GeneratoinItem = [
     {
@@ -40,7 +42,14 @@ const Search = ({navigation}) => {
       source: require('../../assets/image/generation4.jpg'),
     },
   ];
-
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={styles.container}>
       <MainHeader

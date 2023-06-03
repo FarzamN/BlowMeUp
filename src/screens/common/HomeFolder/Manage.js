@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,8 +13,10 @@ import {Colors} from '../../../utils/Colors';
 import {Font} from '../../../utils/font';
 import Upload from './Upload';
 import Video from './Video';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
-const Manage = () => {
+const Manage = ({navigation}) => {
   const [upload, setUpload] = useState(true);
   const [videos, setVideos] = useState(false);
 
@@ -33,7 +35,14 @@ const Manage = () => {
     setUploadColor('#556084');
     setVideoColor(Colors.Main);
   };
-
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />

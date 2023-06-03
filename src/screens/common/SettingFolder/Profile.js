@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,6 +19,8 @@ import {Font} from '../../../utils/font';
 import CustomButton from '../../../components/CustomButton';
 import CustomInput from '../../../components/CustomInput';
 import {useForm} from 'react-hook-form';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Profile = ({navigation}) => {
   const {
@@ -30,6 +32,14 @@ const Profile = ({navigation}) => {
   const [showInput, setShowInput] = useState(false);
   const [showForName,setShowForName] = useState(false)
 
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />

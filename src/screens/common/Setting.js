@@ -5,7 +5,7 @@ import {
   StatusBar,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import MainHeader from '../../components/Header/MainHeader';
 import SettingItem from '../../components/SettingItem';
@@ -15,10 +15,19 @@ import {Colors} from '../../utils/Colors';
 import {moderateScale, verticalScale} from 'react-native-size-matters';
 import {useDispatch} from 'react-redux';
 import {USER_DETAILS} from '../../redux/reducer/Holder';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const Setting = ({navigation}) => {
   const Dispatch = useDispatch();
-
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={styles.container}>
       <MainHeader

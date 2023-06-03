@@ -1,53 +1,60 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import Modal from 'react-native-modal';
+import {
+  
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  StatusBar,
+  View,
+} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {Colors} from '../../utils/Colors';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {Font} from '../../utils/font';
+import ReactNativeModal from 'react-native-modal';
 
-const Loading = ({ isVisible, onClose}) => {
+const Loading = () => {
   return (
-    <Modal
-      visible={isVisible}
-      onBackButtonPress={onClose}
-      onBackdropPress={onClose}
-      style={styles.modal}>
-      <SafeAreaView style={styles.buttons}>
-        <LottieView
-          autoPlay
-          style={{height: verticalScale(150), alignSelf: 'center'}}
-          source={require('../../assets/lotti/loader.json')}
-        />
-        <Text style={styles.text}>
-          Please Wait
-        </Text>
-      </SafeAreaView>
-    </Modal>
-  )
-}
+    <SafeAreaView style={styles.Container}>
+      <StatusBar backgroundColor={Colors.ThemeBlue} />
+      <ReactNativeModal  visible={true} style={[styles.modal,styles.Container]}>
+      <View style={styles.buttons}>
+          <LottieView
+            autoPlay
+            style={{
+              height: verticalScale(150),
+              alignSelf: 'center',
+            }}
+            source={require('../../assets/lotti/loader.json')}
+          />
+          <Text style={styles.text}>Please Wait</Text>
+        </View>
+      </ReactNativeModal>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-  modal: {
+  Container: {
+    flex: 1,
     justifyContent: 'center',
-    margin: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: Colors.ThemeBlue,
   },
-  buttonIcon: {
-    alignSelf: 'center',
+  modal: {
+    margin: 0,
   },
   buttons: {
-    justifyContent: 'center',
-    borderRadius: scale(10),
-    backgroundColor: Colors.Main,
-    alignSelf: 'center',
+    backgroundColor: Colors.ThemeCream,
+    width:'60%'
+    ,alignSelf:'center',
+    borderRadius:scale(20)
   },
   text: {
     fontSize: scale(16),
     textAlign: 'center',
     padding: moderateScale(20),
     fontFamily: Font.Gilroy600,
-    color: Colors.Black
+    color: Colors.ThemeBlue,
   },
-})
-export default Loading
+});
+export default Loading;

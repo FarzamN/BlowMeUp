@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useCallback, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,7 +7,7 @@ import {
   StatusBar,
 } from 'react-native';
 import {moderateScale, scale} from 'react-native-size-matters';
-
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 import {Colors} from '../../utils/Colors';
 
 import MainHeader from '../../components/Header/MainHeader';
@@ -15,8 +15,11 @@ import ListHeader from '../../components/Header/ListHeader';
 import SongCard from '../../components/Card/SongCard';
 import GernCard from '../../components/Card/GernCard';
 import {Font} from '../../utils/font';
+import Loading from '../../components/Modal/Loading';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Dashboard = ({navigation}) => {
+  const [loading,setLoading] = useState(true)
   const PopularData = [
     {
       Song: 'Ghost',
@@ -75,7 +78,18 @@ const Dashboard = ({navigation}) => {
       source: require('../../assets/image/Recent3.jpg'),
     },
   ];
-  return (
+  setTimeout(() => {
+    setLoading(false)
+  }, 2000);
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
+  return loading ?  <Loading /> : (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader

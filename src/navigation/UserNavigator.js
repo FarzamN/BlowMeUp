@@ -12,17 +12,18 @@ import LiveStreams from '../screens/common/LiveStreams';
 import VlogSection from '../screens/common/VlogSection';
 import Setting from '../screens/common/Setting';
 
-import Search from '../screens/common/Search.js';
+import Search from '../screens/common/Search';
 import PopularSong from '../screens/common/HomeFolder/PopularSong';
 import Notifications from '../screens/common/HomeFolder/Notifications';
 import Manage from '../screens/common/HomeFolder/Manage';
 import PlayAll from '../screens/common/HomeFolder/PlayAll';
 import Music from '../screens/common/HomeFolder/Music';
-import Profile from '../screens/common/SettingFolder/Profile.js';
+import Profile from '../screens/common/SettingFolder/Profile';
 import LeaderBoard from '../screens/common/SettingFolder/LeaderBoard';
 import ChangePassword from '../screens/common/SettingFolder/ChangePassword';
 import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions';
 import SearchScreen from '../screens/common/SearchScreen';
+import Alert from '../screens/common/Alert'
 const UserNavigator = () => {
   const Tab = createBottomTabNavigator();
   return (
@@ -188,6 +189,11 @@ function AllDashboard() {
       <Stack.Screen
         name="Search"
         component={Search}
+        options={{animation: 'flip'}}
+      />
+        <Stack.Screen
+        name="Alert"
+        component={Alert}
         options={{animation: 'flip'}}
       />
          <Stack.Screen

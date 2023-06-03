@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,6 +12,8 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import MainHeader from '../../../components/Header/MainHeader';
 import {Font} from '../../../utils/font';
 import SongsItem from '../../../components/Card/SongsItem';
+import { useFocusEffect } from '@react-navigation/native';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
 const PopularSong = ({navigation}) => {
   const params = [
@@ -96,6 +98,14 @@ const PopularSong = ({navigation}) => {
   const handleChange = (item) => {
     setSelect(item.id)
   }
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   const renderItem = ({item}) => (
     <TouchableOpacity
       style={[
@@ -112,7 +122,6 @@ const PopularSong = ({navigation}) => {
         style={[
           styles.bubbles,
           {
-            fontSize: scale(14),
             color: select == item.id ? Colors.White : Colors.Black,
           },
         ]}>
@@ -155,16 +164,16 @@ const styles = StyleSheet.create({
   bubbleBox: {
     borderRadius: scale(8),
     marginRight: scale(6),
-    paddingHorizontal: moderateScale(16),
-    height: verticalScale(40),
+    paddingHorizontal: moderateScale(13),
+    height: verticalScale(30),
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: verticalScale(20),
+    // marginBottom: verticalScale(10),
   },
   bubbles: {
     textTransform: 'capitalize',
     fontFamily: Font.Inter400,
-    fontSize: scale(14),
+    fontSize: scale(12),
   },
 });
 

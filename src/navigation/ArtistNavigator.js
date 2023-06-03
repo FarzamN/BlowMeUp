@@ -21,6 +21,7 @@ import Music from '../screens/common/HomeFolder/Music';
 import Profile from '../screens/common/SettingFolder/Profile';
 import LeaderBoard from '../screens/common/SettingFolder/LeaderBoard';
 import SearchScreen from '../screens/common/SearchScreen';
+import Alert from '../screens/common/Alert';
 
 const ArtistNavigator = () => {
   const Tab = createBottomTabNavigator();
@@ -187,6 +188,11 @@ function AllDashboard() {
       <Stack.Screen
         name="Search"
         component={Search}
+        options={{animation: 'flip'}}
+      />
+              <Stack.Screen
+        name="Alert"
+        component={Alert}
         options={{animation: 'flip'}}
       />
          <Stack.Screen
