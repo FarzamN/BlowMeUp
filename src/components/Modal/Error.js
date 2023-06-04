@@ -1,12 +1,12 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
-import {Colors} from '../../utils/Colors';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
+import { Colors } from '../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
 
-const Error = ({message, isVisible, onClose}) => {
+const Error = ({ message, isVisible, onClose }) => {
   return (
     <Modal
       visible={isVisible}
@@ -16,7 +16,7 @@ const Error = ({message, isVisible, onClose}) => {
       <SafeAreaView style={styles.buttons}>
         <LottieView
           autoPlay
-          style={{height: verticalScale(150), alignSelf: 'center'}}
+          style={{ height: verticalScale(150), alignSelf: 'center' }}
           source={require('../../assets/lotti/error.json')}
         />
         <Text style={styles.text}>
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   buttons: {
     justifyContent: 'center',
     // height: '35%',
-    // width: '60%',
+    width: '75%',
     borderRadius: scale(10),
     backgroundColor: Colors.Main,
     alignSelf: 'center',

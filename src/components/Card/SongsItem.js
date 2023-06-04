@@ -1,27 +1,27 @@
-import {StyleSheet, Text, View, Image, Pressable} from 'react-native';
+import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import React from 'react';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
-import {Colors} from '../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
+import { Colors } from '../../utils/Colors';
 import Entypo from 'react-native-vector-icons/Entypo';
-const SongsItem = ({data,onPress}) => {
+import { GlobalStyle } from '../../Constants/GlobalStyle';
+const SongsItem = ({ data, onPress }) => {
   return (
     <Pressable
-    android_ripple={{color: '#fff'}}
-      onPress={onPress}
-      activeOpacity={0.8}
+      android_ripple={{ color: 'rgba(20, 24, 36, 1)' }}
+      // onPress={onPress}
       style={styles.Container}>
-      <View style={styles.Row}>
+      <View style={[GlobalStyle.Row, { justifyContent: 'center' }]}>
         <View style={styles.ImageBox}>
           <Image style={styles.Image} resizeMode="cover" source={data.source} />
         </View>
-        <View style={{marginHorizontal: scale(10)}}>
+        <View style={{ marginHorizontal: scale(10) }}>
           <Text style={styles.TextOne} numberOfLines={1}>
             {data.SongName}
           </Text>
           <View
             style={[
-              styles.Row,
+              GlobalStyle.Row,
               {
                 alignSelf: 'flex-start',
               },
@@ -43,19 +43,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: scale(15),
-    marginBottom: 15,
+    // marginTop: verticalScale(10),
+    paddingHorizontal: moderateScale(10)
   },
   ImageBox: {
     width: scale(70),
     height: scale(70),
   },
-  Image: {width: '100%', height: '100%', borderRadius: scale(10)},
-  Row: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  Image: { width: '100%', height: '100%', borderRadius: scale(10) },
   TextOne: {
     fontSize: scale(16),
     fontFamily: Font.Inter700,

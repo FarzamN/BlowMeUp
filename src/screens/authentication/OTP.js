@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,25 +12,38 @@ import {
   ScrollView,
   Dimensions,
   Pressable,
+  Platform,
 } from 'react-native';
-import {Colors} from '../../utils/Colors';
-import {useForm} from 'react-hook-form';
-import CustomInput from '../../components/CustomInput';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
-import {Font} from '../../utils/font';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
-import Modal from 'react-native-modal';
-import LottieView from 'lottie-react-native';
+import { Font } from '../../utils/font';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
+import CustomLotti from '../../components/Modal/CustomLotti';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+
 const windowHeight = Dimensions.get('window').height;
-const Reset = ({route, navigation}) => {
+const CELL_COUNT = 4
+const Reset = ({ route, navigation }) => {
   const Type = route.params.type;
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
 
   useEffect(() => {
     const timer = time > 0 && setInterval(() => setTime(time - 1), 1000);
@@ -41,21 +54,13 @@ const Reset = ({route, navigation}) => {
     setOtpResent(true);
     setTimeout(() => {
       setOtpResent(false);
-    }, 2000);
+    }, 2300);
   };
 
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: {errors, isValid},
-  } = useForm({mode: 'all'});
-
   const OTP = 1234;
-  const Submit = data => {
+  const Submit = () => {
     console.log('Opt btn press');
-    if (data.otp == OTP) {
-      reset();
+    if (value == OTP) {
       if (Type == 'forgot') {
         setSuccessModal(true);
         setTimeout(() => {
@@ -86,7 +91,7 @@ const Reset = ({route, navigation}) => {
           resizeMode="cover"
           style={styles.Container}>
           <Image
-            style={{alignSelf: 'center', marginTop: '12%'}}
+            style={{ alignSelf: 'center', marginTop: '12%' }}
             source={require('../../assets/image/logo.png')}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -95,37 +100,38 @@ const Reset = ({route, navigation}) => {
               <Text style={styles.Search}>
                 Send code via email please enter the code
               </Text>
-              <CustomInput
-                Gapp={{paddingHorizontal: 0}}
-                control={control}
-                keyboardType="numeric"
-                name="otp"
-                rules={{
-                  required: 'OTP is required',
-                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-                  message: 'Enter a valid OTP',
-                }}
-                placeholder="Reset Password Code"
-                maxLength={4}
-                fontSize={scale(16)}
+              <CodeField
+                ref={ref}
+                {...props}
+                value={value}
+                onChangeText={setValue}
+                cellCount={CELL_COUNT}
+                rootStyle={styles.codeFieldRoot}
+                keyboardType="number-pad"
+                textContentType="oneTimeCode"
+                renderCell={({ index, symbol, isFocused }) => (
+                  <Text
+                    key={index}
+                    style={[styles.cell, isFocused && styles.focusCell]}
+                    onLayout={getCellOnLayoutHandler(index)}>
+                    {symbol || (isFocused ? <Cursor /> : null)}
+                  </Text>
+                )}
               />
-              {errors.otp && (
-                <Text style={GlobalStyle.error}>{errors.otp.message}</Text>
-              )}
-              <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
+              <View style={[styles.Row, { justifyContent: 'flex-end' }]}>
                 <CustomButton
                   title="Confirm"
-                  onPress={handleSubmit(Submit)}
+                  onPress={Submit}
                   containerStyle={[
                     GlobalStyle.CustomButtonRestyle,
                     styles.containerStyle,
                   ]}
-                  textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}}
+                  textStyle={{ color: Colors.ThemeBlue, fontSize: scale(13) }}
                 />
               </View>
             </View>
             <>
-              <View style={{height: windowHeight * 0.25}} />
+              <View style={{ height: windowHeight * 0.25 }} />
 
               {time == 0 ? (
                 <TouchableOpacity
@@ -165,22 +171,13 @@ const Reset = ({route, navigation}) => {
                 </Pressable>
               )}
             </>
-            <Modal
+            <CustomLotti
               visible={otpResent}
-              onBackButtonPress={() => setOtpResent(false)}
-              onBackdropPress={() => setOtpResent(false)}
-              style={styles.modal}>
-              <SafeAreaView style={styles.buttons}>
-                <LottieView
-                  autoPlay
-                  style={{height: verticalScale(150), alignSelf: 'center'}}
-                  source={require('../../assets/lotti/otp.json')}
-                />
-                <Text style={styles.text}>
-                  Your OPT has been send{'\n'}Please wait a few second
-                </Text>
-              </SafeAreaView>
-            </Modal>
+              source={require('../../assets/lotti/otp.json')}
+              Title="Your OPT has been send"
+            // TitleTrue={true}
+            // Title2="Please wait a few second"
+            />
             <Success
               isVisible={successModal}
               onClose={() => setSuccessModal(false)}
@@ -235,28 +232,18 @@ const styles = StyleSheet.create({
     color: Colors.Black,
     fontFamily: Font.Gilroy500,
   },
-  modal: {
-    justifyContent: 'center',
-    margin: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
-  },
-  buttonIcon: {
-    alignSelf: 'center',
-  },
-  buttons: {
-    justifyContent: 'center',
-    // height: '35%',
-    // width: '60%',
-    borderRadius: scale(10),
-    backgroundColor: Colors.Main,
-    alignSelf: 'center',
-  },
-  text: {
-    color: '#EF4444',
-    fontSize: scale(16),
+  codeFieldRoot: { marginVertical: verticalScale(10) },
+  cell: {
+    width: scale(60),
+    height: scale(60),
+    fontSize: scale(24),
+    borderWidth: scale(1.5),
+    borderRadius: scale(9),
+    borderColor: Colors.Main,
     textAlign: 'center',
-    padding: moderateScale(20),
-    fontFamily: Font.Gilroy600,
+    color: Colors.White,
+    fontFamily: Font.Gilroy400,
+    textAlignVertical: 'center',
   },
 });
 export default Reset;

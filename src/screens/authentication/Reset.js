@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,29 +9,30 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
-import {scale, verticalScale} from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
+import { scale, verticalScale } from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import PasswordInput from '../../components/PasswordInput';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
-import Success from '../../components/Modal/Success';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 import Error from '../../components/Modal/Error';
-const Reset = ({navigation}) => {
-  const [successModal, setSuccessModal] = useState(false);
+import CustomLotti from '../../components/Modal/CustomLotti';
+const Reset = ({ navigation }) => {
   const [errorModal, setErrorModal] = useState(false);
+  const [passwordChange, setPasswordChange] = useState(false);
+
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({mode: 'all'});
+    formState: { errors, isValid },
+  } = useForm({ mode: 'all' });
 
   const onSubmit = data => {
     if (data.password == data.confirm_password) {
-      setSuccessModal(true);
+      setPasswordChange(true);
       setTimeout(() => {
-        setSuccessModal(false);
+        setPasswordChange(false);
         navigation.navigate('SignIn');
       }, 2000);
     } else {
@@ -47,16 +48,16 @@ const Reset = ({navigation}) => {
         <ImageBackground
           source={require('../../assets/image/Bacground/reset.png')}
           resizeMode="cover"
-          style={{flex: 1}}>
+          style={{ flex: 1 }}>
           <Image
-            style={{alignSelf: 'center', marginTop: '12%'}}
+            style={{ alignSelf: 'center', marginTop: '12%' }}
             source={require('../../assets/image/logo.png')}
           />
           <View style={styles.MainBox}>
             <Text style={styles.Find}>Reset Your Password</Text>
             <Text style={styles.Search}>
               Please enter your{' '}
-              <Text style={{color: Colors.Yellow}}>New Password.</Text> Password
+              <Text style={{ color: Colors.Yellow }}>New Password.</Text> Password
               must be on 8 characters
             </Text>
             <PasswordInput
@@ -110,18 +111,19 @@ const Reset = ({navigation}) => {
                 GlobalStyle.CustomButtonRestyle,
                 styles.containerStyle,
               ]}
-              textStyle={{color: Colors.ThemeBlue}}
+              textStyle={{ color: Colors.ThemeBlue }}
             />
           </View>
-          <Success
-            isVisible={successModal}
-            onClose={() => setSuccessModal(false)}
-            message={'Thanks for Password'}
-          />
           <Error
             isVisible={errorModal}
             onClose={() => setErrorModal(false)}
             message={'Password is not matched'}
+          />
+          <CustomLotti
+            visible={passwordChange}
+            source={require('../../assets/lotti/passwordchange.json')}
+            Title="Password has been changed"
+            TextRestyle={{ color: Colors.ThemeBlue }}
           />
         </ImageBackground>
       </SafeAreaView>

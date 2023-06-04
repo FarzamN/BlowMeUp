@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Colors} from '../../../utils/Colors';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import { Colors } from '../../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import MainHeader from '../../../components/Header/MainHeader';
-import {Font} from '../../../utils/font';
+import { Font } from '../../../utils/font';
 import SongsItem from '../../../components/Card/SongsItem';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
-const PopularSong = ({navigation}) => {
+const PopularSong = ({ navigation }) => {
   const params = [
     {
       id: '1',
@@ -106,7 +106,7 @@ const PopularSong = ({navigation}) => {
       })
     }),
   )
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       style={[
         styles.bubbleBox,
@@ -117,7 +117,7 @@ const PopularSong = ({navigation}) => {
       ]}
       activeOpacity={0.9}
       onPress={() => handleChange(item)}>
-    
+
       <Text
         style={[
           styles.bubbles,
@@ -144,14 +144,17 @@ const PopularSong = ({navigation}) => {
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
-      <FlatList
+      {/* <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={SongData}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return <SongsItem data={item} onPress={() => navigation.navigate('Music')} />;
         }}
-      />
+      /> */}
+      {SongData?.map(item => {
+        return <SongsItem data={item} key={item.id} />;
+      })}
     </SafeAreaView>
   );
 };

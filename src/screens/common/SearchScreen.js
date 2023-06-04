@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,22 +12,22 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native';
-import {Colors} from '../../utils/Colors';
-import {Controller, useForm} from 'react-hook-form';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
+import { Colors } from '../../utils/Colors';
+import { Controller, useForm } from 'react-hook-form';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
-import {useFocusEffect} from '@react-navigation/native';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 import RecentSong from '../../components/Card/RecentSong';
-const SearchScreen = ({navigation}) => {
-  const [searchValue, setSearchValue] = useState('');
+const SearchScreen = ({ navigation }) => {
+  const [value, setValue] = useState('');
   // const [searchQuery, setSearchQuery] = useState();
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm({
     defaultValues: '',
   });
@@ -150,62 +150,61 @@ const SearchScreen = ({navigation}) => {
 
   return (
     <>
-      <SafeAreaView style={{backgroundColor: Colors.Ash}} />
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <StatusBar backgroundColor={Colors.Ash} barStyle={'light-content'} />
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, searchvalue}}) => (
-              <View style={styles.InputBox}>
-                <View style={GlobalStyle.Row}>
-                  <AntDesign
-                    name="arrowleft"
+      <SafeAreaView style={{ backgroundColor: Colors.Ash }} />
+      <View style={styles.container}>
+        <StatusBar backgroundColor={Colors.Ash} barStyle={'light-content'} />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur } }) => (
+            <View style={styles.InputBox}>
+              <View style={GlobalStyle.Row}>
+                <AntDesign
+                  name="arrowleft"
+                  color={Colors.White}
+                  size={scale(22)}
+                  onPress={() => navigation.goBack()}
+                />
+                <TextInput
+                  style={styles.Input}
+                  placeholderTextColor="#A9A9A9"
+                  placeholder="Artists, Songs or Live Streams"
+                  onBlur={onBlur}
+                  onChangeText={onSubmit}
+                  value={value}
+                  autoFocus
+                />
+              </View>
+              {value.length >= 1 ? (
+                <Pressable
+                  style={{
+                    alignSelf: 'center',
+                  }}
+                  onPress={() => setSearchValue('')}>
+                  <Ionicons
+                    name="close-circle"
                     color={Colors.White}
                     size={scale(22)}
-                    onPress={() => navigation.goBack()}
                   />
-                  <TextInput
-                    style={styles.Input}
-                    placeholderTextColor="#A9A9A9"
-                    placeholder="Artists, Songs or Live Streams"
-                    // onBlur={onBlur}
-                    onChangeText={onSubmit}
-                    // value={searchValue}
-                    // autoFocus
-                  />
-                </View>
-                {/* {searchValue.length >= 1 ? (
-                  <Pressable
-                    style={{
-                      alignSelf: 'center',
-                    }}
-                    onPress={() => setSearchValue('')}>
-                    <Ionicons
-                      name="close-circle"
-                      color={Colors.White}
-                      size={scale(22)}
-                    />
-                  </Pressable>
-                ) : null} */}
-              </View>
-            )}
-            name="search"
-          />
-          <ScrollView style={{flex:1}}>
+                </Pressable>
+              ) : null}
+            </View>
+          )}
+          name="search"
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.Recent}>Recent Searches</Text>
           {params?.map(item => {
             return <RecentSong Data={item} key={item.id} />;
           })}
-          <TouchableOpacity style={{marginTop: verticalScale(10)}}>
+          <TouchableOpacity>
             <Text style={styles.Recent}>Clear recent search</Text>
           </TouchableOpacity>
-          </ScrollView>
-        </View>
-      </TouchableWithoutFeedback>
+          <View style={{ height: verticalScale(10) }} />
+        </ScrollView>
+      </View>
     </>
   );
 };
@@ -240,6 +239,8 @@ const styles = StyleSheet.create({
   Recent: {
     fontSize: scale(14),
     fontFamily: Font.Gilroy600,
+    marginLeft: scale(12),
+    marginTop: verticalScale(10)
   },
 });
 export default SearchScreen;
