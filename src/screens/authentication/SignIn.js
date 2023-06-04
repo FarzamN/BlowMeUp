@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useForm} from 'react-hook-form';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   StyleSheet,
   Text,
@@ -23,41 +23,41 @@ import {
   verticalScale,
 } from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
 import CustomButton from '../../components/CustomButton';
-import {useDispatch} from 'react-redux';
-import {USER_DETAILS} from '../../redux/reducer/Holder';
+import { useDispatch } from 'react-redux';
+import { USER_DETAILS } from '../../redux/reducer/Holder';
 import PasswordInput from '../../components/PasswordInput';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
-const SignIn = ({navigation}) => {
+const SignIn = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const Dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({mode: 'all'});
+    formState: { errors, isValid },
+  } = useForm({ mode: 'all' });
 
   const Submit = data => {
-    Dispatch({type: USER_DETAILS, payload: data.email});
+    Dispatch({ type: USER_DETAILS, payload: data.email });
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.Container}>
+      <SafeAreaView style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/splash.png')}
           resizeMode="cover"
-          style={styles.Container}>
+          style={GlobalStyle.Container}>
           <Image
-            style={{alignSelf: 'center', marginTop: '12%'}}
+            style={{ alignSelf: 'center', marginTop: '12%' }}
             source={require('../../assets/image/logo.png')}
           />
           <Text style={styles.SignUpText}>Sign In</Text>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{paddingHorizontal: moderateScale(20)}}>
+            <View style={{ paddingHorizontal: moderateScale(20) }}>
               <CustomInput
                 fontSize={scale(16)}
                 MaterialIcons={true}
@@ -124,11 +124,11 @@ const SignIn = ({navigation}) => {
                   marginBottom: '8%',
                 },
               ]}>
-              <View style={[styles.Border, {marginRight: scale(15)}]} />
+              <View style={[styles.Border, { marginRight: scale(15) }]} />
               <Text style={styles.Sign_in_with}>or Sign in with</Text>
-              <View style={[styles.Border, {marginLeft: scale(15)}]} />
+              <View style={[styles.Border, { marginLeft: scale(15) }]} />
             </View>
-            <View style={[styles.Row, {justifyContent: 'space-evenly'}]}>
+            <View style={[styles.Row, { justifyContent: 'space-evenly' }]}>
               <TouchableOpacity style={styles.Box} activeOpacity={0.6}>
                 <FontAwesome
                   name="google"
@@ -147,12 +147,12 @@ const SignIn = ({navigation}) => {
             <View
               style={[
                 styles.Row,
-                {justifyContent: 'space-evenly', marginTop: '20%'},
+                { justifyContent: 'space-evenly', marginTop: '20%' },
               ]}>
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() =>
-                  navigation.navigate('TermsAndConditions', {type: 'auth'})
+                  navigation.navigate('TermsAndConditions', { type: 'auth' })
                 }>
                 <Text style={styles.Term}>Terms of use</Text>
               </TouchableOpacity>
@@ -163,7 +163,7 @@ const SignIn = ({navigation}) => {
                     styles.Term,
                     {
                       textShadowColor: 'rgb(0, 0, 0)',
-                      textShadowOffset: {width: 2, height: 2},
+                      textShadowOffset: { width: 2, height: 2 },
                       textShadowRadius: scale(10),
                     },
                   ]}>
@@ -189,10 +189,6 @@ const SignIn = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   SignUpText: {
     textAlign: 'center',
     color: Colors.White,

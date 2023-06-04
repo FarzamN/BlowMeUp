@@ -1,14 +1,14 @@
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React,{useState} from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import {
   moderateScale,
   moderateVerticalScale,
   scale,
   verticalScale,
 } from 'react-native-size-matters';
-import {Font} from '../../utils/font';
+import { Font } from '../../utils/font';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {Colors} from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';
 import * as ImagePicker from 'react-native-image-picker'
 const ListHeader = props => {
   const [videoSource, setVideoSource] = useState('');
@@ -16,7 +16,7 @@ const ListHeader = props => {
   const options2 = {
     title: 'Select video',
     mediaType: 'video',
-    path:'video',
+    path: 'video',
     quality: 1
   };
 
@@ -50,8 +50,8 @@ const ListHeader = props => {
       </View>
 
       {props.UploadTrue ? (
-        <TouchableOpacity        
-          onPress={ props.UploadVideo ? selectVideo : props.UploadAudio ? selectAudio : null}
+        <TouchableOpacity
+          onPress={props.UploadVideo ? selectVideo : props.UploadAudio ? selectAudio : null}
           style={styles.MoreBox}>
           <Text style={styles.Text}>Upload</Text>
         </TouchableOpacity>
@@ -65,7 +65,7 @@ const ListHeader = props => {
               name="rightcircleo"
               color={Colors.Black}
               size={scale(15)}
-              style={{marginLeft: scale(7)}}
+              style={{ marginLeft: scale(7) }}
             />
           ) : null}
         </TouchableOpacity>
@@ -79,10 +79,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: moderateVerticalScale(20),
+    marginTop: verticalScale(15),
     paddingHorizontal: moderateScale(10),
   },
-  Row: {flexDirection: 'row', alignItems: 'center'},
+  Row: { flexDirection: 'row', alignItems: 'center' },
   Image: {
     width: scale(22),
     height: verticalScale(22),

@@ -1,20 +1,21 @@
 import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {moderateScale, scale} from 'react-native-size-matters';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
-import {useNavigation} from '@react-navigation/native';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
+import { useNavigation } from '@react-navigation/native';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const MusicHeader = props => {
   const navigation = useNavigation();
   return (
-    <View style={[styles.Container, props.Container]}>
+    <View style={[styles.Container, props.Container, GlobalStyle.Row]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={styles.arrowBox}>
-        <Ionicons name="arrow-back" color={Colors.Main} size={scale(15)} />
+        <Ionicons name="arrow-back" color={Colors.Main} size={scale(18)} />
       </TouchableOpacity>
       <View style={styles.Row}>
         <Fontisto name="music-note" color={Colors.Main} size={scale(30)} />
@@ -27,10 +28,9 @@ const MusicHeader = props => {
 
 const styles = StyleSheet.create({
   Container: {
-    alignItems: 'center',
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: moderateScale(10),
+    paddingVertical: moderateVerticalScale(20),
+    paddingHorizontal: moderateScale(20)
   },
   Text: {
     fontFamily: Font.Gilroy700,

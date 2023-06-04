@@ -44,7 +44,7 @@ const Reset = ({ navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.Container}>
+      <SafeAreaView style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/reset.png')}
           resizeMode="cover"
@@ -101,8 +101,8 @@ const Reset = ({ navigation }) => {
               fontSize={scale(16)}
               placeholderTextColor={'#32323266'}
             />
-            {errors.password && (
-              <Text style={GlobalStyle.error}>{errors.password.message}</Text>
+            {errors.confirm_password && (
+              <Text style={GlobalStyle.error}>{errors.confirm_password.message}</Text>
             )}
             <CustomButton
               onPress={handleSubmit(onSubmit)}
@@ -120,7 +120,7 @@ const Reset = ({ navigation }) => {
             message={'Password is not matched'}
           />
           <CustomLotti
-            visible={passwordChange}
+            isVisible={passwordChange}
             source={require('../../assets/lotti/passwordchange.json')}
             Title="Password has been changed"
             TextRestyle={{ color: Colors.ThemeBlue }}
@@ -131,10 +131,6 @@ const Reset = ({ navigation }) => {
   );
 };
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   Find: {
     color: Colors.Yellow,
     fontFamily: Font.Gilroy500,

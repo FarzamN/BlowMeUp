@@ -8,17 +8,17 @@ import {
   StatusBar,
 } from 'react-native';
 import React, { useCallback } from 'react';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 
 import MainHeader from '../../../components/Header/MainHeader';
-import {Colors} from '../../../utils/Colors';
-import {SwipeListView} from 'react-native-swipe-list-view';
+import { Colors } from '../../../utils/Colors';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import Feather from 'react-native-vector-icons/Feather';
-import {Font} from '../../../utils/font';
+import { Font } from '../../../utils/font';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../../Constants/GlobalStyle';
-const Notifications = ({navigation}) => {
+const Notifications = ({ navigation }) => {
   const DATA = [
     {
       Name: 'Aarush Galloway',
@@ -101,12 +101,12 @@ const Notifications = ({navigation}) => {
       })
     }),
   )
-  const Item = ({Name, Time, About, source}) => (
+  const Item = ({ Name, Time, About, source }) => (
     <View style={[styles.Main, styles.Row]}>
       <View style={styles.ImageBox}>
         <Image style={styles.Image} resizeMode="contain" source={source} />
       </View>
-      <View style={{marginHorizontal: scale(15)}}>
+      <View style={{ marginHorizontal: scale(15) }}>
         <View style={styles.Row}>
           <Text style={styles.Name}>{Name}</Text>
           <Text style={styles.About}>{About}</Text>
@@ -116,7 +116,7 @@ const Notifications = ({navigation}) => {
     </View>
   );
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
@@ -134,8 +134,8 @@ const Notifications = ({navigation}) => {
           data={DATA}
           scrollEnabled={true}
           showsVerticalScrollIndicator={false}
-          style={{height: '100%'}}
-          renderItem={({item}) => (
+          style={{ height: '100%' }}
+          renderItem={({ item }) => (
             <Item
               Name={item.Name}
               Time={item.Time}
@@ -147,7 +147,7 @@ const Notifications = ({navigation}) => {
             <View style={styles.rowBack}>
               <LinearGradient
                 colors={['#FF6B00', '#CD2828']}
-                style={{borderRadius: scale(10)}}>
+                style={{ borderRadius: scale(10) }}>
                 <TouchableOpacity style={styles.IconBox}>
                   <Feather name="check" size={scale(22)} color={Colors.White} />
                   <Text style={styles.Read}>Read</Text>
@@ -166,23 +166,19 @@ const Notifications = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   Main: {
     paddingHorizontal: moderateScale(10),
     height: scale(80),
     backgroundColor: '#fff',
     marginBottom: verticalScale(20),
     borderRadius: scale(10),
-    width:'90%',
-    alignSelf:'center'
+    width: '90%',
+    alignSelf: 'center'
   },
   rowBack: {
     alignItems: 'flex-end',
     justifyContent: 'center',
-    marginRight:'7%'
+    marginRight: '7%'
   },
   IconBox: {
     width: scale(80),

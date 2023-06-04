@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,15 +8,15 @@ import {
   StatusBar,
 } from 'react-native';
 import MainHeader from '../../../components/Header/MainHeader';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Colors} from '../../../utils/Colors';
-import {Font} from '../../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../../../utils/Colors';
+import { Font } from '../../../utils/font';
 import Upload from './Upload';
 import Video from './Video';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
-const Manage = ({navigation}) => {
+const Manage = ({ navigation }) => {
   const [upload, setUpload] = useState(true);
   const [videos, setVideos] = useState(false);
 
@@ -44,7 +44,7 @@ const Manage = ({navigation}) => {
     }),
   )
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
@@ -56,22 +56,22 @@ const Manage = ({navigation}) => {
       <View
         style={[
           styles.Row,
-          {justifyContent: 'space-between', marginHorizontal: scale(15),marginBottom:verticalScale(8)},
+          { justifyContent: 'space-between', marginHorizontal: scale(15), marginBottom: verticalScale(8) },
         ]}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => HandleUpload()}
-          style={[styles.ChangeBox, {backgroundColor: uploadColor}]}>
+          style={[styles.ChangeBox, { backgroundColor: uploadColor }]}>
           <Text style={styles.ChangeText}>Upload</Text>
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => HandleVideos()}
-          style={[styles.ChangeBox, {backgroundColor: videoColor}]}>
+          style={[styles.ChangeBox, { backgroundColor: videoColor }]}>
           <Text style={styles.ChangeText}>Videos</Text>
         </TouchableOpacity>
       </View>
-      <View style={{marginHorizontal: scale(15)}}>
+      <View style={{ marginHorizontal: scale(15) }}>
         {upload && <Upload />}
         {videos && <Video />}
       </View>
@@ -80,10 +80,6 @@ const Manage = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   TextRestyle: {
     fontFamily: Font.Poppins500,
     fontSize: scale(13),

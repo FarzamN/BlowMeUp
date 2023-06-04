@@ -7,20 +7,21 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import MainHeader from '../../components/Header/MainHeader';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 const PictureSection = () => {
   const [text, setText] = useState('');
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({mode: 'all'});
+    formState: { errors, isValid },
+  } = useForm({ mode: 'all' });
   const handleInputChange = inputValue => {
     console.log('Input value:', inputValue);
     setText(inputValue);
@@ -46,7 +47,7 @@ const PictureSection = () => {
   ];
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
@@ -58,7 +59,7 @@ const PictureSection = () => {
 
       <View style={styles.Row}>
         <Image
-          style={[styles.Image, {borderRadius: scale(100)}]}
+          style={[styles.Image, { borderRadius: scale(100) }]}
           source={require('../../assets/image/dp.jpg')}
         />
         <View style={styles.TextInputBox}>
@@ -81,7 +82,7 @@ const PictureSection = () => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={SectionItem}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return <SectionCard data={item} />;
         }}
       />
@@ -90,16 +91,11 @@ const PictureSection = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
-
   Row: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf:'center'
-    ,paddingHorizontal:moderateScale(10)
+    alignSelf: 'center',
+    paddingHorizontal: moderateScale(10)
   },
   TextInputBox: {
     borderWidth: scale(1),

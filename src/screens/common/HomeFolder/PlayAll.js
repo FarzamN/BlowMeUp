@@ -10,25 +10,28 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainHeader from '../../../components/Header/MainHeader';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Colors} from '../../../utils/Colors';
-import {Font} from '../../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../../../utils/Colors';
+import { Font } from '../../../utils/font';
 import CustomButton from '../../../components/CustomButton';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AlbumCard from '../../../components/Card/AlbumCard';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-const PlayAll = ({navigation}) => {
+const PlayAll = ({ navigation }) => {
+  const [shuffle, setShuffle] = useState(false)
   const AlbumData = [
     {
       Name: 'Antisocialites',
       source: require('../../../assets/image/album1.jpg'),
-      type:'first'
+      type: 'first'
     },
     {
       Name: 'Alvvays',
@@ -39,13 +42,21 @@ const PlayAll = ({navigation}) => {
       source: require('../../../assets/image/album3.jpg'),
     },
   ];
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar,
+      });
+    }),
+  );
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
         BackArrow={true}
-        // Container={{paddingRight: moderateScale(20)}}
+      // Container={{paddingRight: moderateScale(20)}}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.FirstBox}>
@@ -64,10 +75,13 @@ const PlayAll = ({navigation}) => {
               containerStyle={styles.containerStyle}
               textStyle={styles.textStyle}
             />
-            <TouchableOpacity activeOpacity={0.6} style={styles.IconBox}>
+            <TouchableOpacity onPress={() => setShuffle(!shuffle)} activeOpacity={0.6} style={[styles.IconBox, {
+              borderColor: shuffle == true ? Colors.ThemeBlue : Colors.ThemePurple,
+              backgroundColor: shuffle == true ? Colors.ThemePurple : Colors.ThemeBlue
+            }]}>
               <Ionicons
                 name="md-shuffle"
-                color={Colors.ThemePurple}
+                color={shuffle == true ? Colors.ThemeBlue : Colors.ThemePurple}
                 size={scale(30)}
               />
             </TouchableOpacity>
@@ -91,14 +105,14 @@ const PlayAll = ({navigation}) => {
                   color={Colors.ThemePurple}
                 />
               </View>
-              <View style={{marginLeft: scale(7)}}>
-                <Text style={[styles.Recent, {color: Colors.White}]}>
+              <View style={{ marginLeft: scale(7) }}>
+                <Text style={[styles.Recent, { color: Colors.White }]}>
                   Dreams Tonite
                 </Text>
                 <View style={styles.Row}>
                   <Text style={styles.AftNameText}>Alvvays</Text>
                   <Text
-                    style={[styles.AftNameText, {marginHorizontal: scale(5)}]}>
+                    style={[styles.AftNameText, { marginHorizontal: scale(5) }]}>
                     •
                   </Text>
                   <Text style={styles.AftNameText}>09 March 2023</Text>
@@ -109,8 +123,8 @@ const PlayAll = ({navigation}) => {
           </View>
         </View>
         <View style={styles.ThirdBox}>
-          <Text style={[styles.Recent,{
-    marginLeft: scale(20)
+          <Text style={[styles.Recent, {
+            marginLeft: scale(20)
 
           }]}>Albums</Text>
           <FlatList
@@ -118,7 +132,7 @@ const PlayAll = ({navigation}) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={AlbumData}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return <AlbumCard data={item} />;
             }}
           />
@@ -129,10 +143,6 @@ const PlayAll = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   FirstBox: {
     marginHorizontal: scale(20),
     alignItems: 'center',
@@ -141,8 +151,8 @@ const styles = StyleSheet.create({
     marginHorizontal: scale(20),
   },
   // ThirdBox: {marginLeft: scale(20)},
-  Image: {width: '100%', height: '100%', borderRadius: scale(20)},
-  ImageBox: {width: W * 0.9, height: H * 0.3},
+  Image: { width: '100%', height: '100%', borderRadius: scale(20) },
+  ImageBox: { width: W * 0.9, height: H * 0.3 },
   Name: {
     fontFamily: Font.NunitoSans700,
     fontSize: scale(25),
@@ -168,7 +178,6 @@ const styles = StyleSheet.create({
     width: scale(50),
     aspectRatio: 1 / 1,
     borderWidth: scale(1),
-    borderColor: Colors.ThemePurple,
     borderRadius: 100,
     marginLeft: scale(10),
     justifyContent: 'center',

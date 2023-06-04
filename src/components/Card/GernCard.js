@@ -13,24 +13,24 @@ import {
   verticalScale,
 } from 'react-native-size-matters';
 
-import {Font} from '../../utils/font';
-import {Colors} from '../../utils/Colors';
+import { Font } from '../../utils/font';
+import { Colors } from '../../utils/Colors';
 
-const GernCard = ({data}) => {
+const GernCard = ({ data, onPress }) => {
   return (
-    <TouchableOpacity activeOpacity={0.8}  style={[styles.Container,{marginLeft:data.Type === 'first' ? scale(10) : 0}]}>
-      <View style={[styles.MainBox, {backgroundColor: null}]}>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[styles.Container, { marginLeft: data.Type === 'first' ? scale(10) : 0 }]}>
+      <View style={[styles.MainBox, { backgroundColor: null }]}>
         <ImageBackground
           resizeMode="cover"
-          imageStyle={{borderRadius: scale(15)}}
+          imageStyle={{ borderRadius: scale(15) }}
           style={styles.Image}
           source={data.source}>
-          <View style={[styles.TextBox, {flexDirection: 'column'}]}>
+          <View style={[styles.TextBox, { flexDirection: 'column' }]}>
             <Text style={styles.GernText}>{data.Genre}</Text>
             <Text style={styles.pop}>{data.pop}</Text>
           </View>
           <View style={styles.LinearGradient}>
-            <View style={[styles.TextBox, {justifyContent: 'flex-end'}]}>
+            <View style={[styles.TextBox, { justifyContent: 'flex-end' }]}>
               <Text style={styles.lastGernText}>{data.lastGernText}</Text>
             </View>
           </View>
@@ -44,8 +44,8 @@ const styles = StyleSheet.create({
   Container: {
     width: scale(130),
     aspectRatio: 1 / 1,
-    marginVertical: verticalScale(20),
-    marginRight:scale(10)
+    marginTop: verticalScale(20),
+    marginRight: scale(10)
   },
   MainBox: {
     flex: 1,

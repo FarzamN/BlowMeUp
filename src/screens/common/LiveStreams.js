@@ -6,11 +6,12 @@ import {
   StatusBar,
 } from 'react-native';
 import React from 'react';
-import {moderateScale} from 'react-native-size-matters';
-import {Colors} from '../../utils/Colors';
+import { moderateScale } from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
 import StreamCard from '../../components/Card/StreamCard';
 import MainHeader from '../../components/Header/MainHeader';
 import ListHeader from '../../components/Header/ListHeader';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const LiveStreams = () => {
   const PopularData = [
@@ -18,7 +19,7 @@ const LiveStreams = () => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
-      Type:'first'
+      Type: 'first'
     },
     {
       Song: 'Shivers',
@@ -32,7 +33,7 @@ const LiveStreams = () => {
     },
   ];
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
@@ -48,7 +49,7 @@ const LiveStreams = () => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={PopularData}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <StreamCard data={item} />;
           }}
         />
@@ -58,7 +59,7 @@ const LiveStreams = () => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={PopularData}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <StreamCard data={item} />;
           }}
         />
@@ -68,7 +69,7 @@ const LiveStreams = () => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={PopularData}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <StreamCard data={item} />;
           }}
         />
@@ -77,11 +78,6 @@ const LiveStreams = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default LiveStreams;

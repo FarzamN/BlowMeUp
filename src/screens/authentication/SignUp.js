@@ -9,34 +9,34 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import React, { useState } from 'react';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PasswordInput from '../../components/PasswordInput';
-import {GlobalStyle} from '../../Constants/GlobalStyle';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
-  } = useForm({mode: 'all'});
+    formState: { errors, isValid },
+  } = useForm({ mode: 'all' });
 
   const onSubmit = data => {
     if (data.password == data.confirm_password) {
       setSuccessModal(true);
       setTimeout(() => {
         setSuccessModal(false);
-        navigation.navigate('OTP', {type: 'register'});
+        navigation.navigate('OTP', { type: 'register' });
       }, 2000);
     } else {
       setErrorModal(true);
@@ -78,18 +78,18 @@ const SignUp = ({navigation}) => {
     });
   };
   return (
-    <SafeAreaView style={styles.Container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <ImageBackground
         source={require('../../assets/image/Bacground/signup.png')}
         resizeMode="cover"
         style={styles.Container}>
         <Image
-          style={{alignSelf: 'center', marginTop: '12%'}}
+          style={{ alignSelf: 'center', marginTop: '12%' }}
           source={require('../../assets/image/logo.png')}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.SignUpText}>Sign Up</Text>
-          <View style={{paddingHorizontal: moderateScale(20)}}>
+          <View style={{ paddingHorizontal: moderateScale(20) }}>
             <CustomInput
               fontSize={scale(16)}
               FontAwesome={true}
@@ -216,7 +216,7 @@ const SignUp = ({navigation}) => {
               onPress={handleSubmit(onSubmit)}
               title="Register"
               containerStyle={styles.containerStyle}
-              textStyle={{color: Colors.White, fontSize: scale(23)}}
+              textStyle={{ color: Colors.White, fontSize: scale(23) }}
             />
           </View>
           <Success
@@ -229,7 +229,7 @@ const SignUp = ({navigation}) => {
             onClose={() => setErrorModal(false)}
             message={'Password is not matched'}
           />
-          <View style={{height: verticalScale(10)}} />
+          <View style={{ height: verticalScale(10) }} />
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>
@@ -237,10 +237,6 @@ const SignUp = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   SignUpText: {
     textAlign: 'center',
     color: Colors.White,

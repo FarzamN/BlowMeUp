@@ -10,10 +10,11 @@ import {
 } from 'react-native';
 import React from 'react';
 import MainHeader from '../../components/Header/MainHeader';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const VlogSection = () => {
   const SectionItem = [
@@ -24,7 +25,7 @@ const VlogSection = () => {
       LongText:
         'One good thing about music, when it hits you, you feel no pain. ❤️',
       Number: '36',
-      Avatar:require('../../assets/image/dp2.png')
+      Avatar: require('../../assets/image/dp2.png')
     },
     {
       Name: 'Prisha Mclaughlin',
@@ -33,11 +34,11 @@ const VlogSection = () => {
       LongText:
         'One good thing about music, when it hits you, you feel no pain. ❤️',
       Number: '36',
-      Avatar:require('../../assets/image/dp1.png')
+      Avatar: require('../../assets/image/dp1.png')
     },
   ];
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
         Notification={true}
@@ -47,30 +48,30 @@ const VlogSection = () => {
         Text="Vlog Section"
       />
 
-        <View style={styles.Row}>
-          <Image
-            resizeMode="contain"
-            style={styles.Image}
-            source={require('../../assets/image/avatar.png')}
-          />
-          <View style={styles.TextInputBox}>
-            <TextInput
-              style={styles.TextInput}
-              placeholder="What’s on your mind?"
-              placeholderTextColor={Colors.placeholderTextColor}
-            />
-          </View>
-          <Image
-            resizeMode="contain"
-            style={styles.Image}
-            source={require('../../assets/image/picture.png')}
+      <View style={GlobalStyle.Row}>
+        <Image
+          resizeMode="contain"
+          style={styles.Image}
+          source={require('../../assets/image/avatar.png')}
+        />
+        <View style={styles.TextInputBox}>
+          <TextInput
+            style={styles.TextInput}
+            placeholder="What’s on your mind?"
+            placeholderTextColor={Colors.placeholderTextColor}
           />
         </View>
-        <FlatList
+        <Image
+          resizeMode="contain"
+          style={styles.Image}
+          source={require('../../assets/image/picture.png')}
+        />
+      </View>
+      <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={SectionItem}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           return <SectionCard data={item} />;
         }}
       />
@@ -79,16 +80,6 @@ const VlogSection = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-    paddingLeft: moderateScale(12),
-  },
-
-  Row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   TextInputBox: {
     borderWidth: scale(1),
     borderColor: Colors.White,

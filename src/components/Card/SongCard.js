@@ -6,19 +6,19 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
-import {Colors} from '../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
+import { Colors } from '../../utils/Colors';
 
-const SongCard = ({data}) => {
+const SongCard = ({ data, onPress }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      onPress={data.onPress}
-      style={[styles.Container,{marginLeft:data.Type === 'first' ? scale(10) : 0}]}>
+      onPress={onPress}
+      style={[styles.Container, { marginLeft: data.Type === 'first' ? scale(10) : 0 }]}>
       <ImageBackground
         resizeMode="cover"
-        imageStyle={{borderRadius: scale(15)}}
+        imageStyle={{ borderRadius: scale(15) }}
         style={styles.Image}
         source={data.source}>
         <View style={styles.TextBox}>
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   Container: {
     width: scale(130),
     aspectRatio: 1 / 1,
-    marginVertical: verticalScale(20),
-    marginRight:scale(10)
+    marginTop: verticalScale(20),
+    marginRight: scale(10)
   },
   Image: {
     width: '100%',

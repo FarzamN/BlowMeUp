@@ -1,26 +1,26 @@
-import {Dimensions, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import { Dimensions, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback } from 'react';
-import {Colors} from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';
 import MainHeader from '../../components/Header/MainHeader';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const fontScale = Dimensions.get('window').fontScale;
-const Alert = ({navigation}) => {
-    useFocusEffect(
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        useCallback(() => {
-          navigation.getParent()?.setOptions({
-            tabBarStyle: GlobalStyle.HideBar
-          })
-        }),
-      )
+const Alert = ({ navigation }) => {
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar
+      })
+    }),
+  )
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <MainHeader BackArrow />
-      <View style={{paddingHorizontal: moderateScale(20)}}>
+      <View style={{ paddingHorizontal: moderateScale(20) }}>
         <Text style={styles.Heading}>What&apos;s new</Text>
         <Text
           style={[
@@ -62,10 +62,6 @@ const Alert = ({navigation}) => {
   );
 };
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   Heading: {
     color: Colors.White,
     fontSize: scale(30),

@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, Image, View} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {scale, verticalScale} from 'react-native-size-matters';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Colors} from '../utils/Colors';
+import { StyleSheet, Image, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { scale, verticalScale } from 'react-native-size-matters';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Colors } from '../utils/Colors';
 
 import Dashboard from '../screens/users/Dashboard';
 import PictureSection from '../screens/common/PictureSection';
@@ -34,17 +34,12 @@ const UserNavigator = () => {
           tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarStyle: {
-            backgroundColor: Colors.ThemeGrey,
-            height: verticalScale(60),
-            borderTopColor: Colors.ThemeGrey,
-          },
         }}>
         <Tab.Screen
           name="dashboard"
           component={AllDashboard}
           options={{
-            tabBarIcon: ({focused}) =>
+            tabBarIcon: ({ focused }) =>
               focused ? (
                 <View style={styles.ImageBox}>
                   <Image
@@ -66,7 +61,7 @@ const UserNavigator = () => {
           name="AllPic"
           component={AllPic}
           options={{
-            tabBarIcon: ({focused}) =>
+            tabBarIcon: ({ focused }) =>
               focused ? (
                 <View style={styles.ImageBox}>
                   <Image
@@ -88,7 +83,7 @@ const UserNavigator = () => {
           name="AllStream"
           component={AllStream}
           options={{
-            tabBarIcon: ({focused}) =>
+            tabBarIcon: ({ focused }) =>
               focused ? (
                 <View style={styles.ImageBox}>
                   <Image
@@ -110,7 +105,7 @@ const UserNavigator = () => {
           name="AllVlog"
           component={AllVlog}
           options={{
-            tabBarIcon: ({focused}) =>
+            tabBarIcon: ({ focused }) =>
               focused ? (
                 <View style={styles.ImageBox}>
                   <Image
@@ -132,7 +127,7 @@ const UserNavigator = () => {
           name="AllSetting"
           component={AllSetting}
           options={{
-            tabBarIcon: ({focused}) =>
+            tabBarIcon: ({ focused }) =>
               focused ? (
                 <View style={styles.ImageBox}>
                   <Image
@@ -179,44 +174,44 @@ const Stack = createNativeStackNavigator();
 function AllDashboard() {
   return (
     <Stack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       initialRouteName="userdashboard">
       <Stack.Screen
         name="userdashboard"
         component={Dashboard}
-        options={{animation: 'slide_from_left'}}
+        options={{ animation: 'slide_from_left' }}
       />
       <Stack.Screen
         name="Search"
         component={Search}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
-        <Stack.Screen
+      <Stack.Screen
         name="Alert"
         component={Alert}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
-         <Stack.Screen
+      <Stack.Screen
         name="SearchScreen"
         component={SearchScreen}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
-      
+
       <Stack.Screen
         name="PopularSong"
         component={PopularSong}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
 
       <Stack.Screen
         name="PlayAll"
         component={PlayAll}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="Music"
         component={Music}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
     </Stack.Navigator>
   );
@@ -225,12 +220,12 @@ function AllDashboard() {
 function AllPic() {
   return (
     <Stack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       initialRouteName="PictureSection">
       <Stack.Screen
         name="PictureSection"
         component={PictureSection}
-        options={{animation: 'slide_from_left'}}
+        options={{ animation: 'slide_from_left' }}
       />
     </Stack.Navigator>
   );
@@ -239,12 +234,12 @@ function AllPic() {
 function AllStream() {
   return (
     <Stack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       initialRouteName="LiveStreams">
       <Stack.Screen
         name="LiveStreams"
         component={LiveStreams}
-        options={{animation: 'slide_from_right'}}
+        options={{ animation: 'slide_from_right' }}
       />
     </Stack.Navigator>
   );
@@ -253,12 +248,12 @@ function AllStream() {
 function AllVlog() {
   return (
     <Stack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       initialRouteName="VlogSection">
       <Stack.Screen
         name="VlogSection"
         component={VlogSection}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
     </Stack.Navigator>
   );
@@ -267,42 +262,42 @@ function AllVlog() {
 function AllSetting() {
   return (
     <Stack.Navigator
-      screenOptions={{headerShown: false}}
+      screenOptions={{ headerShown: false }}
       initialRouteName="Setting">
       <Stack.Screen
         name="Setting"
         component={Setting}
-        options={{animation: 'slide_from_left'}}
+        options={{ animation: 'slide_from_left' }}
       />
       <Stack.Screen
         name="Profile"
         component={Profile}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="LeaderBoard"
         component={LeaderBoard}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="Manage"
         component={Manage}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="Notifications"
         component={Notifications}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
       <Stack.Screen
         name="TermsAndConditions"
         component={TermsAndConditions}
-        options={{animation: 'flip'}}
+        options={{ animation: 'flip' }}
       />
     </Stack.Navigator>
   );

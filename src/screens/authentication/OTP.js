@@ -85,11 +85,11 @@ const Reset = ({ route, navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={styles.Container}>
+      <SafeAreaView style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/otp.png')}
           resizeMode="cover"
-          style={styles.Container}>
+          style={GlobalStyle.Container}>
           <Image
             style={{ alignSelf: 'center', marginTop: '12%' }}
             source={require('../../assets/image/logo.png')}
@@ -172,7 +172,7 @@ const Reset = ({ route, navigation }) => {
               )}
             </>
             <CustomLotti
-              visible={otpResent}
+              isVisible={otpResent}
               source={require('../../assets/lotti/otp.json')}
               Title="Your OPT has been send"
             // TitleTrue={true}
@@ -186,7 +186,7 @@ const Reset = ({ route, navigation }) => {
             <Error
               isVisible={errorModal}
               onClose={() => setErrorModal(false)}
-              message={'Your OTP is not current'}
+              message={'Your OTP is not corrent'}
             />
           </ScrollView>
         </ImageBackground>
@@ -195,10 +195,6 @@ const Reset = ({ route, navigation }) => {
   );
 };
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
   Find: {
     color: Colors.Yellow,
     fontFamily: Font.Gilroy500,

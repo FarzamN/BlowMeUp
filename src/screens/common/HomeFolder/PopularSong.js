@@ -54,42 +54,49 @@ const PopularSong = ({ navigation }) => {
       Playlist: 'Playlist',
       Name: 'Zarror',
       source: require('../../../assets/image/songitem1.jpg'),
+      id: 1
     },
     {
       SongName: 'Podcastery Jurnalisa',
       Playlist: 'Podcast',
       Name: 'Jurnalisa',
       source: require('../../../assets/image/songitem2.jpg'),
+      id: 2
     },
     {
       SongName: 'If the World Was Ending',
       Playlist: 'Album',
       Name: 'JP Saxe',
       source: require('../../../assets/image/songitem3.jpg'),
+      id: 3
     },
     {
       SongName: 'Easy On Me',
       Playlist: 'Single',
       Name: 'Adele',
       source: require('../../../assets/image/songitem4.jpg'),
+      id: 4
     },
     {
       SongName: 'Rap Me',
       Playlist: 'Playlist',
       Name: 'John',
       source: require('../../../assets/image/songitem5.jpg'),
+      id: 5
     },
     {
       SongName: 'Yellow',
       Playlist: 'Singer',
       Name: 'Coldplay',
       source: require('../../../assets/image/songitem6.jpg'),
+      id: 6
     },
     {
       SongName: 'Best Song Ever',
       Playlist: 'Album',
       Name: 'One Direction',
       source: require('../../../assets/image/songitem7.jpg'),
+      id: 7
     },
   ];
   const [data, setData] = useState(params);
@@ -112,6 +119,7 @@ const PopularSong = ({ navigation }) => {
         styles.bubbleBox,
         {
           backgroundColor: select == item.id ? Colors.Main : Colors.White,
+          // backgroundColor: 'red',
           marginLeft: item.id == 1 ? scale(15) : 0
         },
       ]}
@@ -130,7 +138,7 @@ const PopularSong = ({ navigation }) => {
     </TouchableOpacity>
   );
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <MainHeader
         Notification={true}
         BackArrow={true}
@@ -144,26 +152,22 @@ const PopularSong = ({ navigation }) => {
         keyExtractor={item => item.id}
         renderItem={renderItem}
       />
-      {/* <FlatList
+      <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={SongData}
         renderItem={({ item }) => {
           return <SongsItem data={item} onPress={() => navigation.navigate('Music')} />;
         }}
-      /> */}
-      {SongData?.map(item => {
+      />
+      {/* {SongData?.map(item => {
         return <SongsItem data={item} key={item.id} />;
-      })}
+      })} */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue
-  },
   bubbleBox: {
     borderRadius: scale(8),
     marginRight: scale(6),
@@ -171,7 +175,7 @@ const styles = StyleSheet.create({
     height: verticalScale(30),
     justifyContent: 'center',
     alignItems: 'center',
-    // marginBottom: verticalScale(10),
+    marginBottom: verticalScale(-50),
   },
   bubbles: {
     textTransform: 'capitalize',

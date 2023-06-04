@@ -10,21 +10,22 @@ import {
   ScrollView,
   useWindowDimensions,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Colors} from '../../../utils/Colors';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import React, { useState, useEffect } from 'react';
+import { Colors } from '../../../utils/Colors';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
 import MusicHeader from '../../../components/Header/MusicHeader';
-import {Font} from '../../../utils/font';
+import { Font } from '../../../utils/font';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Sound from 'react-native-sound';
+import { GlobalStyle } from '../../../Constants/GlobalStyle';
 
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
 const Music = () => {
-  const {width, height} = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const [playing, setPlaying] = useState(false);
   const [sound, setSound] = useState(null);
 
@@ -38,9 +39,9 @@ const Music = () => {
       // loaded successfully
       console.log(
         'duration in seconds: ' +
-          sound.getDuration() +
-          'number of channels: ' +
-          sound.getNumberOfChannels(),
+        sound.getDuration() +
+        'number of channels: ' +
+        sound.getNumberOfChannels(),
       );
       sound.play(() => {
         // Release when done
@@ -62,11 +63,11 @@ const Music = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MusicHeader />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{ justifyContent: 'center' }}>
           <Image
             style={{
               position: 'absolute',
@@ -77,7 +78,7 @@ const Music = () => {
           <View
             style={[
               styles.ImageBox,
-              {width: width <= 450 && height <= 700 ? W * 0.6 : W * 0.7},
+              { width: width <= 450 && height <= 700 ? W * 0.6 : W * 0.7 },
             ]}>
             <Image
               source={require('../../../assets/image/artist1.jpg')}
@@ -87,7 +88,7 @@ const Music = () => {
         </View>
         <Text style={styles.SongName}>As It Was</Text>
         <Text style={styles.Name}>Harry Styles</Text>
-        <View style={[styles.Row, {marginVertical: verticalScale(20)}]}>
+        <View style={[styles.Row, { marginVertical: verticalScale(20) }]}>
           <Text style={styles.Time}>1:39</Text>
           <Image source={require('../../../assets/image/Progress.png')} />
           <Text style={styles.Time}>4:12</Text>
@@ -126,11 +127,6 @@ const Music = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-    paddingHorizontal: moderateScale(12),
-  },
   Image: {
     width: '100%',
     height: '100%',

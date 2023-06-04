@@ -145,7 +145,7 @@ const ChangePassword = ({ navigation }) => {
             onPress={handleSubmit(onSubmit)}
           />
           <CustomLotti
-            visible={passwordChange}
+            isVisible={passwordChange}
             source={require('../../../assets/lotti/passwordchange.json')}
             Title="Password has been changed"
             TextRestyle={{ color: Colors.ThemeBlue }}
@@ -155,9 +155,15 @@ const ChangePassword = ({ navigation }) => {
             isVisible={errorModal}
             message={'Password is not matched'}
           />
-          <Error
+          {/* <Error
             isVisible={passwordError}
             message={'Password is not found in our data base'}
+          /> */}
+          <CustomLotti
+            isVisible={passwordError}
+            source={require('../../../assets/lotti/passwrderror.json')}
+            Title="Password is not found in our data base"
+            TextRestyle={{ color: Colors.Danger }}
           />
         </View>
       </SafeAreaView>

@@ -1,4 +1,4 @@
-import React,{useCallback, useState} from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,27 +6,27 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import {moderateScale, scale} from 'react-native-size-matters';
+import { moderateScale, scale } from 'react-native-size-matters';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
-import {Colors} from '../../utils/Colors';
+import { Colors } from '../../utils/Colors';
 
 import MainHeader from '../../components/Header/MainHeader';
 import ListHeader from '../../components/Header/ListHeader';
 import SongCard from '../../components/Card/SongCard';
 import GernCard from '../../components/Card/GernCard';
-import {Font} from '../../utils/font';
+import { Font } from '../../utils/font';
 import Loading from '../../components/Modal/Loading';
 import { useFocusEffect } from '@react-navigation/native';
 
-const Dashboard = ({navigation}) => {
-  const [loading,setLoading] = useState(true)
+const Dashboard = ({ navigation }) => {
+  const [loading, setLoading] = useState(true)
   const PopularData = [
     {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
-      onPress: () => navigation.navigate('PlayAll'),
-      Type:'first'
+
+      Type: 'first'
     },
     {
       Song: 'Shivers',
@@ -45,7 +45,7 @@ const Dashboard = ({navigation}) => {
       pop: 'Pop',
       lastGernText: 'Pop',
       source: require('../../assets/image/gradiant1.png'),
-      Type:'first'
+      Type: 'first'
     },
     {
       Genre: 'Genre',
@@ -65,7 +65,7 @@ const Dashboard = ({navigation}) => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/Recent1.jpg'),
-      Type:'first'
+      Type: 'first'
     },
     {
       Song: 'Shivers',
@@ -89,7 +89,7 @@ const Dashboard = ({navigation}) => {
       })
     }),
   )
-  return loading ?  <Loading /> : (
+  return loading ? <Loading /> : (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
@@ -98,7 +98,7 @@ const Dashboard = ({navigation}) => {
         source={require('../../assets/image/home.png')}
         Title
         Text="Dashboard"
-        // False
+      // False
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ListHeader
@@ -114,8 +114,8 @@ const Dashboard = ({navigation}) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={PopularData}
-          renderItem={({item}) => {
-            return <SongCard data={item} />;
+          renderItem={({ item }) => {
+            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
           }}
         />
         <ListHeader Title="By Genre" Icon={true} Text="More" />
@@ -124,7 +124,7 @@ const Dashboard = ({navigation}) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={GenreData}
-          renderItem={({item}) => {
+          renderItem={({ item }) => {
             return <GernCard data={item} />;
           }}
         />
@@ -134,8 +134,8 @@ const Dashboard = ({navigation}) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={RecentData}
-          renderItem={({item}) => {
-            return <SongCard data={item} />;
+          renderItem={({ item }) => {
+            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
           }}
         />
         <ListHeader
@@ -153,8 +153,8 @@ const Dashboard = ({navigation}) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={RecentData}
-          renderItem={({item}) => {
-            return <SongCard data={item} />;
+          renderItem={({ item }) => {
+            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
           }}
         />
       </ScrollView>

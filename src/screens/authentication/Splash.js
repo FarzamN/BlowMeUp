@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
 import {
   moderateScale,
   moderateVerticalScale,
@@ -21,24 +21,25 @@ import {
 import Zocial from 'react-native-vector-icons/Zocial';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 
 const W = Dimensions.get('window').width;
-const Splash = ({navigation}) => {
+const Splash = ({ navigation }) => {
   return (
-    <SafeAreaView style={styles.Container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor="transparent" translucent />
       <ImageBackground
         source={require('../../assets/image/Bacground/splash.png')}
         resizeMode="cover"
-        style={{flex: 1}}>
-        <View style={{flex: 1, marginTop: '15%'}}>
+        style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginTop: '15%' }}>
           <Image
-            style={{alignSelf: 'center'}}
+            style={{ alignSelf: 'center' }}
             source={require('../../assets/image/logo.png')}
           />
         </View>
-        <View style={{flex: 1}}>
-          <View style={{paddingHorizontal: moderateScale(20)}}>
+        <View style={{ flex: 1 }}>
+          <View style={{ paddingHorizontal: moderateScale(20) }}>
             <Text style={styles.Heading}>Find your favorite music</Text>
             <TouchableOpacity
               activeOpacity={0.6}
@@ -79,10 +80,6 @@ const Splash = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    // backgroundColor: Colors.ThemeBlue,
-  },
   Heading: {
     color: Colors.White,
     fontFamily: Font.Gilroy600,

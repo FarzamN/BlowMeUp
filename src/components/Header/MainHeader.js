@@ -1,16 +1,17 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import {moderateScale, moderateVerticalScale, scale} from 'react-native-size-matters';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../../utils/Colors';
-import {Font} from '../../utils/font';
-import {useNavigation} from '@react-navigation/native';
+import { Colors } from '../../utils/Colors';
+import { Font } from '../../utils/font';
+import { useNavigation } from '@react-navigation/native';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
 const MainHeader = props => {
   const navigation = useNavigation();
   return (
-    <View style={[styles.Container, props.Container]}>
-      <View style={{flexDirection: 'row'}}>
+    <View style={[styles.Container, props.Container, GlobalStyle.Row]}>
+      <View style={{ flexDirection: 'row' }}>
         {props.Logo ? (
           <Image style={styles.Image} source={props.source} />
         ) : null}
@@ -30,22 +31,22 @@ const MainHeader = props => {
       </View>
 
       {props.Notification ? (
-        <View style={{flexDirection: 'row'}}>
+        <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity onPress={() => navigation.navigate('Search')}>
             <Feather
-              style={{marginHorizontal: scale(10)}}
+              style={{ marginHorizontal: scale(10) }}
               name="search"
               size={scale(20)}
               color={Colors.White}
             />
           </TouchableOpacity >
           <TouchableOpacity onPress={() => navigation.navigate('Alert')}>
-             <Ionicons
+            <Ionicons
               name="notifications-outline"
               size={scale(20)}
               color={Colors.White}
             />
-            <View style={[styles.Dot,{backgroundColor: props.False ? 'transparent' :'red'}]}/>
+            <View style={[styles.Dot, { backgroundColor: props.False ? 'transparent' : 'red' }]} />
           </TouchableOpacity>
         </View>
       ) : null}
@@ -60,11 +61,9 @@ const MainHeader = props => {
 
 const styles = StyleSheet.create({
   Container: {
-    alignItems: 'center',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: moderateVerticalScale(20),
-    paddingHorizontal:moderateScale(20)
+    paddingHorizontal: moderateScale(20)
   },
   arrowBox: {
     borderWidth: scale(1),
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     fontFamily: Font.Poppins500,
     fontSize: scale(12),
   },
-  Dot:{width:scale(5),aspectRatio:1/1,position:'absolute',right:3,top:2,borderRadius:100}
+  Dot: { width: scale(5), aspectRatio: 1 / 1, position: 'absolute', right: 3, top: 2, borderRadius: 100 }
 });
 
 export default MainHeader;

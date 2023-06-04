@@ -1,14 +1,14 @@
-import React, {forwardRef} from 'react';
-import {useController} from 'react-hook-form';
-import {StyleSheet, TextInput, View} from 'react-native';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {Colors} from '../utils/Colors';
-import {Font} from '../utils/font';
+import React, { forwardRef } from 'react'
+import { useController } from 'react-hook-form';
+import { StyleSheet, TextInput, View } from 'react-native';
+import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { Colors } from '../utils/Colors';
+import { Font } from '../utils/font';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 const CustomInput = forwardRef((props, ref) => {
-  const {field} = useController({
+  const { field } = useController({
     control: props.control,
     defaultValue: props.defaultValue || '',
     name: props.name,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderWidth: scale(1),
     borderColor: Colors.White,
-    borderRadius: scale(25),
+    borderRadius: scale(20),
   },
 });
 export default CustomInput;

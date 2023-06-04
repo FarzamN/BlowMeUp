@@ -9,9 +9,9 @@ const SongsItem = ({ data, onPress }) => {
   return (
     <Pressable
       android_ripple={{ color: 'rgba(20, 24, 36, 1)' }}
-      // onPress={onPress}
-      style={styles.Container}>
-      <View style={[GlobalStyle.Row, { justifyContent: 'center' }]}>
+      onPress={onPress}
+      style={[styles.Container, { marginTop: data.id == '1' ? 0 : verticalScale(10), }]}>
+      <View style={GlobalStyle.Row}>
         <View style={styles.ImageBox}>
           <Image style={styles.Image} resizeMode="cover" source={data.source} />
         </View>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    // marginTop: verticalScale(10),
+
     paddingHorizontal: moderateScale(10)
   },
   ImageBox: {

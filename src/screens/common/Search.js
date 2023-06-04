@@ -9,21 +9,21 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
-import {Colors} from '../../utils/Colors';
-import {moderateScale, scale} from 'react-native-size-matters';
+import React, { useCallback, useState } from 'react';
+import { Colors } from '../../utils/Colors';
+import { moderateScale, scale } from 'react-native-size-matters';
 import MainHeader from '../../components/Header/MainHeader';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {verticalScale} from 'react-native-size-matters';
-import {Font} from '../../utils/font';
+import { verticalScale } from 'react-native-size-matters';
+import { Font } from '../../utils/font';
 import GenerationCard from '../../components/Card/GenerationCard';
 import LinearGradient from 'react-native-linear-gradient';
-import {  } from '@react-native-material/core';
+import { } from '@react-native-material/core';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
-const Search = ({navigation}) => {
+const Search = ({ navigation }) => {
   const GeneratoinItem = [
     {
       Text: 'Pop',
@@ -51,7 +51,7 @@ const Search = ({navigation}) => {
     }),
   )
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <MainHeader
         Notification={false}
         Search={true}
@@ -64,23 +64,23 @@ const Search = ({navigation}) => {
             <Feather name="search" color="#626262" size={scale(20)} />
             <Text style={styles.Input}>Artists, Songs or Live Streams</Text>
           </Pressable>
-         
+
           <Text style={styles.TopGenres}>Top Genres</Text>
 
           <FlatList
             scrollEnabled={false}
             numColumns={2}
             data={GeneratoinItem}
-            renderItem={({item}) => {
+            renderItem={({ item }) => {
               return <GenerationCard data={item} />;
             }}
           />
-          <Text style={[styles.TopGenres, {fontFamily: Font.Gilroy700}]}>
+          <Text style={[styles.TopGenres, { fontFamily: Font.Gilroy700 }]}>
             Pod Cast
           </Text>
           <LinearGradient
-            start={{x: 1, y: 0}}
-            end={{x: 0, y: 1}}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 1 }}
             colors={['#AB5EC1', '#7994E2', '#3E4161']}
             style={styles.linearGradient}>
             <View style={[styles.Row, styles.PodcastBox]}>
@@ -110,10 +110,10 @@ const Search = ({navigation}) => {
               />
             </View>
           </LinearGradient>
-          <Text style={[styles.TopGenres, {fontFamily: Font.Gilroy700}]}>
+          <Text style={[styles.TopGenres, { fontFamily: Font.Gilroy700 }]}>
             Top Artist
           </Text>
-          <View style={[styles.Row, {justifyContent: 'space-between'}]}>
+          <View style={[styles.Row, { justifyContent: 'space-between' }]}>
             <Image
               style={styles.ArtistImage}
               source={require('../../assets/image/artist1.jpg')}
@@ -124,18 +124,13 @@ const Search = ({navigation}) => {
             />
           </View>
         </View>
-        <View style={{height: verticalScale(10)}} />
+        <View style={{ height: verticalScale(10) }} />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.ThemeBlue,
-  },
-
   InputBox: {
     flexDirection: 'row',
     alignItems: 'center',
