@@ -3,20 +3,20 @@ import {
   StatusBar,
   View,
   SafeAreaView,
-  ScrollView,
   Image,
   TextInput,
   FlatList
 } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import MainHeader from '../../components/Header/MainHeader';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import { moderateScale, moderateVerticalScale, scale, verticalScale } from 'react-native-size-matters';
 import { Colors } from '../../utils/Colors';
 import { Font } from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 
-const VlogSection = () => {
+const VlogSection = ({navigation}) => {
   const SectionItem = [
     {
       Name: 'Olivia Mā Ddy',
@@ -37,6 +37,15 @@ const VlogSection = () => {
       Avatar: require('../../assets/image/dp1.png')
     },
   ];
+
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
@@ -48,7 +57,7 @@ const VlogSection = () => {
         Text="Vlog Section"
       />
 
-      <View style={GlobalStyle.Row}>
+      <View style={[GlobalStyle.Row,{alignSelf:'center',paddingBottom:moderateVerticalScale(10)}]}>
         <Image
           resizeMode="contain"
           style={styles.Image}

@@ -5,15 +5,15 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React from 'react';
-import { moderateScale } from 'react-native-size-matters';
+import React, { useCallback } from 'react';
 import { Colors } from '../../utils/Colors';
 import StreamCard from '../../components/Card/StreamCard';
 import MainHeader from '../../components/Header/MainHeader';
 import ListHeader from '../../components/Header/ListHeader';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 
-const LiveStreams = () => {
+const LiveStreams = ({navigation}) => {
   const PopularData = [
     {
       Song: 'Ghost',
@@ -32,6 +32,14 @@ const LiveStreams = () => {
       source: require('../../assets/image/song3.jpg'),
     },
   ];
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />

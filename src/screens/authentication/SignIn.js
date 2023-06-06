@@ -30,8 +30,13 @@ import { useDispatch } from 'react-redux';
 import { USER_DETAILS } from '../../redux/reducer/Holder';
 import PasswordInput from '../../components/PasswordInput';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const SignIn = ({ navigation }) => {
+  const [SocialLoginApi,setSocialLoginApi] = useState('')
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const Dispatch = useDispatch();
@@ -44,6 +49,42 @@ const SignIn = ({ navigation }) => {
   const Submit = data => {
     Dispatch({ type: USER_DETAILS, payload: data.email });
   };
+  const googleLoginHandler = async () => {
+    try {
+       GoogleSignin.configure({
+        // webClientId: '786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com',
+        webClientId: '786806587743-sqmrhl9rjq5s9u5chjlg6tdref287rpg.apps.googleusercontent.com',
+      });
+  
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      const socialObj = {
+        email: userInfo.user.email ? userInfo.user.email : '',
+        firstName: userInfo.user.givenName,
+        lastName: userInfo.user.familyName,
+        picUrl: userInfo.user.photo,
+        uID: userInfo.user.id,
+      };
+
+      console.log('socialObj', socialObj)
+  
+      // Perform actions with the user info, e.g., call API, login, etc.
+      // SocialLoginApi(userInfo.user);
+      // login(userInfo.user.id);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        console.log('You cancelled the sign in.');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        console.log('Google sign-in operation is in progress.');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        console.log('Play Services is not available.');
+      } else {
+        console.log('Something unknown went wrong with Google sign in.', error.message);
+      }
+    }
+  };
+
+  
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={GlobalStyle.Container}>
@@ -129,14 +170,16 @@ const SignIn = ({ navigation }) => {
               <View style={[styles.Border, { marginLeft: scale(15) }]} />
             </View>
             <View style={[styles.Row, { justifyContent: 'space-evenly' }]}>
-              <TouchableOpacity style={styles.Box} activeOpacity={0.6}>
+              <TouchableOpacity onPress={() => {
+                  googleLoginHandler();
+                }} style={[GlobalStyle.SocialSignInButton,{width: '42%'}]} activeOpacity={0.6}>
                 <FontAwesome
                   name="google"
                   color={Colors.White}
                   size={scale(20)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.Box} activeOpacity={0.6}>
+              <TouchableOpacity style={[GlobalStyle.SocialSignInButton,{width: '42%'}]} activeOpacity={0.6}>
                 <Entypo
                   name="facebook-with-circle"
                   color={Colors.White}
@@ -219,8 +262,8 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.White,
     width: '40%',
   },
+  // width: '42%',
   Box: {
-    width: '42%',
     borderRadius: scale(20),
     borderWidth: 1,
     borderColor: Colors.White,

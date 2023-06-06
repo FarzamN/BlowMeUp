@@ -49,14 +49,14 @@ const Splash = ({ navigation }) => {
               <Text style={styles.Text}>Continue with Email</Text>
             </TouchableOpacity>
             <View style={styles.Row}>
-              <TouchableOpacity style={styles.Box} activeOpacity={0.6}>
+              <TouchableOpacity style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
                 <FontAwesome
                   name="google"
                   color={Colors.White}
                   size={scale(20)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.Box} activeOpacity={0.6}>
+              <TouchableOpacity style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
                 <Entypo
                   name="facebook-with-circle"
                   color={Colors.White}
@@ -109,15 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  Box: {
-    width: '48%',
-    borderRadius: scale(25),
-    borderWidth: 1,
-    borderColor: Colors.White,
-    alignItems: 'center',
-    marginTop: verticalScale(20),
-    paddingVertical: moderateVerticalScale(12),
-  },
+
   Account: {
     textAlign: 'center',
     color: Colors.White,

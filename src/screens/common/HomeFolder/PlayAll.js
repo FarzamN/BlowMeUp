@@ -10,28 +10,32 @@ import {
   FlatList,
   StatusBar,
 } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MainHeader from '../../../components/Header/MainHeader';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { Colors } from '../../../utils/Colors';
-import { Font } from '../../../utils/font';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {Colors} from '../../../utils/Colors';
+import {Font} from '../../../utils/font';
 import CustomButton from '../../../components/CustomButton';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AlbumCard from '../../../components/Card/AlbumCard';
-import { GlobalStyle } from '../../../Constants/GlobalStyle';
-import { useFocusEffect } from '@react-navigation/native';
+import {GlobalStyle} from '../../../Constants/GlobalStyle';
+import {useFocusEffect} from '@react-navigation/native';
+import Modal from 'react-native-modal';
+import ModalRowItem from '../../../components/ModalRowItem';
+
 const W = Dimensions.get('window').width;
 const H = Dimensions.get('window').height;
 
-const PlayAll = ({ navigation }) => {
-  const [shuffle, setShuffle] = useState(false)
+const PlayAll = ({navigation}) => {
+  const [shuffle, setShuffle] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
   const AlbumData = [
     {
       Name: 'Antisocialites',
       source: require('../../../assets/image/album1.jpg'),
-      type: 'first'
+      type: 'first',
     },
     {
       Name: 'Alvvays',
@@ -53,11 +57,7 @@ const PlayAll = ({ navigation }) => {
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
-      <MainHeader
-        Notification={true}
-        BackArrow={true}
-      // Container={{paddingRight: moderateScale(20)}}
-      />
+      <MainHeader Notification={true} BackArrow={true} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.FirstBox}>
           <View style={styles.ImageBox}>
@@ -68,17 +68,25 @@ const PlayAll = ({ navigation }) => {
             />
           </View>
           <Text style={styles.Name}>Marcus Morgan</Text>
-          <View style={styles.Row}>
+          <View style={GlobalStyle.Row}>
             <CustomButton
               title="Play All"
               Play={true}
               containerStyle={styles.containerStyle}
               textStyle={styles.textStyle}
             />
-            <TouchableOpacity onPress={() => setShuffle(!shuffle)} activeOpacity={0.6} style={[styles.IconBox, {
-              borderColor: shuffle == true ? Colors.ThemeBlue : Colors.ThemePurple,
-              backgroundColor: shuffle == true ? Colors.ThemePurple : Colors.ThemeBlue
-            }]}>
+            <TouchableOpacity
+              onPress={() => setShuffle(!shuffle)}
+              activeOpacity={0.6}
+              style={[
+                styles.IconBox,
+                {
+                  borderColor:
+                    shuffle == true ? Colors.ThemeBlue : Colors.ThemePurple,
+                  backgroundColor:
+                    shuffle == true ? Colors.ThemePurple : Colors.ThemeBlue,
+                },
+              ]}>
               <Ionicons
                 name="md-shuffle"
                 color={shuffle == true ? Colors.ThemeBlue : Colors.ThemePurple}
@@ -91,13 +99,13 @@ const PlayAll = ({ navigation }) => {
           <Text style={styles.Recent}>Recent Song</Text>
           <View
             style={[
-              styles.Row,
+              GlobalStyle.Row,
               {
                 justifyContent: 'space-between',
                 marginVertical: verticalScale(15),
               },
             ]}>
-            <View style={styles.Row}>
+            <View style={GlobalStyle.Row}>
               <View style={styles.MusicIconBox}>
                 <Fontisto
                   name="music-note"
@@ -105,38 +113,68 @@ const PlayAll = ({ navigation }) => {
                   color={Colors.ThemePurple}
                 />
               </View>
-              <View style={{ marginLeft: scale(7) }}>
-                <Text style={[styles.Recent, { color: Colors.White }]}>
+              <View style={{marginLeft: scale(7)}}>
+                <Text style={[styles.Recent, {color: Colors.White}]}>
                   Dreams Tonite
                 </Text>
-                <View style={styles.Row}>
+                <View style={GlobalStyle.Row}>
                   <Text style={styles.AftNameText}>Alvvays</Text>
                   <Text
-                    style={[styles.AftNameText, { marginHorizontal: scale(5) }]}>
+                    style={[styles.AftNameText, {marginHorizontal: scale(5)}]}>
                     •
                   </Text>
                   <Text style={styles.AftNameText}>09 March 2023</Text>
                 </View>
               </View>
             </View>
-            <Entypo name="dots-three-vertical" size={20} color={Colors.White} />
+            <Entypo
+              name="dots-three-vertical"
+              size={20}
+              color={Colors.White}
+              onPress={() => setModalVisible(true)}
+            />
           </View>
         </View>
         <View style={styles.ThirdBox}>
-          <Text style={[styles.Recent, {
-            marginLeft: scale(20)
-
-          }]}>Albums</Text>
+          <Text
+            style={[
+              styles.Recent,
+              {
+                marginLeft: scale(20),
+              },
+            ]}>
+            Albums
+          </Text>
           <FlatList
             scrollEnabled={true}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             data={AlbumData}
-            renderItem={({ item }) => {
+            renderItem={({item}) => {
               return <AlbumCard data={item} />;
             }}
           />
         </View>
+        <Modal
+          isVisible={isModalVisible}
+          onBackdropPress={() => setModalVisible(false)}
+          swipeDirection="down"
+          onSwipeComplete={() => setModalVisible(false)}
+          style={{margin: 0, justifyContent: 'flex-end'}}>
+          <View style={styles.ModalInsideBox}>
+            <View style={GlobalStyle.ModalLine} />
+            <ModalRowItem
+              MaterialCommunityIcons
+              name="music-note-plus"
+              Title="Add to playlist"
+            />
+            <ModalRowItem
+              MaterialIcons
+              name="queue-music"
+              Title="Add to Queue"
+            />
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -150,9 +188,12 @@ const styles = StyleSheet.create({
   SecBox: {
     marginHorizontal: scale(20),
   },
-  // ThirdBox: {marginLeft: scale(20)},
-  Image: { width: '100%', height: '100%', borderRadius: scale(20) },
-  ImageBox: { width: W * 0.9, height: H * 0.3 },
+  Image: {
+    width: '100%',
+    height: '100%',
+    borderRadius: scale(20),
+  },
+  ImageBox: {width: W * 0.9, height: H * 0.3},
   Name: {
     fontFamily: Font.NunitoSans700,
     fontSize: scale(25),
@@ -160,10 +201,6 @@ const styles = StyleSheet.create({
     color: Colors.White,
     marginTop: verticalScale(10),
     marginBottom: verticalScale(20),
-  },
-  Row: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   containerStyle: {
     backgroundColor: Colors.ThemePurple,
@@ -200,6 +237,12 @@ const styles = StyleSheet.create({
     fontFamily: Font.NunitoSans400,
     color: '#8F9AA3',
     fontSize: scale(11),
+  },
+  ModalInsideBox: {
+    backgroundColor: Colors.AshGrey,
+    flex: 0.5,
+    borderTopRightRadius: scale(20),
+    borderTopLeftRadius: scale(20),
   },
 });
 export default PlayAll;

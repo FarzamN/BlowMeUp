@@ -7,21 +7,22 @@ import {
   TextInput,
   FlatList,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useCallback, useState} from 'react';
 import MainHeader from '../../components/Header/MainHeader';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { Colors } from '../../utils/Colors';
-import { Font } from '../../utils/font';
+import {
+  moderateScale,
+  moderateVerticalScale,
+  scale,
+  verticalScale,
+} from 'react-native-size-matters';
+import {Colors} from '../../utils/Colors';
+import {Font} from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
-import { useForm } from 'react-hook-form';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-const PictureSection = () => {
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import {useFocusEffect} from '@react-navigation/native';
+const PictureSection = ({navigation}) => {
   const [text, setText] = useState('');
-  const {
-    control,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({ mode: 'all' });
+
   const handleInputChange = inputValue => {
     console.log('Input value:', inputValue);
     setText(inputValue);
@@ -45,7 +46,14 @@ const PictureSection = () => {
       Number: '36',
     },
   ];
-
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar,
+      });
+    }),
+  );
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
@@ -57,9 +65,13 @@ const PictureSection = () => {
         Text="Picture Section"
       />
 
-      <View style={styles.Row}>
+      <View
+        style={[
+          GlobalStyle.Row,
+          {alignSelf: 'center', paddingBottom: moderateVerticalScale(10)},
+        ]}>
         <Image
-          style={[styles.Image, { borderRadius: scale(100) }]}
+          style={[styles.Image, {borderRadius: scale(100)}]}
           source={require('../../assets/image/dp.jpg')}
         />
         <View style={styles.TextInputBox}>
@@ -67,7 +79,6 @@ const PictureSection = () => {
             style={styles.TextInput}
             placeholder="What’s on your mind?"
             placeholderTextColor={Colors.placeholderTextColor}
-            control={control}
             value={text}
             onChangeText={handleInputChange}
           />
@@ -82,7 +93,7 @@ const PictureSection = () => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={SectionItem}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           return <SectionCard data={item} />;
         }}
       />
@@ -95,7 +106,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    paddingHorizontal: moderateScale(10)
+    paddingHorizontal: moderateScale(10),
   },
   TextInputBox: {
     borderWidth: scale(1),

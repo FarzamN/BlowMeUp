@@ -1,4 +1,4 @@
-import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+import { moderateScale, moderateVerticalScale, scale, verticalScale } from "react-native-size-matters";
 import { Colors } from "../utils/Colors";
 import { Font } from "../utils/font"
 
@@ -54,5 +54,21 @@ export const GlobalStyle = {
     justifyContent: 'center',
     margin: 0,
     backgroundColor: 'rgba(0, 0, 0, 0.8)'
-  }
+  },
+  ModalLine:{
+    width:'25%',
+    height:verticalScale(4),
+    backgroundColor:Colors.Grey,
+    alignSelf:'center',
+    borderRadius:scale(10),
+    marginTop:verticalScale(20)
+  },
+  SocialSignInButton: {
+    borderRadius: scale(20),
+    borderWidth: 1,
+    borderColor: Colors.White,
+    alignItems: 'center',
+    marginTop: verticalScale(20),
+    paddingVertical: moderateVerticalScale(12),
+  },
 }

@@ -14,7 +14,7 @@ import { Font } from '../../../utils/font';
 import SongsItem from '../../../components/Card/SongsItem';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../../Constants/GlobalStyle';
-
+import { SongData } from '../../../Constants/SongData';
 const PopularSong = ({ navigation }) => {
   const params = [
     {
@@ -48,57 +48,7 @@ const PopularSong = ({ navigation }) => {
       selected: false,
     },
   ];
-  const SongData = [
-    {
-      SongName: 'Cold',
-      Playlist: 'Playlist',
-      Name: 'Zarror',
-      source: require('../../../assets/image/songitem1.jpg'),
-      id: 1
-    },
-    {
-      SongName: 'Podcastery Jurnalisa',
-      Playlist: 'Podcast',
-      Name: 'Jurnalisa',
-      source: require('../../../assets/image/songitem2.jpg'),
-      id: 2
-    },
-    {
-      SongName: 'If the World Was Ending',
-      Playlist: 'Album',
-      Name: 'JP Saxe',
-      source: require('../../../assets/image/songitem3.jpg'),
-      id: 3
-    },
-    {
-      SongName: 'Easy On Me',
-      Playlist: 'Single',
-      Name: 'Adele',
-      source: require('../../../assets/image/songitem4.jpg'),
-      id: 4
-    },
-    {
-      SongName: 'Rap Me',
-      Playlist: 'Playlist',
-      Name: 'John',
-      source: require('../../../assets/image/songitem5.jpg'),
-      id: 5
-    },
-    {
-      SongName: 'Yellow',
-      Playlist: 'Singer',
-      Name: 'Coldplay',
-      source: require('../../../assets/image/songitem6.jpg'),
-      id: 6
-    },
-    {
-      SongName: 'Best Song Ever',
-      Playlist: 'Album',
-      Name: 'One Direction',
-      source: require('../../../assets/image/songitem7.jpg'),
-      id: 7
-    },
-  ];
+ 
   const [data, setData] = useState(params);
   const [select, setSelect] = useState(1);
 
@@ -157,7 +107,7 @@ const PopularSong = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         data={SongData}
         renderItem={({ item }) => {
-          return <SongsItem data={item} onPress={() => navigation.navigate('Music')} />;
+          return <SongsItem data={item} onPress={() => navigation.navigate('Music',{data: item})} />;
         }}
       />
       {/* {SongData?.map(item => {
@@ -184,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PopularSong;
+export default PopularSong
