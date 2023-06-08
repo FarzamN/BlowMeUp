@@ -4,21 +4,18 @@ import {
   StyleSheet,
   Text,
   SafeAreaView,
-  StatusBar,
   View,
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Colors } from '../../utils/Colors';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { Font } from '../../utils/font';
+import {  scale, verticalScale } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal'
 import { GlobalStyle } from '../../Constants/GlobalStyle';
 
-const Loading = () => {
+const Loading = ({isVisible}) => {
   return (
-    <SafeAreaView style={[GlobalStyle.Container, { justifyContent: 'center' }]}>
-      <StatusBar backgroundColor={Colors.ThemeBlue} />
-      <ReactNativeModal visible={true} style={[styles.modal, GlobalStyle.Container]}>
+    <SafeAreaView style={ { justifyContent: 'center' }}>
+      <ReactNativeModal visible={isVisible} style={[styles.modal, GlobalStyle.Container]}>
         <View style={styles.buttons}>
           <LottieView
             autoPlay

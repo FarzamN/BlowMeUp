@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,32 +9,39 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import { Colors } from '../../utils/Colors';
-import { Font } from '../../utils/font';
-import { scale, verticalScale } from 'react-native-size-matters';
+import {Colors} from '../../utils/Colors';
+import {Font} from '../../utils/font';
+import {scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import PasswordInput from '../../components/PasswordInput';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
 import Error from '../../components/Modal/Error';
 import CustomLotti from '../../components/Modal/CustomLotti';
-const Reset = ({ navigation }) => {
+import {update_password} from '../../redux/actions/AuthActions';
+import Loading from '../../components/Modal/Loading';
+const Reset = ({route, navigation}) => {
+  const {user_id} = route.params;
+  const [loading, setLoading] = useState(false);
+  console.log('user_id reset Screen', user_id);
   const [errorModal, setErrorModal] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({ mode: 'all' });
+    formState: {errors, isValid},
+  } = useForm({mode: 'all'});
 
   const onSubmit = data => {
     if (data.password == data.confirm_password) {
-      setPasswordChange(true);
-      setTimeout(() => {
-        setPasswordChange(false);
-        navigation.navigate('SignIn');
-      }, 2000);
+      update_password(data, setPasswordChange, navigation, user_id,setLoading);
+      // setPasswordChange(true);
+      // setTimeout(() => {
+      //   setPasswordChange(false);
+      //   navigation.navigate('SignIn');
+      // }, 2000);
+      // }
     } else {
       setErrorModal(true);
       setTimeout(() => {
@@ -48,16 +55,16 @@ const Reset = ({ navigation }) => {
         <ImageBackground
           source={require('../../assets/image/Bacground/reset.png')}
           resizeMode="cover"
-          style={{ flex: 1 }}>
+          style={{flex: 1}}>
           <Image
-            style={{ alignSelf: 'center', marginTop: '12%' }}
+            style={{alignSelf: 'center', marginTop: '12%'}}
             source={require('../../assets/image/logo.png')}
           />
           <View style={styles.MainBox}>
             <Text style={styles.Find}>Reset Your Password</Text>
             <Text style={styles.Search}>
               Please enter your{' '}
-              <Text style={{ color: Colors.Yellow }}>New Password.</Text> Password
+              <Text style={{color: Colors.Yellow}}>New Password.</Text> Password
               must be on 8 characters
             </Text>
             <PasswordInput
@@ -102,7 +109,9 @@ const Reset = ({ navigation }) => {
               placeholderTextColor={'#32323266'}
             />
             {errors.confirm_password && (
-              <Text style={GlobalStyle.error}>{errors.confirm_password.message}</Text>
+              <Text style={GlobalStyle.error}>
+                {errors.confirm_password.message}
+              </Text>
             )}
             <CustomButton
               onPress={handleSubmit(onSubmit)}
@@ -111,7 +120,7 @@ const Reset = ({ navigation }) => {
                 GlobalStyle.CustomButtonRestyle,
                 styles.containerStyle,
               ]}
-              textStyle={{ color: Colors.ThemeBlue }}
+              textStyle={{color: Colors.ThemeBlue}}
             />
           </View>
           <Error
@@ -123,8 +132,9 @@ const Reset = ({ navigation }) => {
             isVisible={passwordChange}
             source={require('../../assets/lotti/passwordchange.json')}
             Title="Password has been changed"
-            TextRestyle={{ color: Colors.ThemeBlue }}
+            TextRestyle={{color: Colors.ThemeBlue}}
           />
+          <Loading isVisible={loading} />
         </ImageBackground>
       </SafeAreaView>
     </TouchableWithoutFeedback>

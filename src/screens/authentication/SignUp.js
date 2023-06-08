@@ -9,39 +9,64 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
 } from 'react-native';
-import React, { useState } from 'react';
-import { Colors } from '../../utils/Colors';
-import { Font } from '../../utils/font';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import React, {useState} from 'react';
+import {Colors} from '../../utils/Colors';
+import {Font} from '../../utils/font';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
-import { useForm } from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PasswordInput from '../../components/PasswordInput';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-import { launchImageLibrary } from 'react-native-image-picker';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
-const SignUp = ({ navigation }) => {
+import {useDispatch} from 'react-redux';
+import {verify_email_before_registration} from '../../redux/actions/AuthActions';
+import Loading from '../../components/Modal/Loading';
+const SignUp = ({navigation}) => {
+  const dispatch = useDispatch();
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+  const [isEmailExist, setIsEmailExist] = useState(false);
+  const [photoModal, setPhotoModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({ mode: 'all' });
+    formState: {errors, isValid},
+  } = useForm({mode: 'all'});
 
-  const onSubmit = data => {
-    if (data.password == data.confirm_password) {
-      setSuccessModal(true);
-      setTimeout(() => {
-        setSuccessModal(false);
-        navigation.navigate('OTP', { type: 'register' });
-      }, 2000);
+  const onSubmit = (data, type) => {
+    if (saveimage?.uri) {
+      if (data.password == data.confirm_password) {
+        // setTimeout(() => {
+        //   setLoading(true);
+        // }, 2000);
+        // setLoading(true)
+        dispatch(
+          verify_email_before_registration(
+            data,
+            setSuccessModal,
+            navigation,
+            type,
+            // saveimage?.uri,
+            setIsEmailExist,
+            setLoading
+          ),
+        );
+      } else {
+        setErrorModal(true);
+        setTimeout(() => {
+          setErrorModal(false);
+        }, 2000);
+      }
     } else {
-      setErrorModal(true);
+      setPhotoModal(true);
       setTimeout(() => {
-        setErrorModal(false);
+        setPhotoModal(false);
       }, 2000);
     }
   };
@@ -84,12 +109,12 @@ const SignUp = ({ navigation }) => {
         resizeMode="cover"
         style={styles.Container}>
         <Image
-          style={{ alignSelf: 'center', marginTop: '12%' }}
+          style={{alignSelf: 'center', marginTop: '12%'}}
           source={require('../../assets/image/logo.png')}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <Text style={styles.SignUpText}>Sign Up</Text>
-          <View style={{ paddingHorizontal: moderateScale(20) }}>
+          <View style={{paddingHorizontal: moderateScale(20)}}>
             <CustomInput
               fontSize={scale(16)}
               FontAwesome={true}
@@ -216,20 +241,18 @@ const SignUp = ({ navigation }) => {
               onPress={handleSubmit(onSubmit)}
               title="Register"
               containerStyle={styles.containerStyle}
-              textStyle={{ color: Colors.White, fontSize: scale(23) }}
+              textStyle={{color: Colors.White, fontSize: scale(23)}}
             />
           </View>
           <Success
             isVisible={successModal}
-            onClose={() => setSuccessModal(false)}
             message={'Thanks for your Effort'}
           />
-          <Error
-            isVisible={errorModal}
-            onClose={() => setErrorModal(false)}
-            message={'Password is not matched'}
-          />
-          <View style={{ height: verticalScale(10) }} />
+          <Error isVisible={errorModal} message={'Password is not matched'} />
+          <Error isVisible={isEmailExist} message={'This email already exists'} />
+          <Error isVisible={photoModal} message={'please Upload a Photo'} />
+          <Loading isVisible={loading}/>
+          <View style={{height: verticalScale(10)}} />
         </ScrollView>
       </ImageBackground>
     </SafeAreaView>

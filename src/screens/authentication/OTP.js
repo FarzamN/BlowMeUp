@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,13 +12,12 @@ import {
   ScrollView,
   Dimensions,
   Pressable,
-  Platform,
 } from 'react-native';
-import { Colors } from '../../utils/Colors';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
+import {Colors} from '../../utils/Colors';
+import {scale, verticalScale} from 'react-native-size-matters';
 import CustomButton from '../../components/CustomButton';
-import { Font } from '../../utils/font';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
+import {Font} from '../../utils/font';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
 import CustomLotti from '../../components/Modal/CustomLotti';
@@ -28,18 +27,21 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
+import {useDispatch} from 'react-redux';
 
 const windowHeight = Dimensions.get('window').height;
-const CELL_COUNT = 4
-const Reset = ({ route, navigation }) => {
-  const Type = route.params.type;
+const CELL_COUNT = 4;
+const OTP = ({route, navigation}) => {
+  const {type, data, OTP, saveimage,user_id} = route.params;
+  console.log('user_id otp screwen ==>', user_id);
+  const dispatch = useDispatch();
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
 
   const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -50,28 +52,31 @@ const Reset = ({ route, navigation }) => {
     return () => clearInterval(timer);
   }, [time]);
 
-  const OTPmodalState = () => {
+  const ResendOTP = () => {
     setOtpResent(true);
     setTimeout(() => {
       setOtpResent(false);
     }, 2300);
   };
 
-  const OTP = 1234;
   const Submit = () => {
     console.log('Opt btn press');
+    // dispatch(verify_email_before_registration(data.email, setSuccessModal, navigation, type,setErrorModal))
     if (value == OTP) {
-      if (Type == 'forgot') {
+      if (type == 'forgot') {
         setSuccessModal(true);
         setTimeout(() => {
           setSuccessModal(false);
-          navigation.navigate('Reset');
+          navigation.navigate('Reset',{user_id: user_id});
         }, 2000);
-      } else if (Type == 'register') {
+      } else if (type == 'register') {
         setSuccessModal(true);
         setTimeout(() => {
           setSuccessModal(false);
-          navigation.navigate('SignIn');
+          navigation.navigate('AccountType', {
+            data: data,
+            saveimage: saveimage,
+          });
         }, 2000);
       } else {
         console.log('Can not Navigate ===> ');
@@ -91,14 +96,14 @@ const Reset = ({ route, navigation }) => {
           resizeMode="cover"
           style={GlobalStyle.Container}>
           <Image
-            style={{ alignSelf: 'center', marginTop: '12%' }}
+            style={{alignSelf: 'center', marginTop: '12%'}}
             source={require('../../assets/image/logo.png')}
           />
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.MainBox}>
               <Text style={styles.Find}>Reset Your Password</Text>
               <Text style={styles.Search}>
-                Send code via email please enter the code
+                Send code via email please enter the code {OTP}
               </Text>
               <CodeField
                 ref={ref}
@@ -109,7 +114,7 @@ const Reset = ({ route, navigation }) => {
                 rootStyle={styles.codeFieldRoot}
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
-                renderCell={({ index, symbol, isFocused }) => (
+                renderCell={({index, symbol, isFocused}) => (
                   <Text
                     key={index}
                     style={[styles.cell, isFocused && styles.focusCell]}
@@ -118,7 +123,7 @@ const Reset = ({ route, navigation }) => {
                   </Text>
                 )}
               />
-              <View style={[styles.Row, { justifyContent: 'flex-end' }]}>
+              <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
                 <CustomButton
                   title="Confirm"
                   onPress={Submit}
@@ -126,12 +131,12 @@ const Reset = ({ route, navigation }) => {
                     GlobalStyle.CustomButtonRestyle,
                     styles.containerStyle,
                   ]}
-                  textStyle={{ color: Colors.ThemeBlue, fontSize: scale(13) }}
+                  textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}}
                 />
               </View>
             </View>
             <>
-              <View style={{ height: windowHeight * 0.25 }} />
+              <View style={{height: windowHeight * 0.25}} />
 
               {time == 0 ? (
                 <TouchableOpacity
@@ -152,7 +157,7 @@ const Reset = ({ route, navigation }) => {
                 </TouchableOpacity>
               ) : (
                 <Pressable
-                  onPress={OTPmodalState}
+                  onPress={ResendOTP}
                   style={[
                     styles.containerStyle,
                     {
@@ -174,9 +179,7 @@ const Reset = ({ route, navigation }) => {
             <CustomLotti
               isVisible={otpResent}
               source={require('../../assets/lotti/otp.json')}
-              Title="Your OPT has been send"
-            // TitleTrue={true}
-            // Title2="Please wait a few second"
+              Title="Your OPT has alrady been send"
             />
             <Success
               isVisible={successModal}
@@ -186,7 +189,7 @@ const Reset = ({ route, navigation }) => {
             <Error
               isVisible={errorModal}
               onClose={() => setErrorModal(false)}
-              message={'Your OTP is not corrent'}
+              message={'Your OTP is not correct'}
             />
           </ScrollView>
         </ImageBackground>
@@ -228,7 +231,7 @@ const styles = StyleSheet.create({
     color: Colors.Black,
     fontFamily: Font.Gilroy500,
   },
-  codeFieldRoot: { marginVertical: verticalScale(10) },
+  codeFieldRoot: {marginVertical: verticalScale(10)},
   cell: {
     width: scale(60),
     height: scale(60),
@@ -242,4 +245,4 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
 });
-export default Reset;
+export default OTP;

@@ -34,9 +34,9 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import { login } from '../../redux/actions/AuthActions';
 
 const SignIn = ({ navigation }) => {
-  const [SocialLoginApi,setSocialLoginApi] = useState('')
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const Dispatch = useDispatch();
@@ -48,7 +48,11 @@ const SignIn = ({ navigation }) => {
 
   const Submit = data => {
     Dispatch({ type: USER_DETAILS, payload: data.email });
+    Dispatch(login(data))
   };
+
+
+
   const googleLoginHandler = async () => {
     try {
        GoogleSignin.configure({

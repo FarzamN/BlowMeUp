@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,42 +7,45 @@ import {
   Image,
   ImageBackground,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
 } from 'react-native';
-import { useForm } from 'react-hook-form';
-import { Colors } from '../../utils/Colors';
-import { Font } from '../../utils/font';
-import { scale, verticalScale } from 'react-native-size-matters';
+import {useForm} from 'react-hook-form';
+import {Colors} from '../../utils/Colors';
+import {Font} from '../../utils/font';
+import {scale, verticalScale} from 'react-native-size-matters';
 import CustomInput from '../../components/CustomInput';
 import CustomButton from '../../components/CustomButton';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
+import {useDispatch} from 'react-redux';
+import {verify_email_before_password} from '../../redux/actions/AuthActions';
+import Loading from '../../components/Modal/Loading';
 
-const FindAccount = ({ navigation }) => {
+const FindAccount = ({navigation}) => {
+  const [isEmailExist, setIsEmailExist] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
-  const [errorModal, setErrorModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [user_id,setUser_id] = useState('')
+
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({ mode: 'all' });
-  const email = 'user@gmail.com';
-  const onSubmit = (data) => {
-    if (data.email == email) {
-      setSuccessModal(true);
-      setTimeout(() => {
-        setSuccessModal(false);
-        navigation.navigate('OTP', { type: 'forgot' })
-      }, 2000);
-    } else {
-      setErrorModal(true);
-      setTimeout(() => {
-        setErrorModal(false);
-      }, 2000);
-    }
-
-  }
+    formState: {errors, isValid},
+  } = useForm({mode: 'all'});
+  const onSubmit = data => {
+    if (data) {
+      verify_email_before_password(
+        data,
+        setSuccessModal,
+        navigation,
+        setIsEmailExist,
+        user_id,
+        setUser_id,
+        setLoading
+        );
+      }
+  };
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <SafeAreaView style={GlobalStyle.Container}>
@@ -51,7 +54,7 @@ const FindAccount = ({ navigation }) => {
           resizeMode="cover"
           style={GlobalStyle.Container}>
           <Image
-            style={{ alignSelf: 'center', marginTop: '12%' }}
+            style={{alignSelf: 'center', marginTop: '12%'}}
             source={require('../../assets/image/logo.png')}
           />
           <View style={styles.MainBox}>
@@ -77,22 +80,26 @@ const FindAccount = ({ navigation }) => {
               fontSize={scale(16)}
             />
             {errors.email && (
-              <Text style={GlobalStyle.error}>
-                {errors.email.message}
-              </Text>
+              <Text style={GlobalStyle.error}>{errors.email.message}</Text>
             )}
-            <View style={[styles.Row, { justifyContent: 'flex-end' }]}>
+            <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
               <CustomButton
                 onPress={() => navigation.navigate('SignIn')}
                 title="Cancel"
-                containerStyle={[GlobalStyle.CustomButtonRestyle, styles.containerStyle]}
-                textStyle={{ color: Colors.ThemeBlue, fontSize: scale(14) }}
+                containerStyle={[
+                  GlobalStyle.CustomButtonRestyle,
+                  styles.containerStyle,
+                ]}
+                textStyle={{color: Colors.ThemeBlue, fontSize: scale(14)}}
               />
               <CustomButton
                 onPress={handleSubmit(onSubmit)}
                 title="Search"
-                containerStyle={[GlobalStyle.CustomButtonRestyle, styles.containerStyle]}
-                textStyle={{ color: Colors.ThemeBlue, fontSize: scale(13) }}
+                containerStyle={[
+                  GlobalStyle.CustomButtonRestyle,
+                  styles.containerStyle,
+                ]}
+                textStyle={{color: Colors.ThemeBlue, fontSize: scale(13)}}
               />
             </View>
           </View>
@@ -101,10 +108,10 @@ const FindAccount = ({ navigation }) => {
             onClose={() => setSuccessModal(false)}
             message={'Thanks for your Email'}
           />
-          <Error
-            isVisible={errorModal}
-            message={'Can not find your email'}
-          />
+          {/* <Error isVisible={errorModal} message={isEmailExistMessage} /> */}
+          <Error isVisible={isEmailExist} message={'This email does not exists'} />
+          <Loading isVisible={loading}/>
+          
         </ImageBackground>
       </SafeAreaView>
     </TouchableWithoutFeedback>

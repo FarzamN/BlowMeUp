@@ -3,12 +3,13 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 
 import Spalsh from '../screens/authentication/Splash';
-import SignIn from '../screens/authentication/SignIn.js';
-import SignUp from '../screens/authentication/SignUp.js';
-import FindAccount from '../screens/authentication/FindAccount.js';
-import OTP from '../screens/authentication/OTP.js';
-import Reset from '../screens/authentication/Reset.js';
-import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions.js';
+import SignIn from '../screens/authentication/SignIn';
+import SignUp from '../screens/authentication/SignUp';
+import FindAccount from '../screens/authentication/FindAccount';
+import OTP from '../screens/authentication/OTP';
+import Reset from '../screens/authentication/Reset';
+import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions';
+import AccountType from '../screens/authentication/AccountType';
 
 // import UserNavigator from './UserNavigator';
 const AuthNavigator = () => {
@@ -24,6 +25,7 @@ const AuthNavigator = () => {
         <Stack.Screen name="FindAccount" component={FindAccount} />
         <Stack.Screen name="OTP" component={OTP} />
         <Stack.Screen name="Reset" component={Reset} />
+        <Stack.Screen name="AccountType" component={AccountType} />
         <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
       </Stack.Navigator>
     </NavigationContainer>
