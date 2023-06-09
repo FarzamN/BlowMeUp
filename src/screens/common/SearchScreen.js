@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,141 +10,152 @@ import {
   Keyboard,
   Pressable,
   TouchableOpacity,
-  ScrollView
-} from 'react-native';
-import { Colors } from '../../utils/Colors';
-import { moderateScale, scale, verticalScale } from 'react-native-size-matters';
-import { Font } from '../../utils/font';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-import { useFocusEffect } from '@react-navigation/native';
-import RecentSong from '../../components/Card/RecentSong';
+  ScrollView,
+} from "react-native";
+import { Colors } from "../../utils/Colors";
+import { moderateScale, scale, verticalScale } from "react-native-size-matters";
+import { Font } from "../../utils/font";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { GlobalStyle } from "../../Constants/GlobalStyle";
+import { useFocusEffect } from "@react-navigation/native";
+import RecentSong from "../../components/Card/RecentSong";
 
 const SearchScreen = ({ navigation }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
-
   const params = [
     {
       id: 1,
-      title: 'Drakes',
-      source: require('../../assets/image/album3.jpg'),
-      Value: 'Song',
-      Singer: 'FIFTY FIFTY',
+      title: "Drakes",
+      source: require("../../assets/image/album3.jpg"),
+      Value: "Song",
+      Singer: "FIFTY FIFTY",
     },
     {
       id: 2,
-      title: 'Gamora',
-      source: require('../../assets/image/album2.jpg'),
-      Value: 'Song',
-      Singer: 'One direction',
+      title: "Gamora",
+      source: require("../../assets/image/album2.jpg"),
+      Value: "Song",
+      Singer: "One direction",
     },
     {
       id: 4,
-      title: 'shazam',
-      source: require('../../assets/image/album1.jpg'),
-      Value: 'artist',
-      Singer: 'justin biebeer',
+      title: "shazam",
+      source: require("../../assets/image/album1.jpg"),
+      Value: "artist",
+      Singer: "justin biebeer",
     },
     {
       id: 5,
-      title: 'Black pink',
-      source: require('../../assets/image/album3.jpg'),
-      Value: 'Singer',
-      Singer: 'enemy',
+      title: "Black pink",
+      source: require("../../assets/image/album3.jpg"),
+      Value: "Singer",
+      Singer: "enemy",
     },
     {
       id: 6,
-      title: 'Black panter',
-      source: require('../../assets/image/album2.jpg'),
-      Value: 'artish',
-      Singer: 'one moew',
+      title: "Black panter",
+      source: require("../../assets/image/album2.jpg"),
+      Value: "artish",
+      Singer: "one moew",
     },
     {
       id: 7,
-      title: 'ememim',
-      source: require('../../assets/image/album1.jpg'),
-      Value: 'Singere',
-      Singer: 'slim shady',
+      title: "ememim",
+      source: require("../../assets/image/album1.jpg"),
+      Value: "Singere",
+      Singer: "slim shady",
     },
     {
       id: 8,
-      title: 'super man',
-      source: require('../../assets/image/album3.jpg'),
-      Value: 'Song',
-      Singer: 'us bro',
+      title: "super man",
+      source: require("../../assets/image/album3.jpg"),
+      Value: "Song",
+      Singer: "us bro",
     },
     {
       id: 9,
-      title: 'Batman',
-      source: require('../../assets/image/album2.jpg'),
-      Value: 'Siger',
-      Singer: 'some body to love',
+      title: "Batman",
+      source: require("../../assets/image/album2.jpg"),
+      Value: "Siger",
+      Singer: "some body to love",
     },
     {
       id: 10,
-      title: 'spider man',
-      source: require('../../assets/image/album1.jpg'),
-      Value: 'artish',
-      Singer: 'the hero',
+      title: "spider man",
+      source: require("../../assets/image/album1.jpg"),
+      Value: "artish",
+      Singer: "the hero",
     },
     {
       id: 11,
-      title: 'cool boy',
-      source: require('../../assets/image/album3.jpg'),
-      Value: 'Song',
-      Singer: 'boy band',
+      title: "cool boy",
+      source: require("../../assets/image/album3.jpg"),
+      Value: "Song",
+      Singer: "boy band",
     },
     {
       id: 12,
-      title: 'bad girl',
-      source: require('../../assets/image/album2.jpg'),
-      Value: 'Song',
-      Singer: 'bad boy',
+      title: "bad girl",
+      source: require("../../assets/image/album2.jpg"),
+      Value: "Song",
+      Singer: "bad boy",
     },
     {
       id: 13,
-      title: 'drunk',
-      source: require('../../assets/image/album1.jpg'),
-      Value: 'artish',
-      Singer: 'drunk and drive',
+      title: "drunk",
+      source: require("../../assets/image/album1.jpg"),
+      Value: "artish",
+      Singer: "drunk and drive",
     },
     {
       id: 14,
-      title: 'One more',
-      source: require('../../assets/image/album3.jpg'),
-      Value: 'Song',
-      Singer: 'best song',
+      title: "One more",
+      source: require("../../assets/image/album3.jpg"),
+      Value: "Song",
+      Singer: "best song",
     },
     {
       id: 15,
-      title: 'its done',
-      source: require('../../assets/image/album2.jpg'),
-      Value: 'Song',
-      Singer: 'heah',
+      title: "its done",
+      source: require("../../assets/image/album2.jpg"),
+      Value: "Song",
+      Singer: "heah",
     },
     {
       id: 16,
-      title: 'okay man',
-      source: require('../../assets/image/album1.jpg'),
-      Value: 'Song',
-      Singer: 'FIFTY FIFTY',
+      title: "okay man",
+      source: require("../../assets/image/album1.jpg"),
+      Value: "Song",
+      Singer: "FIFTY FIFTY",
     },
   ];
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState(params);
+
   const handleSearch = (text) => {
-    const filteredData = params.filter((item) =>
-      item.title.toLowerCase().includes(text.toLowerCase()) ||
-      item.Value.toLowerCase().includes(text.toLowerCase()) ||
-      item.Singer.toLowerCase().includes(text.toLowerCase())
+    const filteredData = params.filter(
+      (item) =>
+        item.title.toLowerCase().includes(text.toLowerCase()) ||
+        item.Value.toLowerCase().includes(text.toLowerCase()) ||
+        item.Singer.toLowerCase().includes(text.toLowerCase())
     );
     setSearchQuery(text);
     setFilteredData(filteredData);
   };
+
+  const handleCancel = () => {
+    setSearchQuery("");
+    setFilteredData(params);
+  };
+
   const renderFilteredData = () => {
     if (filteredData.length === 0) {
-      return <View style={styles.noResultsBox}><Text style={styles.noResultsText}>No results found.</Text></View>;
+      return (
+        <View style={styles.noResultsBox}>
+          <Text style={styles.noResultsText}>No results found.</Text>
+        </View>
+      );
     }
     return filteredData.map((item, index) => (
       <RecentSong Data={item} key={item.id} />
@@ -156,13 +167,13 @@ const SearchScreen = ({ navigation }) => {
       navigation.getParent()?.setOptions({
         tabBarStyle: GlobalStyle.HideBar,
       });
-    }),
+    })
   );
   return (
     <>
       <SafeAreaView style={{ backgroundColor: Colors.Ash }} />
       <View style={GlobalStyle.Container}>
-        <StatusBar backgroundColor={Colors.Ash} barStyle={'light-content'} />
+        <StatusBar backgroundColor={Colors.Ash} barStyle={"light-content"} />
 
         <View style={styles.InputBox}>
           <View style={GlobalStyle.Row}>
@@ -184,25 +195,26 @@ const SearchScreen = ({ navigation }) => {
           {searchQuery.length >= 1 ? (
             <Pressable
               style={{
-                alignSelf: 'center',
-                position: 'absolute',
-                right: scale(20)
+                alignSelf: "center",
+                position: "absolute",
+                right: scale(20),
               }}
-              onPress={() => setSearchQuery('')}>
-              <Ionicons
-                name="close-circle"
-                color='#fff'
-                size={scale(22)}
-              />
+              onPress={handleCancel}
+            >
+              <Ionicons name="close-circle" color="#fff" size={scale(22)} />
             </Pressable>
           ) : null}
         </View>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {filteredData.length != 0 ? <Text style={styles.Recent}>Recent Searches</Text> : null}
+          {filteredData.length != 0 ? (
+            <Text style={styles.Recent}>Recent Searches</Text>
+          ) : null}
           {renderFilteredData()}
-          {filteredData.length != 0 ? <TouchableOpacity>
-            <Text style={styles.Recent}>Clear recent search</Text>
-          </TouchableOpacity> : null}
+          {filteredData.length != 0 ? (
+            <TouchableOpacity>
+              <Text style={styles.Recent}>Clear recent search</Text>
+            </TouchableOpacity>
+          ) : null}
 
           <View style={{ height: verticalScale(10) }} />
         </ScrollView>
@@ -213,12 +225,12 @@ const SearchScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   InputBox: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: Colors.Ash,
     height: verticalScale(55),
     paddingHorizontal: moderateScale(15),
-    shadowColor: '#fff',
+    shadowColor: "#fff",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -226,11 +238,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   Input: {
     marginLeft: scale(7),
-    width: '100%',
+    width: "100%",
     color: Colors.White,
     fontFamily: Font.Inter400,
     fontSize: scale(14),
@@ -239,18 +251,18 @@ const styles = StyleSheet.create({
     fontSize: scale(14),
     fontFamily: Font.Gilroy600,
     marginLeft: scale(12),
-    marginTop: verticalScale(10)
+    marginTop: verticalScale(10),
   },
   noResultsText: {
     color: Colors.White,
     fontFamily: Font.Inter700,
-    fontSize: scale(20)
+    fontSize: scale(20),
     // , textAlign: 'center'
   },
   noResultsBox: {
-    marginTop: '70%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  }
+    marginTop: "70%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
-export default SearchScreen;
+export default SearchScreen

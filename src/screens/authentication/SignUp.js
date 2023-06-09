@@ -2,12 +2,10 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ScrollView,
   ImageBackground,
   TouchableOpacity,
-  PermissionsAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import {Colors} from '../../utils/Colors';
@@ -39,22 +37,50 @@ const SignUp = ({navigation}) => {
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
 
+  const [saveimage, setsaveimage] = useState({});
+  const [show2, setShow2] = useState(true);
+
+  const photosave = () => {
+    let options = {
+      storageOptions: {
+        mediaType: 'photo',
+        path: 'image',
+        includeExtra: true,
+      },
+      selectionLimit: 1,
+    };
+    console.log(photosave.path);
+
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else if (res.customButton) {
+        console.log('User tapped custom button: ', res.customButton);
+        // alert(res.customButton);
+      } else {
+        setsaveimage({
+          name: res.assets?.[0]?.fileName,
+          uri: res.assets?.[0]?.uri,
+          type: res.assets?.[0]?.type,
+        });
+        setShow2(false);
+      }
+    });
+  };
   const onSubmit = (data, type) => {
     if (saveimage?.uri) {
       if (data.password == data.confirm_password) {
-        // setTimeout(() => {
-        //   setLoading(true);
-        // }, 2000);
-        // setLoading(true)
         dispatch(
           verify_email_before_registration(
             data,
             setSuccessModal,
             navigation,
             type,
-            // saveimage?.uri,
+            saveimage,
             setIsEmailExist,
-            setLoading
+            setLoading,
           ),
         );
       } else {
@@ -70,40 +96,8 @@ const SignUp = ({navigation}) => {
       }, 2000);
     }
   };
-
-  const [saveimage, setsaveimage] = useState({});
-  const [show2, setShow2] = useState(true);
-
-  const photosave = () => {
-    let options = {
-      storageOptions: {
-        mediaType: 'photo',
-        path: 'image',
-        includeExtra: true,
-      },
-      selectionLimit: 1,
-    };
-
-    launchImageLibrary(options, res => {
-      if (res.didCancel) {
-        // console.log('User cancelled image picker')
-      } else if (res.error) {
-        // console.log('ImagePicker Error: ', res.error)
-      } else if (res.customButton) {
-        // console.log('User tapped custom button: ', res.customButton)
-        alert(res.customButton);
-      } else {
-        setsaveimage({
-          name: res.assets?.[0]?.fileName,
-          uri: res.assets?.[0]?.uri,
-          type: res.assets?.[0]?.type,
-        });
-        setShow2(false);
-      }
-    });
-  };
   return (
-    <SafeAreaView style={GlobalStyle.Container}>
+    <View style={GlobalStyle.Container}>
       <ImageBackground
         source={require('../../assets/image/Bacground/signup.png')}
         resizeMode="cover"
@@ -244,18 +238,18 @@ const SignUp = ({navigation}) => {
               textStyle={{color: Colors.White, fontSize: scale(23)}}
             />
           </View>
-          <Success
-            isVisible={successModal}
-            message={'Thanks for your Effort'}
-          />
+          <Success isVisible={successModal} />
           <Error isVisible={errorModal} message={'Password is not matched'} />
-          <Error isVisible={isEmailExist} message={'This email already exists'} />
+          <Error
+            isVisible={isEmailExist}
+            message={'This email already exists'}
+          />
           <Error isVisible={photoModal} message={'please Upload a Photo'} />
-          <Loading isVisible={loading}/>
+          <Loading isVisible={loading} />
           <View style={{height: verticalScale(10)}} />
         </ScrollView>
       </ImageBackground>
-    </SafeAreaView>
+    </View>
   );
 };
 

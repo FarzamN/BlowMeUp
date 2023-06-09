@@ -3,22 +3,22 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
-  StatusBar
+  StatusBar,
 } from 'react-native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import {Colors} from '../../utils/Colors';
-import {moderateScale} from 'react-native-size-matters';
 import MainHeader from '../../components/Header/MainHeader';
 import ListHeader from '../../components/Header/ListHeader';
 import SongCard from '../../components/Card/SongCard';
+import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { useFocusEffect } from '@react-navigation/native';
 
-const ArtistDashboard = () => {
+const ArtistDashboard = ({navigation}) => {
   const PodCastsData = [
     {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
-    
     },
     {
       Song: 'Shivers',
@@ -29,12 +29,23 @@ const ArtistDashboard = () => {
       Song: 'Happier',
       Singer: 'Olivia Radrigo',
       source: require('../../assets/image/song3.jpg'),
-      Type:'last'
+      Type: 'last',
     },
   ];
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.showBar
+      })
+    }),
+  )
   return (
     <SafeAreaView style={styles.container}>
- <StatusBar backgroundColor={Colors.ThemeBlue} barStyle={'light-content'} />
+      <StatusBar
+        backgroundColor={Colors.ThemeBlue}
+        barStyle={'light-content'}
+      />
       <MainHeader
         Notification={true}
         Logo={true}
@@ -44,13 +55,13 @@ const ArtistDashboard = () => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ListHeader
-          Logo={true}
+          Logo
           Text="LIVE NOW"
           source={require('../../assets/image/line.png')}
           Title="Live Stream"
           //   onPress={() => navigation.navigate('PopularSong')}
         />
-        <ListHeader Title="Pod Casts" UploadTrue={true} />
+        <ListHeader Title="Pod Casts" UploadTrue/>
         <FlatList
           scrollEnabled={true}
           horizontal={true}

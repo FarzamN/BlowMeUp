@@ -3,11 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ImageBackground,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
 import {useForm} from 'react-hook-form';
 import {Colors} from '../../utils/Colors';
@@ -18,7 +15,6 @@ import CustomButton from '../../components/CustomButton';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
-import {useDispatch} from 'react-redux';
 import {verify_email_before_password} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
 
@@ -34,7 +30,6 @@ const FindAccount = ({navigation}) => {
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
   const onSubmit = data => {
-    if (data) {
       verify_email_before_password(
         data,
         setSuccessModal,
@@ -44,11 +39,9 @@ const FindAccount = ({navigation}) => {
         setUser_id,
         setLoading
         );
-      }
   };
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={GlobalStyle.Container}>
+      <View style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/find.png')}
           resizeMode="cover"
@@ -113,8 +106,7 @@ const FindAccount = ({navigation}) => {
           <Loading isVisible={loading}/>
           
         </ImageBackground>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+      </View>
   );
 };
 

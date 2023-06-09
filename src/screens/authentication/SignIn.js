@@ -4,13 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ScrollView,
   TouchableOpacity,
   ImageBackground,
-  Keyboard,
-  TouchableWithoutFeedback,
 } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -27,7 +24,6 @@ import { Colors } from '../../utils/Colors';
 import { Font } from '../../utils/font';
 import CustomButton from '../../components/CustomButton';
 import { useDispatch } from 'react-redux';
-import { USER_DETAILS } from '../../redux/reducer/Holder';
 import PasswordInput from '../../components/PasswordInput';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
 import {
@@ -35,10 +31,16 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import { login } from '../../redux/actions/AuthActions';
+import Loading from '../../components/Modal/Loading';
 
 const SignIn = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [ErrorMessage,setErrorMessage] =useState('')
+  const [SuccessMessage,setSuccessMessage] =useState('')
+  
+   
   const Dispatch = useDispatch();
   const {
     control,
@@ -46,9 +48,11 @@ const SignIn = ({ navigation }) => {
     formState: { errors, isValid },
   } = useForm({ mode: 'all' });
 
-  const Submit = data => {
-    Dispatch({ type: USER_DETAILS, payload: data.email });
-    Dispatch(login(data))
+  const Submit = (data) => {
+    // Dispatch({ type: USER_DETAILS, payload: data.email });
+    Dispatch(login(data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage,setLoading));
+    console.log('data ==>', data)
+
   };
 
 
@@ -90,8 +94,7 @@ const SignIn = ({ navigation }) => {
 
   
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={GlobalStyle.Container}>
+      <View style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/splash.png')}
           resizeMode="cover"
@@ -220,18 +223,18 @@ const SignIn = ({ navigation }) => {
             </View>
             <Success
               isVisible={successModal}
-              onClose={() => setSuccessModal(false)}
-              message={'Thanks for Password'}
+              message={SuccessMessage}
             />
             <Error
               isVisible={errorModal}
-              onClose={() => setErrorModal(false)}
-              message={'Password is not matched'}
+              message={ErrorMessage}
+            />
+            <Loading
+              isVisible={loading}
             />
           </ScrollView>
         </ImageBackground>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+      </View>
   );
 };
 

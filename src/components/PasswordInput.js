@@ -5,7 +5,6 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {Colors} from '../utils/Colors';
 import {Font} from '../utils/font';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const PasswordInput = forwardRef((props, ref) => {
@@ -51,7 +50,7 @@ const PasswordInput = forwardRef((props, ref) => {
         fontSize={props.fontSize}
         maxLength={props.maxLength}
       />
-      <Text style={styles.Text} onPress={() => setPassword(!password)}>{password == true ?  'HIDE' : 'SHOW'}</Text>
+      <Text style={styles.Text} onPress={() => setPassword(!password)}>{password == true ?  'SHOW' : 'HIDE'}</Text>
     </View>
   );
 });
@@ -62,9 +61,7 @@ const styles = StyleSheet.create({
     height: '100%',
     color: Colors.White,
     fontFamily: Font.Gilroy500,
-    fontSize: scale(1),
     paddingHorizontal: moderateScale(20),
-    // textTransform: 'lowercase',
   },
   smallbox: {
     alignSelf: 'center',

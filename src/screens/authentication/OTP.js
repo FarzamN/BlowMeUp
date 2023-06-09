@@ -3,11 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ImageBackground,
-  TouchableWithoutFeedback,
-  Keyboard,
   TouchableOpacity,
   ScrollView,
   Dimensions,
@@ -27,14 +24,12 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import {useDispatch} from 'react-redux';
+import { verify_email_before_password } from '../../redux/actions/AuthActions';
 
 const windowHeight = Dimensions.get('window').height;
 const CELL_COUNT = 4;
 const OTP = ({route, navigation}) => {
   const {type, data, OTP, saveimage,user_id} = route.params;
-  console.log('user_id otp screwen ==>', user_id);
-  const dispatch = useDispatch();
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -52,12 +47,18 @@ const OTP = ({route, navigation}) => {
     return () => clearInterval(timer);
   }, [time]);
 
-  const ResendOTP = () => {
+  const WaitOTP = () => {
     setOtpResent(true);
     setTimeout(() => {
       setOtpResent(false);
     }, 2300);
   };
+
+  const ResendOTP = () =>{
+    console.log('data of Resend OTP',data)
+    verify_email_before_password(data)
+    setTime(10)
+  }
 
   const Submit = () => {
     console.log('Opt btn press');
@@ -89,8 +90,7 @@ const OTP = ({route, navigation}) => {
     }
   };
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={GlobalStyle.Container}>
+      <View style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/otp.png')}
           resizeMode="cover"
@@ -140,7 +140,7 @@ const OTP = ({route, navigation}) => {
 
               {time == 0 ? (
                 <TouchableOpacity
-                  onPress={() => setTime(10)}
+                  onPress={() => ResendOTP()}
                   style={[
                     styles.containerStyle,
                     {
@@ -157,7 +157,7 @@ const OTP = ({route, navigation}) => {
                 </TouchableOpacity>
               ) : (
                 <Pressable
-                  onPress={ResendOTP}
+                  onPress={WaitOTP}
                   style={[
                     styles.containerStyle,
                     {
@@ -193,8 +193,7 @@ const OTP = ({route, navigation}) => {
             />
           </ScrollView>
         </ImageBackground>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+      </View>
   );
 };
 const styles = StyleSheet.create({

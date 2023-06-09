@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {
   View,
-  SafeAreaView,
   Image,
   ImageBackground,
   Text,
@@ -88,7 +87,7 @@ const AccountType = ({navigation, route}) => {
   };
 
   return (
-    <SafeAreaView style={GlobalStyle.Container}>
+    <View style={GlobalStyle.Container}>
       <ImageBackground
         source={require('../../assets/image/Bacground/otp.png')}
         resizeMode="cover"
@@ -117,7 +116,7 @@ const AccountType = ({navigation, route}) => {
       />
       <Error isVisible={isNull} message="Please select One" />
       <Loading isVisible={loading}/>
-    </SafeAreaView>
+    </View>
   );
 };
 const styles = StyleSheet.create({
@@ -135,7 +134,7 @@ const styles = StyleSheet.create({
     aspectRatio: 1 / 1,
     borderRadius: scale(20),
     marginHorizontal: scale(10),
-    borderWidth: scale(1),
+    borderWidth: scale(2),
   },
 });
 export default AccountType;

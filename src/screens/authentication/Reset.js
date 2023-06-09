@@ -3,11 +3,8 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   Image,
   ImageBackground,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
@@ -36,12 +33,6 @@ const Reset = ({route, navigation}) => {
   const onSubmit = data => {
     if (data.password == data.confirm_password) {
       update_password(data, setPasswordChange, navigation, user_id,setLoading);
-      // setPasswordChange(true);
-      // setTimeout(() => {
-      //   setPasswordChange(false);
-      //   navigation.navigate('SignIn');
-      // }, 2000);
-      // }
     } else {
       setErrorModal(true);
       setTimeout(() => {
@@ -50,8 +41,7 @@ const Reset = ({route, navigation}) => {
     }
   };
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <SafeAreaView style={GlobalStyle.Container}>
+      <View style={GlobalStyle.Container}>
         <ImageBackground
           source={require('../../assets/image/Bacground/reset.png')}
           resizeMode="cover"
@@ -136,8 +126,7 @@ const Reset = ({route, navigation}) => {
           />
           <Loading isVisible={loading} />
         </ImageBackground>
-      </SafeAreaView>
-    </TouchableWithoutFeedback>
+      </View>
   );
 };
 const styles = StyleSheet.create({
