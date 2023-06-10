@@ -20,9 +20,11 @@ import {Font} from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
 import {useFocusEffect} from '@react-navigation/native';
+import { Image_BaseUrl } from '../../utils/url';
+import { useSelector } from 'react-redux';
 const PictureSection = ({navigation}) => {
   const [text, setText] = useState('');
-
+  const userDetails = useSelector(state => state.userDetails);
   const handleInputChange = inputValue => {
     console.log('Input value:', inputValue);
     setText(inputValue);
@@ -72,7 +74,7 @@ const PictureSection = ({navigation}) => {
         ]}>
         <Image
           style={[styles.Image, {borderRadius: scale(100)}]}
-          source={require('../../assets/image/dp.jpg')}
+          source={{uri: Image_BaseUrl + userDetails.profile_image}}
         />
         <View style={styles.TextInputBox}>
           <TextInput

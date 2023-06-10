@@ -13,13 +13,16 @@ import CustomButton from '../../components/CustomButton';
 
 import { Colors } from '../../utils/Colors';
 import { moderateScale, verticalScale } from 'react-native-size-matters';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { USER_DETAILS } from '../../redux/reducer/Holder';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Setting = ({ navigation }) => {
-  const Dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const userDetails = useSelector(state => state.userDetails);
+
   useFocusEffect(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useCallback(() => {
@@ -28,6 +31,11 @@ const Setting = ({ navigation }) => {
       })
     }),
   )
+
+  const logOut = async () => {
+    await AsyncStorage.removeItem('user_details')
+    dispatch({ type: USER_DETAILS, payload: null })
+  }
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <MainHeader
@@ -38,7 +46,6 @@ const Setting = ({ navigation }) => {
         Text="Setting"
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ paddingHorizontal: moderateScale(15) }}>
           <SettingItem
             onPress={() => navigation.navigate('Profile')}
             Title="Profile"
@@ -54,7 +61,7 @@ const Setting = ({ navigation }) => {
           />
           <SettingItem Title="Start live streaming" />
           <SettingItem
-            onPress={() => navigation.navigate('TermsAndConditions', { type: 'user' })}
+            onPress={() => navigation.navigate('TermsAndConditions', { path: 'user' })}
             Title="Terms and conditions"
           />
           <SettingItem Title="Privacy Policy" />
@@ -62,18 +69,19 @@ const Setting = ({ navigation }) => {
             onPress={() => navigation.navigate('LeaderBoard')}
             Title="LeaderBoard"
           />
-          <SettingItem
+          { userDetails.social_id ? null :  (<SettingItem
             onPress={() => navigation.navigate('ChangePassword')}
             Title="Change Password"
-          />
+          />)
+          }
+         
           <View style={{ paddingRight: moderateScale(12) }}>
             <CustomButton
-              onPress={() => Dispatch({ type: USER_DETAILS, payload: null })}
+              onPress={() => logOut()}
               title="Log Out"
               containerStyle={{ marginTop: verticalScale(25) }}
             />
           </View>
-        </View>
         <View style={{ height: verticalScale(10) }} />
       </ScrollView>
     </SafeAreaView>

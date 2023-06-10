@@ -21,8 +21,10 @@ import {register} from '../../redux/actions/AuthActions';
 import Error from '../../components/Modal/Error';
 import Loading from '../../components/Modal/Loading';
 const AccountType = ({navigation, route}) => {
-  const {data, saveimage} = route.params;
-  console.log('data AccountType', data, 'saveimageAccountType', saveimage);
+  const {data, saveimage,socialData} = route.params;
+
+
+
   const [isArtist, setIsArtist] = useState(false);
   const [isListener, setIsListener] = useState(false);
   const [isNull, setIsNull] = useState(false);
@@ -45,20 +47,21 @@ const AccountType = ({navigation, route}) => {
       setTimeout(() => {
         setIsNull(false);
       }, 2000);
-    } else {
-      dispatch(register(data, select, setIsArtist, setIsListener, navigation, setLoading));
+    } else  {
+      dispatch(register(data, select, setIsArtist, setIsListener, navigation, setLoading,saveimage,socialData));
     }
   };
   const renderItem = ({item}) => {
     return (
+      <View style={styles.Box}>
       <Pressable
         onPress={() => handelItem(item)}
-        android_ripple={{color: 'rgba(20, 24, 36, 1)'}}
+        android_ripple={{color: select == item.id ? Colors.ThemeBlue : Colors.Main,borderless: true, foreground: true }}
         style={[
-          styles.Box,
+          styles.Pressable,
           {
-            backgroundColor: select == item.id ? Colors.Main : Colors.ThemeBlue,
-            borderColor: select == item.id ? Colors.Yellow : 'transparent',
+            backgroundColor: select == item.id ? Colors.Main : Colors.ThemeBlue, 
+            borderColor: select == item.id ? Colors.Yellow : 'transparent',         
           },
         ]}>
         {item.id == 1 ? (
@@ -83,6 +86,7 @@ const AccountType = ({navigation, route}) => {
           {item.title}
         </Text>
       </Pressable>
+      </View>
     );
   };
 
@@ -109,9 +113,9 @@ const AccountType = ({navigation, route}) => {
           {/* <CustomButton title="Are Your Listener" onPress={() =>HandelListener()}/> */}
         </View>
       </ImageBackground>
-      <Success isVisible={isArtist} message="Your have Registered as Artist" />
+      <Success isVisible={isListener} message="Your have Registered as Artist" />
       <Success
-        isVisible={isListener}
+        isVisible={isArtist}
         message="Your have Registered as Listener"
       />
       <Error isVisible={isNull} message="Please select One" />
@@ -127,14 +131,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: verticalScale(15),
   },
-  Box: {
+  Pressable: {
     justifyContent: 'center',
     alignItems: 'center',
     height: verticalScale(130),
     aspectRatio: 1 / 1,
     borderRadius: scale(20),
-    marginHorizontal: scale(10),
+    overflow: 'hidden',
     borderWidth: scale(2),
   },
+  Box:{
+    borderRadius: scale(20),
+    borderWidth: scale(2),
+    height: verticalScale(130),
+    aspectRatio: 1 / 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: scale(10),
+  }
 });
 export default AccountType;

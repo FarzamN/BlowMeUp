@@ -15,8 +15,11 @@ import { Font } from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
 import { useFocusEffect } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { Image_BaseUrl } from '../../utils/url';
 
 const VlogSection = ({navigation}) => {
+  const userDetails = useSelector(state => state.userDetails);
   const SectionItem = [
     {
       Name: 'Olivia Mā Ddy',
@@ -57,11 +60,15 @@ const VlogSection = ({navigation}) => {
         Text="Vlog Section"
       />
 
-      <View style={[GlobalStyle.Row,{alignSelf:'center',paddingBottom:moderateVerticalScale(10)}]}>
+<View
+        style={[
+          GlobalStyle.Row,
+          {alignSelf: 'center', paddingBottom: moderateVerticalScale(10)},
+        ]}>
         <Image
           resizeMode="contain"
           style={styles.Image}
-          source={require('../../assets/image/avatar.png')}
+          source={{uri: Image_BaseUrl + userDetails.profile_image}}
         />
         <View style={styles.TextInputBox}>
           <TextInput
@@ -106,6 +113,7 @@ const styles = StyleSheet.create({
   Image: {
     width: scale(30),
     height: scale(30),
+    
   },
 });
 

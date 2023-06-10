@@ -1,12 +1,13 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React from 'react';
 import {Colors} from '../utils/Colors';
 import {Font} from '../utils/font';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import Entypo from 'react-native-vector-icons/Entypo';
 const SettingItem = props => {
   return (
-    <TouchableOpacity
+    <Pressable
+    android_ripple={{color:Colors.Main}}
       onPress={props.onPress}
       activeOpacity={0.6}
       style={styles.Container}>
@@ -18,10 +19,10 @@ const SettingItem = props => {
           </View>
         ) : null}
         <View style={styles.Circle}>
-          <Entypo name="chevron-right" size={scale(15)} color={Colors.Grey} />
+          <Entypo name="chevron-right" size={scale(18)} color={Colors.Grey} />
         </View>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -30,13 +31,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginRight: scale(12),
-    marginVertical: verticalScale(12),
+    height:verticalScale(50),
+    paddingHorizontal: moderateScale(15)
   },
   Text: {
     color: Colors.White,
     fontFamily: Font.Poppins500,
     fontSize: scale(16),
+    top:verticalScale(2)
   },
   Circle: {
     backgroundColor: Colors.White,
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: scale(8),
   },
   Image: {
     height: scale(15),

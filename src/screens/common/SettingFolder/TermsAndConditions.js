@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback,useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   Image,
   ScrollView,
+  useWindowDimensions
 } from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
@@ -15,18 +16,54 @@ import {Font} from '../../../utils/font';
 import MainHeader from '../../../components/Header/MainHeader';
 import { useFocusEffect } from '@react-navigation/native';
 import { GlobalStyle } from '../../../Constants/GlobalStyle';
-
+import { BaseUrl, token } from '../../../utils/url';
+import RenderHtml from 'react-native-render-html';
 const TermsAndConditions = ({navigation,route}) => {
-  const Type = route.params.type
-
+  const {path} = route.params;
+  const type = 'terms'
+  const [data, setData] = useState('')
+  const { width } = useWindowDimensions();
     const onSubmit = () => {
       navigation.goBack()
-      // if (Type == 'auth') {
+      // if (path == 'auth') {
       //   navigation.goBack()
       // } else {
       //   navigation.navigate('Setting')
       // }
     }
+
+    const getHtml = async () => {
+  
+      try {
+        let base_url = `${BaseUrl}get_terms_n_privacy.php`;
+        let myData = new FormData();
+    
+        myData.append('token', token);
+        myData.append('type', type);
+    
+        const response = await fetch(base_url, {
+          body: myData,
+          method: 'post',
+        });
+        const responseData = await response.json();
+        if (responseData.status == true){
+          setData(responseData.data.content)
+        }
+      } catch (error) {
+        console.log('error', error)
+      }
+    
+    
+    }
+    
+    useFocusEffect(
+      useCallback(() => {
+        getHtml()
+      },[])
+    )
+    const source = {
+      html: data
+    };
     useFocusEffect(
       // eslint-disable-next-line react-hooks/exhaustive-deps
       useCallback(() => {
@@ -37,7 +74,7 @@ const TermsAndConditions = ({navigation,route}) => {
     )
   return (
     <SafeAreaView style={styles.Container}>
-      <View style={{marginTop: Type == 'auth' ? '10%' : 0}}>
+      <View style={{marginTop: path == 'auth' ? '10%' : 0}}>
         <MainHeader
           Notification={false}
           BackArrow={true}
@@ -90,6 +127,10 @@ const TermsAndConditions = ({navigation,route}) => {
             Conditions along with an EULA if the mobile app has an online
             service component, i.e. it connects with a server.
           </Text>
+            {/* <RenderHtml
+      contentWidth={width}
+      source={source}
+    /> */}
           <CustomButton
             onPress={onSubmit}
             title="Accept and Continue"

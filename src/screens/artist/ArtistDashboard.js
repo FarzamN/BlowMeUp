@@ -19,6 +19,7 @@ const ArtistDashboard = ({navigation}) => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
+      Type: 'first'
     },
     {
       Song: 'Shivers',

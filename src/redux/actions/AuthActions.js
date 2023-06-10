@@ -1,6 +1,6 @@
 import {Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {USER_DETAILS} from '../reducer/Holder';
+import {OTP, ROLE_ID, USER_DETAILS} from '../reducer/Holder';
 
 import {
   GoogleSignin,
@@ -8,17 +8,17 @@ import {
 } from '@react-native-google-signin/google-signin';
 import {BaseUrl, token} from '../../utils/url';
 
-export const sign_in = (email, password) => {
-  return async dispatch => {
-    try {
-      await AsyncStorage.setItem('user_details', email);
-      await dispatch({type: USER_DETAILS, payload: email});
-      console.log('Login Success fully!');
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-};
+// export const sign_in = (email, password) => {
+//   return async dispatch => {
+//     try {
+//       await AsyncStorage.setItem('user_details', email);
+//       await dispatch({type: USER_DETAILS, payload: email});
+//       console.log('Login Success fully!');
+//     } catch (error) {
+//       console.log('error', error);
+//     }
+//   };
+// };
 
 export const login = (data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage, setLoading) => {
   return async dispatch => {
@@ -36,11 +36,14 @@ export const login = (data,setSuccessModal, setErrorModal, setErrorMessage,setSu
         method: 'post',
       });
 
+      console.log('response', response)
+
       const responseData = await response.json();
-      console.log(responseData)
+      console.log('responseData',responseData.data)
       if (responseData.status == true) {
+        dispatch({type: USER_DETAILS, payload: responseData.data});
+        dispatch({type: ROLE_ID, payload: responseData.data.role});
         await AsyncStorage.setItem('user_details', JSON.stringify(responseData.data));
-        await dispatch({type: USER_DETAILS, payload: responseData.data});
         setSuccessMessage(responseData.message)
         setLoading(false)
         setSuccessModal(true);
@@ -68,8 +71,8 @@ export const googleSignin = navigation => {
       GoogleSignin.configure({
         webClientId:
           Platform.OS == 'android'
-            ? '786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com'
-            : '1027704725204-8ra8ndftf0ovqh7jn4fik17gv4cm2ghr.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+            ? '786806587743-sqmrhl9rjq5s9u5chjlg6tdref287rpg.apps.googleusercontent.com'
+            : '786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
 
         offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
         forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
@@ -83,11 +86,11 @@ export const googleSignin = navigation => {
         lastName: userInfo.user.familyName,
         picUrl: userInfo.user.photo,
         uID: userInfo.user.id,
+        user_name: userInfo.user.name
       };
 
-      console.log('socialObj', socialObj);
 
-      // dispatch(social_signin(socialObj, navigation));
+      dispatch(social_signin(socialObj, navigation));
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         console.log('You cancelled the sign in.');
@@ -103,57 +106,104 @@ export const googleSignin = navigation => {
     }
   };
 };
+const social_signin = (data, navigation) => {
+  // console.log('data.uID', data.uID)
+  return async (dispatch) => {
+    try {
 
-export const verify_email_before_registration = async (
+      let base_url = `${BaseUrl}Authentication/social_login.php`;
+      let myData = new FormData();
+  
+      myData.append('token', token);
+      myData.append('social_id', data.uID);
+
+      const response = await fetch(base_url, {
+        body: myData,
+        method: 'post',
+      });
+
+      console.log('response', response)
+  
+      const responseData = await response.json();
+      console.log('responseData', responseData)
+      if(responseData.status == true){
+        dispatch({type: USER_DETAILS, payload: responseData.data});
+        dispatch({type: ROLE_ID, payload: responseData.data.role});
+        await AsyncStorage.setItem('user_details', JSON.stringify(responseData.data));
+      }else{
+        navigation.navigate('SignUp',{
+          social: 'social',
+          socialData: data
+        })
+      }
+    } catch (error) {
+      console.log('error', error)
+    }
+  }
+}
+
+export const verify_email_before_registration =  (
   data,
+  type,
   setSuccessModal,
   navigation,
-  type,
   saveimage,
   setIsEmailExist,
   setLoading,
 ) => {
-  // console.log('data in redux', data);
-  console.log('saveimage', saveimage)
-  setLoading(true);
-  try {
-    let base_url = `${BaseUrl}Authentication/verify_email_before_registration.php`;
-    let myData = new FormData();
+  if(type == 'signup'){
+    setLoading(true);
+  }
+  return async (dispatch) => {
 
-    myData.append('token', token);
-    myData.append('email', data.email);
-    // myData.append('photo', saveimage);
-
-    const response = await fetch(base_url, {
-      body: myData,
-      method: 'post',
-    });
-
-    const responseData = await response.json();
-
-    if (responseData.status == true) {
-      console.log('responseData', responseData);
-      setLoading(false);
-      setSuccessModal(true);
-      setTimeout(() => {
-        setSuccessModal(false);
-        navigation.navigate('OTP', {
-          type: 'register',
-          data: data,
-          OTP: responseData.Code,
-        });
-      }, 2000);
-    } else {
-      console.log('else error', responseData.message);
+    try {
+      let base_url = `${BaseUrl}Authentication/verify_email_before_registration.php`;
+      let myData = new FormData();
+  
+      myData.append('token', token);
+      myData.append('email', data.email);
+      
+  
+      const response = await fetch(base_url, {
+        body: myData,
+        method: 'post',
+      });
+  
+      const responseData = await response.json();
+  
+      if (responseData.status == true) {
+        console.log('responseData', responseData);
+        await dispatch({ type: OTP, payload:  responseData.Code})
+  
+        if(type == 'signup'){
+          setLoading(false);
+          setSuccessModal(true);
+          setTimeout(() => {
+            setSuccessModal(false);
+            navigation.navigate('OTP', {
+              type: type,
+              data: data,
+              saveimage: saveimage
+            })
+          }, 2000);
+        }else{
+         console.log('first')
+         setSuccessModal(10)
+        }
+      } else {
+        console.log('else error', responseData.message);
+        if(type == 'signup'){
+          setLoading(false)
+          setIsEmailExist(true);
+          setTimeout(() => {
+            setIsEmailExist(false);
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.log('verify_email_before_registration catch error -->', error);
       setLoading(false)
-      setIsEmailExist(true);
-      setTimeout(() => {
-        setIsEmailExist(false);
-      }, 2000);
     }
-  } catch (error) {
-    console.log('verify_email_before_registration catch error -->', error);
-    setLoading(false)
   }
 };
 
@@ -164,16 +214,12 @@ export const register = (
   setIsArtist,
   navigation,
   setLoading,
+  saveimage,
+  socialData
 ) => {
-  console.log(
-    'data',
-    data.email,
-    data.phone_number,
-    data.password,
-    data.name,
-    'typeof(select) ==>',
-    typeof select,
-  );
+  console.log('socialData', socialData)
+  console.log('data', data)
+
   setLoading(true);
   return async dispatch => {
     try {
@@ -184,35 +230,44 @@ export const register = (
         'token',
         'as23rlkjadsnlkcj23qkjnfsDKJcnzdfb3353ads54vd3favaeveavgbqaerbVEWDSC',
       );
-      myData.append('user_name', data.name);
+      myData.append('user_name', data?.name ? data?.name : socialData?.user_name );
       myData.append('role_id', select);
       myData.append('email', data.email);
-      myData.append('phone_number', data.phone_number);
-      myData.append('password', data.confirm_password);
+      myData.append('phone_number', data?.phone_number);
+      myData.append('password', data?.confirm_password ?  data?.confirm_password : 'Demo1234');
+      myData.append('profile_image', saveimage);
+
+      {
+        socialData?.uID &&
+        myData.append('social_id', socialData?.uID);
+      }
+
 
       const response = await fetch(base_url, {
         method: 'POST',
         body: myData,
       });
+      console.log('response', response)
 
-      console.log('response', response);
 
       const responseData = await response.json();
+      console.log('responseData', responseData)
 
-      console.log('responseData', responseData);
       if (responseData.status == true) {
+        setLoading(false)
         if (select == 1) {
-          setIsListener(true);
-          setTimeout(() => {
-            setIsListener(false);
-            navigation.navigate('SignIn');
-          }, 3000);
+          // setIsListener(true);
+          await AsyncStorage.setItem('user_details', JSON.stringify(responseData.Data));
+          // setIsListener(false);
+          dispatch({type: USER_DETAILS, payload: responseData.Data});
+          dispatch({type: ROLE_ID, payload: responseData.Data.role});
+         
         } else {
-          setIsArtist(true);
-          setTimeout(() => {
-            setIsArtist(false);
-            navigation.navigate('SignIn');
-          }, 3000);
+          // setIsArtist(true);
+          await AsyncStorage.setItem('user_details', JSON.stringify(responseData.Data));
+          // setIsArtist(false);
+          dispatch({type: USER_DETAILS, payload: responseData.Data});
+          dispatch({type: ROLE_ID, payload: responseData.Data.role});
         }
       } else {
         console.log('else error');
@@ -220,58 +275,68 @@ export const register = (
       }
     } catch (error) {
       console.log('catch error in register', error);
+      setLoading(false)
     }
   };
 };
 
-export const verify_email_before_password = async (
+export const verify_email_before_password =  (
   data,
+  type,
   setSuccessModal,
   navigation,
   setIsEmailExist,
-  user_id,
-  setUser_id,
   setLoading,
 ) => {
-  setLoading(true);
-  try {
-    let base_url = `${BaseUrl}Authentication/verify_email_before_password.php`;
-    let myData = new FormData();
+  if(type == 'forgot'){
+    setLoading(true);
+  }
+  return async (dispatch) => {
+    try {
+      let base_url = `${BaseUrl}Authentication/verify_email_before_password.php`;
+      let myData = new FormData();
+  
+      myData.append('token', token);
+      myData.append('email', data.email);
+  
+      const response = await fetch(base_url, {
+        body: myData,
+        method: 'post',
+      });
+  
+      const responseData = await response.json();
+      if (responseData.status == true) {
+        console.log('responseData', responseData);
+       await dispatch({ type: OTP, payload:  responseData.Code})
 
-    myData.append('token', token);
-    myData.append('email', data.email);
-
-    const response = await fetch(base_url, {
-      body: myData,
-      method: 'post',
-    });
-
-    const responseData = await response.json();
-    setUser_id('responseData user_id', responseData.user_id);
-    if (responseData.status == true) {
-      console.log('responseData', responseData);
-      setLoading(false);
-
-      setSuccessModal(true);
-      setTimeout(() => {
-        setSuccessModal(false);
-        navigation.navigate('OTP', {
-          type: 'forgot',
-          data: data,
-          OTP: responseData.Code,
-          user_id: responseData.user_id,
-        });
-      }, 2000);
-    } else {
-      console.log('else error', responseData.message);
-      setLoading(false);
-      setIsEmailExist(true);
-      setTimeout(() => {
-        setIsEmailExist(false);
-      }, 2000);
+        if(type == 'forgot'){
+          setLoading(false);
+          setSuccessModal(true);
+          setTimeout(() => {
+            setSuccessModal(false);
+            navigation.navigate('OTP', {
+              type: type,
+              data: data,
+              // OTP: responseData.Code,
+              user_id: responseData.user_id,
+            });
+          }, 2000);
+        }else{
+          setSuccessModal(10)
+        }
+      } else {
+        console.log('else error', responseData.message);
+        if(type == 'forgot'){
+          setLoading(false);
+          setIsEmailExist(true);
+          setTimeout(() => {
+            setIsEmailExist(false);
+          }, 2000);
+        }
+      }
+    } catch (error) {
+      console.log('verify_email_before_password catch error -->', error);
     }
-  } catch (error) {
-    console.log('verify_email_before_password catch error -->', error);
   }
 };
 
@@ -287,7 +352,6 @@ export const update_password = async (
   setLoading(true);
   try {
     let base_url = `${BaseUrl}Authentication/update_password.php`;
-
     let myData = new FormData();
 
     myData.append('token', token);

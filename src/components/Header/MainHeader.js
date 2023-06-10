@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity,Pressable } from 'react-native';
 import { moderateScale, moderateVerticalScale, scale } from 'react-native-size-matters';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,11 +16,11 @@ const MainHeader = props => {
           <Image style={styles.Image} source={props.source} />
         ) : null}
         {props.BackArrow ? (
-          <TouchableOpacity
+          <Pressable android_ripple={{color:Colors.Main}}
             onPress={() => navigation.goBack()}
             style={styles.arrowBox}>
             <Ionicons name="arrow-back" color={Colors.Main} size={scale(18)} />
-          </TouchableOpacity>
+          </Pressable>
         ) : null}
         {props.Search ? (
           <Feather name="search" color={Colors.Main} size={scale(20)} />
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.Main,
     paddingHorizontal: 2,
     paddingVertical: 1,
+    overflow:'hidden'
   },
   Text: {
     fontFamily: Font.Gilroy700,

@@ -17,28 +17,32 @@ import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
 import {verify_email_before_password} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
+import { useDispatch } from 'react-redux';
 
 const FindAccount = ({navigation}) => {
+  const dispatch = useDispatch()
+
   const [isEmailExist, setIsEmailExist] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user_id,setUser_id] = useState('')
+
 
   const {
     control,
     handleSubmit,
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
+  const type = 'forgot'
   const onSubmit = data => {
-      verify_email_before_password(
+    dispatch(verify_email_before_password(
         data,
+        type,
         setSuccessModal,
         navigation,
         setIsEmailExist,
-        user_id,
-        setUser_id,
-        setLoading
-        );
+        setLoading,
+        ));
   };
   return (
       <View style={GlobalStyle.Container}>

@@ -23,6 +23,8 @@ import com.airbnb.android.react.lottie.LottiePackage;
 import com.imagepicker.ImagePickerPackage;
 // react-native-linear-gradient
 import com.BV.LinearGradient.LinearGradientPackage;
+// react-native-onesignal
+import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
@@ -82,6 +84,7 @@ public class PackageList {
       new LottiePackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
+      new ReactNativeOneSignalPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new RNSoundPackage(),

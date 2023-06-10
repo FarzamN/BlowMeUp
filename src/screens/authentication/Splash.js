@@ -22,9 +22,15 @@ import Zocial from 'react-native-vector-icons/Zocial';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { GlobalStyle } from '../../Constants/GlobalStyle';
+import { useDispatch } from 'react-redux';
+import { googleSignin } from '../../redux/actions/AuthActions';
 
 const W = Dimensions.get('window').width;
 const Splash = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const googleLoginHandler =  () => {
+    dispatch(googleSignin(navigation))
+   };
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor="transparent" translucent />
@@ -43,13 +49,15 @@ const Splash = ({ navigation }) => {
             <Text style={styles.Heading}>Find your favorite music</Text>
             <TouchableOpacity
               activeOpacity={0.6}
-              onPress={() => navigation.navigate('SignUp')}
+              onPress={() => navigation.navigate('SignUp',{social:'oay'})}
               style={styles.EmailBox}>
               <Zocial name="email" color={Colors.White} size={scale(20)} />
               <Text style={styles.Text}>Continue with Email</Text>
             </TouchableOpacity>
-            <View style={styles.Row}>
-              <TouchableOpacity style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
+            <View style={[GlobalStyle.Row,{justifyContent: 'space-between',}]}>
+              <TouchableOpacity onPress={() => {
+                  googleLoginHandler();
+                }} style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
                 <FontAwesome
                   name="google"
                   color={Colors.White}
@@ -104,12 +112,6 @@ const styles = StyleSheet.create({
     borderRadius: scale(25),
     flexDirection: 'row',
   },
-  Row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-
   Account: {
     textAlign: 'center',
     color: Colors.White,

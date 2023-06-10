@@ -24,12 +24,17 @@ import {
   useBlurOnFulfill,
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
-import { verify_email_before_password } from '../../redux/actions/AuthActions';
+import { verify_email_before_password, verify_email_before_registration } from '../../redux/actions/AuthActions';
+import { useDispatch, useSelector } from 'react-redux';
 
 const windowHeight = Dimensions.get('window').height;
 const CELL_COUNT = 4;
 const OTP = ({route, navigation}) => {
-  const {type, data, OTP, saveimage,user_id} = route.params;
+  const {type, data, saveimage,user_id} = route.params;
+  const dispatch = useDispatch()
+  const OTP = useSelector(state => state.otp)
+
+
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -54,23 +59,27 @@ const OTP = ({route, navigation}) => {
     }, 2300);
   };
 
+  const resendType = 'resendType'
+
   const ResendOTP = () =>{
-    console.log('data of Resend OTP',data)
-    verify_email_before_password(data)
-    setTime(10)
+    if(type == 'forgot'){
+      dispatch(verify_email_before_password(data,resendType,setTime))
+    } else if(type == 'signup'){
+      dispatch(verify_email_before_registration(data,resendType,setTime))
+    }
   }
 
   const Submit = () => {
-    console.log('Opt btn press');
-    // dispatch(verify_email_before_registration(data.email, setSuccessModal, navigation, type,setErrorModal))
     if (value == OTP) {
+
       if (type == 'forgot') {
         setSuccessModal(true);
         setTimeout(() => {
           setSuccessModal(false);
           navigation.navigate('Reset',{user_id: user_id});
         }, 2000);
-      } else if (type == 'register') {
+      } else if (type == 'signup') {
+
         setSuccessModal(true);
         setTimeout(() => {
           setSuccessModal(false);
@@ -82,6 +91,7 @@ const OTP = ({route, navigation}) => {
       } else {
         console.log('Can not Navigate ===> ');
       }
+
     } else {
       setErrorModal(true);
       setTimeout(() => {

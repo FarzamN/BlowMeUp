@@ -30,8 +30,9 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { login } from '../../redux/actions/AuthActions';
+import { googleSignin, login } from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
+import { USER_DETAILS } from '../../redux/reducer/Holder';
 
 const SignIn = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
@@ -41,7 +42,7 @@ const SignIn = ({ navigation }) => {
   const [SuccessMessage,setSuccessMessage] =useState('')
   
    
-  const Dispatch = useDispatch();
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -49,47 +50,13 @@ const SignIn = ({ navigation }) => {
   } = useForm({ mode: 'all' });
 
   const Submit = (data) => {
-    // Dispatch({ type: USER_DETAILS, payload: data.email });
-    Dispatch(login(data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage,setLoading));
-    console.log('data ==>', data)
-
+    dispatch(login(data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage,setLoading));
   };
 
 
 
-  const googleLoginHandler = async () => {
-    try {
-       GoogleSignin.configure({
-        // webClientId: '786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com',
-        webClientId: '786806587743-sqmrhl9rjq5s9u5chjlg6tdref287rpg.apps.googleusercontent.com',
-      });
-  
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      const socialObj = {
-        email: userInfo.user.email ? userInfo.user.email : '',
-        firstName: userInfo.user.givenName,
-        lastName: userInfo.user.familyName,
-        picUrl: userInfo.user.photo,
-        uID: userInfo.user.id,
-      };
-
-      console.log('socialObj', socialObj)
-  
-      // Perform actions with the user info, e.g., call API, login, etc.
-      // SocialLoginApi(userInfo.user);
-      // login(userInfo.user.id);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log('You cancelled the sign in.');
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log('Google sign-in operation is in progress.');
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log('Play Services is not available.');
-      } else {
-        console.log('Something unknown went wrong with Google sign in.', error.message);
-      }
-    }
+  const googleLoginHandler =  () => {
+   dispatch(googleSignin(navigation))
   };
 
   
@@ -202,7 +169,7 @@ const SignIn = ({ navigation }) => {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() =>
-                  navigation.navigate('TermsAndConditions', { type: 'auth' })
+                  navigation.navigate('TermsAndConditions', { path: 'auth' })
                 }>
                 <Text style={styles.Term}>Terms of use</Text>
               </TouchableOpacity>

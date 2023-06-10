@@ -11,7 +11,6 @@ import Reset from '../screens/authentication/Reset';
 import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions';
 import AccountType from '../screens/authentication/AccountType';
 
-// import UserNavigator from './UserNavigator';
 const AuthNavigator = () => {
   const Stack = createNativeStackNavigator();
   return (

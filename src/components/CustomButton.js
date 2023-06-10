@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, Pressable} from 'react-native';
 import React from 'react';
 import {scale, verticalScale} from 'react-native-size-matters';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -6,7 +6,9 @@ import {Font} from '../utils/font';
 import {Colors} from '../utils/Colors';
 const CustomButton = props => {
   return (
-    <TouchableOpacity
+    <Pressable
+    android_ripple={{color: 'rgba(20, 24, 36, 1)',borderless: true, foreground: true }}
+    disabled={props.disabled}
       onPress={props.onPress}
       style={[styles.containerStyle, props.containerStyle]}>
       {props.Play ? (
@@ -18,7 +20,7 @@ const CustomButton = props => {
         />
       ) : null}
       <Text style={[styles.font, props.textStyle]}>{props.title}</Text>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
     borderWidth: scale(1),
     borderColor: Colors.Yellow,
     flexDirection: 'row',
+    overflow: 'hidden'
   },
 
   font: {
