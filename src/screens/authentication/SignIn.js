@@ -49,7 +49,7 @@ const SignIn = ({ navigation }) => {
     formState: { errors, isValid },
   } = useForm({ mode: 'all' });
 
-  const Submit = (data) => {
+  const Submit = data => {
     dispatch(login(data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage,setLoading));
   };
 

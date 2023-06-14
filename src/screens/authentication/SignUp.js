@@ -24,14 +24,14 @@ import {useDispatch} from 'react-redux';
 import {verify_email_before_registration} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
 const SignUp = ({navigation, route}) => {
-  const {social,data,socialData} = route.params;
+  const {social, data, socialData} = route.params;
   const dispatch = useDispatch();
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [isEmailExist, setIsEmailExist] = useState(false);
   const [photoModal, setPhotoModal] = useState(false);
   const [loading, setLoading] = useState(false);
-console.log('socialData', socialData)
+  console.log('socialData', socialData);
   const {
     control,
     handleSubmit,
@@ -71,16 +71,15 @@ console.log('socialData', socialData)
     });
   };
 
-  const type = 'signup'
-  const onSubmit = (data) => {
+  const type = 'signup';
+  const onSubmit = data => {
     if (saveimage?.uri) {
       if (social == 'social') {
-        navigation.navigate('AccountType',{
+        navigation.navigate('AccountType', {
           socialData: socialData,
-          saveimage:saveimage,
-          data: data
-
-        })
+          saveimage: saveimage,
+          data: data,
+        });
       } else if (data.password == data.confirm_password) {
         dispatch(
           verify_email_before_registration(
@@ -112,11 +111,11 @@ console.log('socialData', socialData)
         source={require('../../assets/image/Bacground/signup.png')}
         resizeMode="cover"
         style={GlobalStyle.Container}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-        <Image
-          style={{alignSelf: 'center', marginTop: '12%'}}
-          source={require('../../assets/image/logo.png')}
-        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Image
+            style={{alignSelf: 'center', marginTop: '12%'}}
+            source={require('../../assets/image/logo.png')}
+          />
           <Text style={styles.SignUpText}>Sign Up</Text>
           <View style={{paddingHorizontal: moderateScale(20)}}>
             <CustomInput
@@ -127,8 +126,8 @@ console.log('socialData', socialData)
               control={control}
               keyboardType="default"
               name="name"
-              defaultValue={social == 'social' ? socialData?.user_name : "" }
-              value={social == 'social' ? socialData?.user_name : "" }
+              defaultValue={social == 'social' ? socialData?.user_name : ''}
+              value={social == 'social' ? socialData?.user_name : ''}
               rules={{
                 required: 'User Name is required',
                 value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
@@ -145,8 +144,8 @@ console.log('socialData', socialData)
               MaterialIcons_Name="email"
               size={scale(20)}
               control={control}
-              defaultValue={social == 'social' ? socialData?.email : "" }
-              value={social == 'social' ? socialData?.email : "" }
+              defaultValue={social == 'social' ? socialData?.email : ''}
+              value={social == 'social' ? socialData?.email : ''}
               keyboardType="email-address"
               name="email"
               rules={{
@@ -188,58 +187,59 @@ console.log('socialData', socialData)
               </Text>
             )}
 
-            {
-              social == 'social' ? null :
+            {social == 'social' ? null : (
               <>
-              <PasswordInput
-                control={control}
-                name="password"
-                rules={{
-                  required: '*Password is required',
-                  minLength: {
-                    value: 8,
-                    message: '*Password too short (minimum length is 8)',
-                  },
-                  maxLength: {
-                    value: 16,
-                    message: '*Password too long (maximum length is 16)',
-                  },
-                }}
-                placeholder="Password"
-                maxLength={16}
-                placeholderTextColor={'#32323266'}
-                fontSize={scale(16)}
-              />
-              {errors.password && (
-                <Text style={GlobalStyle.error}>{errors.password.message}</Text>
-              )}
-  
-              <PasswordInput
-                control={control}
-                name="confirm_password"
-                rules={{
-                  required: '*Password is required',
-                  minLength: {
-                    value: 8,
-                    message: '*Password too short (minimum length is 8)',
-                  },
-                  maxLength: {
-                    value: 16,
-                    message: '*Password too long (maximum length is 16)',
-                  },
-                }}
-                placeholder="Confirm Password"
-                maxLength={16}
-                fontSize={scale(16)}
-                placeholderTextColor={'#32323266'}
-              />
-              {errors.confirm_password && (
-                <Text style={GlobalStyle.error}>
-                  {errors.confirm_password.message}
-                </Text>
-              )}
+                <PasswordInput
+                  control={control}
+                  name="password"
+                  rules={{
+                    required: '*Password is required',
+                    minLength: {
+                      value: 8,
+                      message: '*Password too short (minimum length is 8)',
+                    },
+                    maxLength: {
+                      value: 16,
+                      message: '*Password too long (maximum length is 16)',
+                    },
+                  }}
+                  placeholder="Password"
+                  maxLength={16}
+                  placeholderTextColor={'#32323266'}
+                  fontSize={scale(16)}
+                />
+                {errors.password && (
+                  <Text style={GlobalStyle.error}>
+                    {errors.password.message}
+                  </Text>
+                )}
+
+                <PasswordInput
+                  control={control}
+                  name="confirm_password"
+                  rules={{
+                    required: '*Password is required',
+                    minLength: {
+                      value: 8,
+                      message: '*Password too short (minimum length is 8)',
+                    },
+                    maxLength: {
+                      value: 16,
+                      message: '*Password too long (maximum length is 16)',
+                    },
+                  }}
+                  placeholder="Confirm Password"
+                  maxLength={16}
+                  fontSize={scale(16)}
+                  placeholderTextColor={'#32323266'}
+                />
+                {errors.confirm_password && (
+                  <Text style={GlobalStyle.error}>
+                    {errors.confirm_password.message}
+                  </Text>
+                )}
               </>
-            }
+            )}
             <TouchableOpacity
               onPress={() => photosave()}
               style={styles.ImagePickerBox}>

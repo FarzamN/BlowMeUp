@@ -110,7 +110,6 @@ const AccountType = ({navigation, route}) => {
         </View>
         <View style={{marginBottom: '15%'}}>
           <CustomButton title="Continue" onPress={() => handelBtn()} />
-          {/* <CustomButton title="Are Your Listener" onPress={() =>HandelListener()}/> */}
         </View>
       </ImageBackground>
       <Success isVisible={isListener} message="Your have Registered as Artist" />

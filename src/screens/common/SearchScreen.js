@@ -6,8 +6,6 @@ import {
   SafeAreaView,
   TextInput,
   StatusBar,
-  TouchableWithoutFeedback,
-  Keyboard,
   Pressable,
   TouchableOpacity,
   ScrollView,
