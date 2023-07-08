@@ -6,8 +6,9 @@ import {
   Image,
   TextInput,
   FlatList,
+  Text,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import MainHeader from '../../components/Header/MainHeader';
 import {
   moderateScale,
@@ -20,15 +21,17 @@ import {Font} from '../../utils/font';
 import SectionCard from '../../components/Card/SectionCard';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
 import {useFocusEffect} from '@react-navigation/native';
-import { Image_BaseUrl } from '../../utils/url';
-import { useSelector } from 'react-redux';
+import {Image_BaseUrl} from '../../utils/url';
+import {useSelector} from 'react-redux';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import Netinfo from '@react-native-community/netinfo';
+import SectionInput from '../../components/Card/SectionInput';
+import {useForm} from 'react-hook-form';
+import Validation from '../../components/Validation';
+
 const PictureSection = ({navigation}) => {
   const [text, setText] = useState('');
-  const userDetails = useSelector(state => state.userDetails);
-  const handleInputChange = inputValue => {
-    console.log('Input value:', inputValue);
-    setText(inputValue);
-  };
+  const [isConnected, setIsConnected] = useState(false);
 
   const SectionItem = [
     {
@@ -56,6 +59,25 @@ const PictureSection = ({navigation}) => {
       });
     }),
   );
+
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({mode: 'all'});
+
+  const onSubmit = data => {
+    console.log('data', data)
+  }
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
@@ -67,30 +89,22 @@ const PictureSection = ({navigation}) => {
         Text="Picture Section"
       />
 
-      <View
-        style={[
-          GlobalStyle.Row,
-          {alignSelf: 'center', paddingBottom: moderateVerticalScale(10)},
-        ]}>
-        <Image
-          style={[styles.Image, {borderRadius: scale(100)}]}
-          source={{uri: Image_BaseUrl + userDetails.profile_image}}
-        />
-        <View style={styles.TextInputBox}>
-          <TextInput
-            style={styles.TextInput}
-            placeholder="What’s on your mind?"
-            placeholderTextColor={Colors.placeholderTextColor}
-            value={text}
-            onChangeText={handleInputChange}
-          />
-        </View>
-        <Image
-          style={styles.Image}
-          resizeMode="contain"
-          source={require('../../assets/image/picture.png')}
-        />
-      </View>
+      <SectionInput
+        control={control}
+        name="on_mind"
+        rules={{
+          required: '*required',
+
+          maxLength: {
+            value: 300,
+            message: '*Can not Push empty inPut',
+          },
+        }}
+        onPress={handleSubmit(onSubmit)}
+      />
+      {errors.on_mind && (
+        <Validation restyle={{marginLeft: scale(40), marginBottom: 0}} message={errors.on_mind.message}/>
+      )}
       <FlatList
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
@@ -99,35 +113,9 @@ const PictureSection = ({navigation}) => {
           return <SectionCard data={item} />;
         }}
       />
+      <ConnectionModal isVisible={!isConnected} />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  Row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
-    paddingHorizontal: moderateScale(10),
-  },
-  TextInputBox: {
-    borderWidth: scale(1),
-    borderColor: Colors.White,
-    borderRadius: scale(20),
-    paddingHorizontal: moderateScale(20),
-    height: verticalScale(40),
-    width: '75%',
-    marginHorizontal: scale(5),
-  },
-  TextInput: {
-    color: Colors.White,
-    fontFamily: Font.Gilroy500,
-    fontSize: scale(16),
-  },
-  Image: {
-    width: scale(30),
-    height: scale(30),
-  },
-});
 
 export default PictureSection;

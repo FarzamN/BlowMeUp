@@ -26,6 +26,8 @@ import {
 } from 'react-native-confirmation-code-field';
 import { verify_email_before_password, verify_email_before_registration } from '../../redux/actions/AuthActions';
 import { useDispatch, useSelector } from 'react-redux';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import  Netinfo from '@react-native-community/netinfo';
 
 const windowHeight = Dimensions.get('window').height;
 const CELL_COUNT = 4;
@@ -34,7 +36,7 @@ const OTP = ({route, navigation}) => {
   const dispatch = useDispatch()
   const OTP = useSelector(state => state.otp)
 
-
+  const [isConnected, setIsConnected] = useState(false);
   const [time, setTime] = useState(10);
   const [otpResent, setOtpResent] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
@@ -99,6 +101,16 @@ const OTP = ({route, navigation}) => {
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
       <View style={GlobalStyle.Container}>
         <ImageBackground
@@ -153,15 +165,7 @@ const OTP = ({route, navigation}) => {
                   onPress={() => ResendOTP()}
                   style={[
                     styles.containerStyle,
-                    {
-                      width: '70%',
-                      marginTop: 0,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: scale(10),
-                      marginBottom: verticalScale(10),
-                    },
+                    styles.OptBox
                   ]}>
                   <Text style={styles.Text}>Press to Resend Your OPT</Text>
                 </TouchableOpacity>
@@ -170,15 +174,7 @@ const OTP = ({route, navigation}) => {
                   onPress={WaitOTP}
                   style={[
                     styles.containerStyle,
-                    {
-                      width: '70%',
-                      marginTop: 0,
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      borderRadius: scale(10),
-                      marginBottom: verticalScale(10),
-                    },
+                    styles.OptBox
                   ]}>
                   <Text style={styles.Text}>
                     You can Reset Your OTP in {time}
@@ -202,6 +198,7 @@ const OTP = ({route, navigation}) => {
               message={'Your OTP is not correct'}
             />
           </ScrollView>
+          <ConnectionModal isVisible={!isConnected}/>
         </ImageBackground>
       </View>
   );
@@ -252,6 +249,15 @@ const styles = StyleSheet.create({
     color: Colors.White,
     fontFamily: Font.Gilroy400,
     textAlignVertical: 'center',
+  },
+  OptBox:{
+    width: '70%',
+    marginTop: 0,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: scale(10),
+    marginBottom: verticalScale(10),
   },
 });
 export default OTP;

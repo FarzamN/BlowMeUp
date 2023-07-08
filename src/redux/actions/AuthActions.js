@@ -1,6 +1,6 @@
 import {Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {OTP, ROLE_ID, USER_DETAILS} from '../reducer/Holder';
+import {OTP, REGISTER, ROLE_ID, USER_DETAILS} from '../reducer/Holder';
 
 import {
   GoogleSignin,
@@ -20,39 +20,50 @@ import {BaseUrl, token} from '../../utils/url';
 //   };
 // };
 
-export const login = (data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage, setLoading) => {
+export const login = (
+  data,
+  setSuccessModal,
+  setErrorModal,
+  setErrorMessage,
+  setSuccessMessage,
+  setLoading,
+) => {
   return async dispatch => {
-    setLoading(true)
+    setLoading(true);
     try {
-      let base_url = `${BaseUrl}Authentication/login.php`;
+      let base_url = `${BaseUrl}login`;
       let myData = new FormData();
 
-      myData.append('token', token);
+      // myData.append('token', token);
       myData.append('email', data.email);
       myData.append('password', data.password);
 
       const response = await fetch(base_url, {
         body: myData,
-        method: 'post',
+        method: 'POST',
+        headers: 'bearer' 
       });
 
-      console.log('response', response)
+      console.log('response of login ki api', response);
 
       const responseData = await response.json();
-      console.log('responseData',responseData.data)
+      console.log('responseData', responseData.data);
       if (responseData.status == true) {
         dispatch({type: USER_DETAILS, payload: responseData.data});
         dispatch({type: ROLE_ID, payload: responseData.data.role});
-        await AsyncStorage.setItem('user_details', JSON.stringify(responseData.data));
-        setSuccessMessage(responseData.message)
-        setLoading(false)
+        await AsyncStorage.setItem(
+          'user_details',
+          JSON.stringify(responseData.data),
+        );
+        setSuccessMessage(responseData.message);
+        setLoading(false);
         setSuccessModal(true);
         setTimeout(() => {
-          setSuccessModal(false)
+          setSuccessModal(false);
         }, 2000);
       } else {
         setErrorMessage(responseData.message);
-        setLoading(false)
+        setLoading(false);
         setErrorModal(true);
         setTimeout(() => {
           setErrorModal(false);
@@ -60,7 +71,7 @@ export const login = (data,setSuccessModal, setErrorModal, setErrorMessage,setSu
       }
     } catch (error) {
       console.log('error', error);
-      setLoading(false)
+      setLoading(false);
     }
   };
 };
@@ -86,9 +97,8 @@ export const googleSignin = navigation => {
         lastName: userInfo.user.familyName,
         picUrl: userInfo.user.photo,
         uID: userInfo.user.id,
-        user_name: userInfo.user.name
+        user_name: userInfo.user.name,
       };
-
 
       dispatch(social_signin(socialObj, navigation));
     } catch (error) {
@@ -108,12 +118,11 @@ export const googleSignin = navigation => {
 };
 const social_signin = (data, navigation) => {
   // console.log('data.uID', data.uID)
-  return async (dispatch) => {
+  return async dispatch => {
     try {
-
       let base_url = `${BaseUrl}Authentication/social_login.php`;
       let myData = new FormData();
-  
+
       myData.append('token', token);
       myData.append('social_id', data.uID);
 
@@ -122,27 +131,30 @@ const social_signin = (data, navigation) => {
         method: 'post',
       });
 
-      console.log('response', response)
-  
+      console.log('response', response);
+
       const responseData = await response.json();
-      console.log('responseData', responseData)
-      if(responseData.status == true){
+      console.log('responseData', responseData);
+      if (responseData.status == true) {
         dispatch({type: USER_DETAILS, payload: responseData.data});
         dispatch({type: ROLE_ID, payload: responseData.data.role});
-        await AsyncStorage.setItem('user_details', JSON.stringify(responseData.data));
-      }else{
-        navigation.navigate('SignUp',{
+        await AsyncStorage.setItem(
+          'user_details',
+          JSON.stringify(responseData.data),
+        );
+      } else {
+        navigation.navigate('SignUp', {
           social: 'social',
-          socialData: data
-        })
+          socialData: data,
+        });
       }
     } catch (error) {
-      console.log('error', error)
+      console.log('error', error);
     }
-  }
-}
+  };
+};
 
-export const verify_email_before_registration =  (
+export const verify_email_before_registration = (
   data,
   type,
   setSuccessModal,
@@ -151,31 +163,30 @@ export const verify_email_before_registration =  (
   setIsEmailExist,
   setLoading,
 ) => {
-  if(type == 'signup'){
+  if (type == 'signup') {
     setLoading(true);
   }
-  return async (dispatch) => {
-
+  return async dispatch => {
     try {
-      let base_url = `${BaseUrl}Authentication/verify_email_before_registration.php`;
+      let base_url = `${BaseUrl}verify_email_before_registration`;
+      // let base_url = `${BaseUrl}register`;
       let myData = new FormData();
-  
+
       myData.append('token', token);
       myData.append('email', data.email);
-      
-  
+
       const response = await fetch(base_url, {
         body: myData,
         method: 'post',
       });
-  
+
       const responseData = await response.json();
-  
+
       if (responseData.status == true) {
         console.log('responseData', responseData);
-        await dispatch({ type: OTP, payload:  responseData.Code})
-  
-        if(type == 'signup'){
+        await dispatch({type: OTP, payload: responseData.Code});
+
+        if (type == 'signup') {
           setLoading(false);
           setSuccessModal(true);
           setTimeout(() => {
@@ -183,17 +194,16 @@ export const verify_email_before_registration =  (
             navigation.navigate('OTP', {
               type: type,
               data: data,
-              saveimage: saveimage
-            })
+              saveimage: saveimage,
+            });
           }, 2000);
-        }else{
-         console.log('first')
-         setSuccessModal(10)
+        } else {
+          setSuccessModal(10);
         }
       } else {
         console.log('else error', responseData.message);
-        if(type == 'signup'){
-          setLoading(false)
+        if (type == 'signup') {
+          setLoading(false);
           setIsEmailExist(true);
           setTimeout(() => {
             setIsEmailExist(false);
@@ -202,9 +212,9 @@ export const verify_email_before_registration =  (
       }
     } catch (error) {
       console.log('verify_email_before_registration catch error -->', error);
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 };
 
 export const register = (
@@ -215,57 +225,65 @@ export const register = (
   navigation,
   setLoading,
   saveimage,
-  socialData
+  socialData,
 ) => {
-  console.log('socialData', socialData)
-  console.log('data', data)
+  // console.log('socialData', socialData)
+  console.log('data ==>', data);
 
   setLoading(true);
   return async dispatch => {
     try {
-      let base_url = `https://sassolution.org/BlowMeUp/APIs/Authentication/register.php`;
+      let base_url = `${BaseUrl}register`;
       let myData = new FormData();
 
-      myData.append(
-        'token',
-        'as23rlkjadsnlkcj23qkjnfsDKJcnzdfb3353ads54vd3favaeveavgbqaerbVEWDSC',
-      );
-      myData.append('user_name', data?.name ? data?.name : socialData?.user_name );
+      // myData.append(
+      //   'token',
+      //   'as23rlkjadsnlkcj23qkjnfsDKJcnzdfb3353ads54vd3favaeveavgbqaerbVEWDSC',
+      // );
+      myData.append('name', data?.name ? data?.name : socialData?.user_name);
       myData.append('role_id', select);
       myData.append('email', data.email);
       myData.append('phone_number', data?.phone_number);
-      myData.append('password', data?.confirm_password ?  data?.confirm_password : 'Demo1234');
-      myData.append('profile_image', saveimage);
+      myData.append('password', data?.confirm_password);
+      myData.append('image', saveimage);
 
       {
-        socialData?.uID &&
-        myData.append('social_id', socialData?.uID);
+        socialData?.uID && myData.append('social_id', socialData?.uID);
       }
-
 
       const response = await fetch(base_url, {
         method: 'POST',
         body: myData,
       });
-      console.log('response', response)
-
+      console.log('response', response);
 
       const responseData = await response.json();
-      console.log('responseData', responseData)
+      console.log('responseData', responseData);
 
-      if (responseData.status == true) {
-        setLoading(false)
+      if (responseData.success.data.status === 200) {
+        REGISTER({type: register, payload: responseData.success.data});
+
+        setLoading(false);
         if (select == 1) {
-          // setIsListener(true);
-          await AsyncStorage.setItem('user_details', JSON.stringify(responseData.Data));
-          // setIsListener(false);
+          setIsListener(true);
+          setTimeout(() => {
+            setIsListener(false);
+          }, 3000);
+          await AsyncStorage.setItem(
+            'user_details',
+            JSON.stringify(responseData.Data),
+          );
           dispatch({type: USER_DETAILS, payload: responseData.Data});
           dispatch({type: ROLE_ID, payload: responseData.Data.role});
-         
         } else {
-          // setIsArtist(true);
-          await AsyncStorage.setItem('user_details', JSON.stringify(responseData.Data));
-          // setIsArtist(false);
+          setIsArtist(true);
+          setTimeout(() => {
+            setIsArtist(false);
+          }, 3000);
+          await AsyncStorage.setItem(
+            'user_details',
+            JSON.stringify(responseData.Data),
+          );
           dispatch({type: USER_DETAILS, payload: responseData.Data});
           dispatch({type: ROLE_ID, payload: responseData.Data.role});
         }
@@ -275,12 +293,12 @@ export const register = (
       }
     } catch (error) {
       console.log('catch error in register', error);
-      setLoading(false)
+      setLoading(false);
     }
   };
 };
 
-export const verify_email_before_password =  (
+export const verify_email_before_password = (
   data,
   type,
   setSuccessModal,
@@ -288,28 +306,28 @@ export const verify_email_before_password =  (
   setIsEmailExist,
   setLoading,
 ) => {
-  if(type == 'forgot'){
+  if (type == 'forgot') {
     setLoading(true);
   }
-  return async (dispatch) => {
+  return async dispatch => {
     try {
       let base_url = `${BaseUrl}Authentication/verify_email_before_password.php`;
       let myData = new FormData();
-  
+
       myData.append('token', token);
       myData.append('email', data.email);
-  
+
       const response = await fetch(base_url, {
         body: myData,
         method: 'post',
       });
-  
+
       const responseData = await response.json();
       if (responseData.status == true) {
         console.log('responseData', responseData);
-       await dispatch({ type: OTP, payload:  responseData.Code})
+        await dispatch({type: OTP, payload: responseData.Code});
 
-        if(type == 'forgot'){
+        if (type == 'forgot') {
           setLoading(false);
           setSuccessModal(true);
           setTimeout(() => {
@@ -321,12 +339,12 @@ export const verify_email_before_password =  (
               user_id: responseData.user_id,
             });
           }, 2000);
-        }else{
-          setSuccessModal(10)
+        } else {
+          setSuccessModal(10);
         }
       } else {
         console.log('else error', responseData.message);
-        if(type == 'forgot'){
+        if (type == 'forgot') {
           setLoading(false);
           setIsEmailExist(true);
           setTimeout(() => {
@@ -337,7 +355,7 @@ export const verify_email_before_password =  (
     } catch (error) {
       console.log('verify_email_before_password catch error -->', error);
     }
-  }
+  };
 };
 
 export const update_password = async (

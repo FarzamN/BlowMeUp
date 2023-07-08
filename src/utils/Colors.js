@@ -18,5 +18,6 @@ export const Colors = {
   ThemeRed: '#820000',
   Danger: '#990000',
   Ash: '#141824',
-  AshGrey: '#242424'
+  AshGrey: '#242424',
+  Non: 'transparent'
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   StyleSheet,
@@ -32,7 +32,9 @@ import {
 } from '@react-native-google-signin/google-signin';
 import { googleSignin, login } from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
-import { USER_DETAILS } from '../../redux/reducer/Holder';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import  Netinfo from '@react-native-community/netinfo';
+import Validation from '../../components/Validation';
 
 const SignIn = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
@@ -40,13 +42,13 @@ const SignIn = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [ErrorMessage,setErrorMessage] =useState('')
   const [SuccessMessage,setSuccessMessage] =useState('')
-  
+  const [isConnected, setIsConnected] = useState(false);
    
   const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({ mode: 'all' });
 
   const Submit = data => {
@@ -59,7 +61,15 @@ const SignIn = ({ navigation }) => {
    dispatch(googleSignin(navigation))
   };
 
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
   
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
       <View style={GlobalStyle.Container}>
         <ImageBackground
@@ -91,8 +101,9 @@ const SignIn = ({ navigation }) => {
                 placeholder="Email Address"
               />
               {errors.email && (
-                <Text style={GlobalStyle.error}>{errors.email.message}</Text>
+                <Validation title={errors.email.message}/>
               )}
+          
               <PasswordInput
                 fontSize={scale(16)}
                 control={control}
@@ -113,7 +124,7 @@ const SignIn = ({ navigation }) => {
                 placeholderTextColor={'#32323266'}
               />
               {errors.password && (
-                <Text style={GlobalStyle.error}>{errors.password.message}</Text>
+                <Validation title={errors.password.message}/>
               )}
               <Text
                 onPress={() => navigation.navigate('FindAccount')}
@@ -199,6 +210,7 @@ const SignIn = ({ navigation }) => {
             <Loading
               isVisible={loading}
             />
+              <ConnectionModal isVisible={!isConnected}/>
           </ScrollView>
         </ImageBackground>
       </View>

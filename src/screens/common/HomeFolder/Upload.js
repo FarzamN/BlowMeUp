@@ -2,15 +2,22 @@ import React, {useState} from 'react';
 import {StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import {Colors} from '../../../utils/Colors';
 import {Font} from '../../../utils/font';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {SelectList} from 'react-native-dropdown-select-list';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomInput from '../../../components/CustomInput';
 import {useForm} from 'react-hook-form';
-import VideoPicker from '../../../utils/VideoPicker';
+import CustomButton from '../../../components/CustomButton';
+import {GlobalStyle} from '../../../Constants/GlobalStyle';
+import Validation from '../../../components/Validation';
+import {create_Video} from '../../../redux/actions/UserAction';
+import {useSelector} from 'react-redux';
+import {launchImageLibrary} from 'react-native-image-picker';
+import Toast from 'react-native-simple-toast';
 const Upload = () => {
-  const [selected, setSelected] = useState('');
-
+  const userDetails = useSelector(state => state.userDetails);
+  const [type, setType] = useState('');
+  const [saveVideo, setsaveVideo] = useState();
   const data = [
     {key: '1', value: 'MP4 '},
     {key: '2', value: 'MOV'},
@@ -23,8 +30,36 @@ const Upload = () => {
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
+
+  const UploadVideo = () => {
+    const options = {
+      title: 'Select video',
+      mediaType: 'video',
+      path: 'video',
+      quality: 1,
+    };
+
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        Toast.show('User cancelled Video picker');
+      } else if (response.error) {
+        console.log('VideoPicker Error: ', response.error);
+      } else {
+        const source = {
+          name: response.assets?.[0]?.fileName,
+          uri: response.assets?.[0]?.uri,
+          type: response.assets?.[0]?.type,
+        };
+        setsaveVideo(source);
+      }
+    });
+  };
+
+  const onSubmit = data => {
+    create_Video(userDetails, data, type, saveVideo);
+  };
   return (
     <View style={{height: '100%'}}>
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
@@ -33,12 +68,16 @@ const Upload = () => {
           <CustomInput
             control={control}
             keyboardType="default"
-            name="Title"
+            name="title"
             placeholder="Title of the video"
             Gapp={styles.Gapp}
             style={styles.inputBoxRestyle}
             fontSize={scale(16)}
+            rules={{
+              required: '*Title is required',
+            }}
           />
+          {errors.title && <Validation title={errors.title.message} />}
         </View>
         <View style={styles.Container}>
           <Text style={styles.Title}>
@@ -61,27 +100,13 @@ const Upload = () => {
                   color={Colors.White}
                 />
               }
-              dropdownStyles={{backgroundColor: Colors.Main,borderWidth: scale(1),
-                borderColor: Colors.Main,}}
-              dropdownItemStyles={{backgroundColor: Colors.ThemeBlue,
-             }}
-              boxStyles={{
-                backgroundColor: 'transparent',
-                height: verticalScale(50),
-                alignItems: 'center',
-                borderRadius:scale(20),
-                marginTop: verticalScale(20),
-                borderWidth: scale(1),
-                borderColor: Colors.White,
-              }}
-              dropdownTextStyles={{color: Colors.White}}
-              inputStyles={{
-                color: Colors.White,
-                fontSize: scale(13),
-                fontFamily: Font.Gilroy500,
-              }}
+              dropdownStyles={styles.dropdownStyles}
+              dropdownItemStyles={styles.dropdownItemStyles}
+              boxStyles={styles.boxStyles}
+              dropdownTextStyles={styles.dropdownTextStyles}
+              inputStyles={styles.inputStyles}
               search={false}
-              setSelected={val => setSelected(val)}
+              setSelected={val => setType(val)}
               data={data}
               save="value"
             />
@@ -96,8 +121,20 @@ const Upload = () => {
               source={require('../../../assets/image/photo.png')}
             />
           </View>
-          <VideoPicker />
+          {/* <VideoPicker /> */}
+          <CustomButton
+            onPress={() => UploadVideo()}
+            containerStyle={styles.containerStyle}
+            textStyle={styles.textStyle}
+            title="Tab to select a video"
+          />
         </View>
+        <CustomButton
+          onPress={handleSubmit(onSubmit)}
+          containerStyle={GlobalStyle.CustomButtonRestyle}
+          textStyle={{color: Colors.White}}
+          title="Upload"
+        />
         <View style={{height: verticalScale(110)}} />
       </ScrollView>
     </View>
@@ -123,12 +160,52 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginRight: scale(20),
   },
-  Gapp:{
+  Gapp: {
     paddingHorizontal: 0,
   },
-  inputBoxRestyle:{
-    borderRadius:scale(20)
-  }
+  inputBoxRestyle: {
+    borderRadius: scale(20),
+  },
+  boxStyles: {
+    backgroundColor: 'transparent',
+    height: verticalScale(50),
+    alignItems: 'center',
+    borderRadius: scale(20),
+    marginTop: verticalScale(20),
+    borderWidth: scale(1),
+    borderColor: Colors.White,
+  },
+  inputStyles: {
+    color: Colors.White,
+    fontSize: scale(13),
+    fontFamily: Font.Gilroy500,
+  },
+  dropdownTextStyles: {
+    color: Colors.White,
+  },
+  dropdownItemStyles: {
+    backgroundColor: Colors.ThemeBlue,
+  },
+  dropdownStyles: {
+    backgroundColor: Colors.Main,
+    borderWidth: scale(1),
+    borderColor: Colors.Main,
+  },
+  containerStyle: {
+    borderWidth: scale(1),
+    borderColor: Colors.White,
+    height: verticalScale(50),
+    borderRadius: scale(20),
+    justifyContent: 'flex-start',
+    paddingHorizontal: moderateScale(25),
+    marginTop: verticalScale(15),
+    backgroundColor: Colors.Non,
+    width: '95%',
+  },
+  textStyle: {
+    color: Colors.White,
+    fontFamily: Font.Gilroy500,
+  },
 });
 
 export default Upload;

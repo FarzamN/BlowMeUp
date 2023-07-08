@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import LottieView from 'lottie-react-native';
 import { Colors } from '../../utils/Colors';
-import {  scale, verticalScale } from 'react-native-size-matters';
+import {  scale } from 'react-native-size-matters';
 import ReactNativeModal from 'react-native-modal'
 import { GlobalStyle } from '../../Constants/GlobalStyle';
 
@@ -19,10 +19,7 @@ const Loading = ({isVisible}) => {
         <View style={styles.buttons}>
           <LottieView
             autoPlay
-            style={{
-              height: verticalScale(150),
-              alignSelf: 'center',
-            }}
+            style={GlobalStyle.LottieView}
             source={require('../../assets/lotti/loader.json')}
           />
           <Text style={GlobalStyle.ModalText}>Please Wait...</Text>

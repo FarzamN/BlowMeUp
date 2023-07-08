@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,6 +18,9 @@ import Error from '../../components/Modal/Error';
 import {verify_email_before_password} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
 import { useDispatch } from 'react-redux';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import  Netinfo from '@react-native-community/netinfo';
+import Validation from '../../components/Validation';
 
 const FindAccount = ({navigation}) => {
   const dispatch = useDispatch()
@@ -25,13 +28,13 @@ const FindAccount = ({navigation}) => {
   const [isEmailExist, setIsEmailExist] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [user_id,setUser_id] = useState('')
+  const [isConnected, setIsConnected] = useState(false);
 
 
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
   const type = 'forgot'
   const onSubmit = data => {
@@ -44,6 +47,17 @@ const FindAccount = ({navigation}) => {
         setLoading,
         ));
   };
+
+  
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
       <View style={GlobalStyle.Container}>
         <ImageBackground
@@ -60,7 +74,7 @@ const FindAccount = ({navigation}) => {
               Please enter your email address to search for your account.
             </Text>
             <CustomInput
-              MaterialIcons={true}
+              MaterialIcons
               MaterialIcons_Name="email"
               size={scale(21)}
               control={control}
@@ -77,7 +91,7 @@ const FindAccount = ({navigation}) => {
               fontSize={scale(16)}
             />
             {errors.email && (
-              <Text style={GlobalStyle.error}>{errors.email.message}</Text>
+              <Validation message={errors.email.message}/>
             )}
             <View style={[styles.Row, {justifyContent: 'flex-end'}]}>
               <CustomButton
@@ -105,10 +119,10 @@ const FindAccount = ({navigation}) => {
             onClose={() => setSuccessModal(false)}
             message={'Thanks for your Email'}
           />
-          {/* <Error isVisible={errorModal} message={isEmailExistMessage} /> */}
           <Error isVisible={isEmailExist} message={'This email does not exists'} />
           <Loading isVisible={loading}/>
-          
+          <ConnectionModal isVisible={!isConnected}/>
+
         </ImageBackground>
       </View>
   );

@@ -2,12 +2,14 @@ export const USER_DETAILS = 'USER_DETAILS';
 export const IS_SIGN_IN = 'IS_SIGN_IN';
 export const OTP = 'OTP';
 export const ROLE_ID = 'ROLE_ID';
+export const REGISTER = 'REGISTER';
 
 const initial_state = {
   userDetails: null,
   isSignin: false,
   otp: null,
-  role_id: null
+  role_id: null,
+  register: null
 };
 
 const holderReducer = (state = initial_state, action) => {
@@ -31,6 +33,11 @@ const holderReducer = (state = initial_state, action) => {
       return {
         ...state,
         role_id: action.payload,
+      };
+    case REGISTER:
+      return {
+        ...state,
+        register: action.payload,
       };
     default: {
       return state;

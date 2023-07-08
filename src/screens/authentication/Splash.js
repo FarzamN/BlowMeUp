@@ -10,8 +10,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { Colors } from '../../utils/Colors';
-import { Font } from '../../utils/font';
+import {Colors} from '../../utils/Colors';
+import {Font} from '../../utils/font';
 import {
   moderateScale,
   moderateVerticalScale,
@@ -21,50 +21,55 @@ import {
 import Zocial from 'react-native-vector-icons/Zocial';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-import { useDispatch } from 'react-redux';
-import { googleSignin } from '../../redux/actions/AuthActions';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import {useDispatch} from 'react-redux';
+import {googleSignin} from '../../redux/actions/AuthActions';
 
 const W = Dimensions.get('window').width;
-const Splash = ({ navigation }) => {
+const Splash = ({navigation}) => {
   const dispatch = useDispatch();
-  const googleLoginHandler =  () => {
-    dispatch(googleSignin(navigation))
-   };
+  const googleLoginHandler = () => {
+    dispatch(googleSignin(navigation));
+  };
   return (
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor="transparent" translucent />
       <ImageBackground
         source={require('../../assets/image/Bacground/splash.png')}
         resizeMode="cover"
-        style={{ flex: 1 }}>
-        <View style={{ flex: 1, marginTop: '15%' }}>
+        style={{flex: 1}}>
+        <View style={{flex: 1, marginTop: '15%'}}>
           <Image
-            style={{ alignSelf: 'center' }}
+            style={{alignSelf: 'center'}}
             source={require('../../assets/image/logo.png')}
           />
         </View>
-        <View style={{ flex: 1 }}>
-          <View style={{ paddingHorizontal: moderateScale(20) }}>
+        <View style={{flex: 1}}>
+          <View style={{paddingHorizontal: moderateScale(20)}}>
             <Text style={styles.Heading}>Find your favorite music</Text>
             <TouchableOpacity
               activeOpacity={0.6}
-              onPress={() => navigation.navigate('SignUp',{social:'oay'})}
+              onPress={() => navigation.navigate('SignUp', {social: 'oay'})}
               style={styles.EmailBox}>
               <Zocial name="email" color={Colors.White} size={scale(20)} />
               <Text style={styles.Text}>Continue with Email</Text>
             </TouchableOpacity>
-            <View style={[GlobalStyle.Row,{justifyContent: 'space-between',}]}>
-              <TouchableOpacity onPress={() => {
+            <View style={[GlobalStyle.Row, {justifyContent: 'space-between'}]}>
+              <TouchableOpacity
+                onPress={() => {
                   googleLoginHandler();
-                }} style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
+                }}
+                style={[GlobalStyle.SocialSignInButton, {width: '48%'}]}
+                activeOpacity={0.6}>
                 <FontAwesome
                   name="google"
                   color={Colors.White}
                   size={scale(20)}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={[GlobalStyle.SocialSignInButton,{width: '48%'}]} activeOpacity={0.6}>
+              <TouchableOpacity
+                style={[GlobalStyle.SocialSignInButton, {width: '48%'}]}
+                activeOpacity={0.6}>
                 <Entypo
                   name="facebook-with-circle"
                   color={Colors.White}

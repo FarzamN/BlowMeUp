@@ -1,4 +1,4 @@
-import React, { useCallback,useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,74 +6,83 @@ import {
   View,
   Image,
   ScrollView,
-  useWindowDimensions
 } from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale, verticalScale} from 'react-native-size-matters';
 
 import CustomButton from '../../../components/CustomButton';
 import {Colors} from '../../../utils/Colors';
 import {Font} from '../../../utils/font';
 import MainHeader from '../../../components/Header/MainHeader';
-import { useFocusEffect } from '@react-navigation/native';
-import { GlobalStyle } from '../../../Constants/GlobalStyle';
-import { BaseUrl, token } from '../../../utils/url';
+import {useFocusEffect} from '@react-navigation/native';
+import {GlobalStyle} from '../../../Constants/GlobalStyle';
+import {BaseUrl, token} from '../../../utils/url';
 import RenderHtml from 'react-native-render-html';
-const TermsAndConditions = ({navigation,route}) => {
-  const {path} = route.params;
-  const type = 'terms'
-  const [data, setData] = useState('')
-  const { width } = useWindowDimensions();
-    const onSubmit = () => {
-      navigation.goBack()
-      // if (path == 'auth') {
-      //   navigation.goBack()
-      // } else {
-      //   navigation.navigate('Setting')
-      // }
-    }
+import Netinfo from '@react-native-community/netinfo';
+import ConnectionModal from '../../../components/Modal/ConnectionModal';
 
-    const getHtml = async () => {
-  
-      try {
-        let base_url = `${BaseUrl}get_terms_n_privacy.php`;
-        let myData = new FormData();
-    
-        myData.append('token', token);
-        myData.append('type', type);
-    
-        const response = await fetch(base_url, {
-          body: myData,
-          method: 'post',
-        });
-        const responseData = await response.json();
-        if (responseData.status == true){
-          setData(responseData.data.content)
-        }
-      } catch (error) {
-        console.log('error', error)
+const TermsAndConditions = ({navigation, route}) => {
+  const {path} = route.params;
+  const type = 'terms';
+  const [data, setData] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
+  const onSubmit = () => {
+    navigation.goBack();
+    // if (path == 'auth') {
+    //   navigation.goBack()
+    // } else {
+    //   navigation.navigate('Setting')
+    // }
+  };
+
+  const getHtml = async () => {
+    try {
+      let base_url = `${BaseUrl}get_terms_n_privacy.php`;
+      let myData = new FormData();
+
+      myData.append('token', token);
+      myData.append('type', type);
+
+      const response = await fetch(base_url, {
+        body: myData,
+        method: 'post',
+      });
+      const responseData = await response.json();
+      if (responseData.status == true) {
+        setData(responseData.data.content);
       }
-    
-    
+    } catch (error) {
+      console.log('error', error);
     }
-    
-    useFocusEffect(
-      useCallback(() => {
-        getHtml()
-      },[])
-    )
-    const source = {
-      html: data
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getHtml();
+    }, []),
+  );
+  const source = {
+    html: data,
+  };
+  useFocusEffect(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: GlobalStyle.HideBar,
+      });
+    }),
+  );
+
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
     };
-    useFocusEffect(
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      useCallback(() => {
-        navigation.getParent()?.setOptions({
-          tabBarStyle: GlobalStyle.HideBar
-        })
-      }),
-    )
+  }, []);
   return (
-    <SafeAreaView style={styles.Container}>
+    <SafeAreaView style={GlobalStyle.Container}>
       <View style={{marginTop: path == 'auth' ? '10%' : 0}}>
         <MainHeader
           Notification={false}
@@ -114,20 +123,21 @@ const TermsAndConditions = ({navigation,route}) => {
             important details and disclaimers. Your Terms and Conditions
             agreement will be uniquely yours. While some clauses are standard
             and commonly seen in pretty much every Terms and Conditions
-            agreement, it&asp;s up to you to set the rules and guidelines that the
-            user must agree to. Terms and Conditions agreements are also known
-            as Terms of Service or Terms of Use agreements. These terms are
-            interchangeable, practically speaking. You can use this agreement
-            anywhere, regardless of what platform your business operates on:
-            Websites WordPress blogs or blogs on any kind of platform: Joomla!,
-            Drupal etc. Ecommerce stores Mobile apps Facebook apps Desktop apps
-            SaaS apps Desktop apps usually have an EULA (End-User License
-            Agreement) instead of a Terms and Conditions agreement, but your
-            business can use both. Mobile apps are increasingly using Terms and
-            Conditions along with an EULA if the mobile app has an online
-            service component, i.e. it connects with a server.
+            agreement, it&asp;s up to you to set the rules and guidelines that
+            the user must agree to. Terms and Conditions agreements are also
+            known as Terms of Service or Terms of Use agreements. These terms
+            are interchangeable, practically speaking. You can use this
+            agreement anywhere, regardless of what platform your business
+            operates on: Websites WordPress blogs or blogs on any kind of
+            platform: Joomla!, Drupal etc. Ecommerce stores Mobile apps Facebook
+            apps Desktop apps SaaS apps Desktop apps usually have an EULA
+            (End-User License Agreement) instead of a Terms and Conditions
+            agreement, but your business can use both. Mobile apps are
+            increasingly using Terms and Conditions along with an EULA if the
+            mobile app has an online service component, i.e. it connects with a
+            server.
           </Text>
-            {/* <RenderHtml
+          {/* <RenderHtml
       contentWidth={width}
       source={source}
     /> */}
@@ -137,9 +147,10 @@ const TermsAndConditions = ({navigation,route}) => {
             containerStyle={{
               width: '85%',
               alignSelf: 'center',
-              marginBottom: verticalScale(20)
+              marginBottom: verticalScale(20),
             }}
           />
+          <ConnectionModal isVisible={!isConnected} />
         </ScrollView>
       </View>
     </SafeAreaView>

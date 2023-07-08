@@ -1,10 +1,9 @@
 import React from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { scale, verticalScale } from 'react-native-size-matters';
+import { scale } from 'react-native-size-matters';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Colors } from '../utils/Colors';
 
 import Dashboard from '../screens/users/Dashboard';
 import PictureSection from '../screens/common/PictureSection';
@@ -24,6 +23,7 @@ import ChangePassword from '../screens/common/SettingFolder/ChangePassword';
 import TermsAndConditions from '../screens/common/SettingFolder/TermsAndConditions';
 import SearchScreen from '../screens/common/SearchScreen';
 import Alert from '../screens/common/Alert'
+
 const UserNavigator = () => {
   const Tab = createBottomTabNavigator();
   return (

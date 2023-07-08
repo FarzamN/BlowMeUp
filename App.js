@@ -26,6 +26,8 @@ const App = () => {
    }
   }
 
+  console.log('userData ==>', userData)
+
   useEffect(() => {
     checkStatus()
   },[])

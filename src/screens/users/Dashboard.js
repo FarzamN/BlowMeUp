@@ -1,32 +1,36 @@
-import React, { useCallback, useState } from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   ScrollView,
   FlatList,
   StatusBar,
+  View,
 } from 'react-native';
-import { moderateScale, scale } from 'react-native-size-matters';
-import { GlobalStyle } from '../../Constants/GlobalStyle';
-import { Colors } from '../../utils/Colors';
+import {scale, verticalScale} from 'react-native-size-matters';
+import {GlobalStyle} from '../../Constants/GlobalStyle';
+import {Colors} from '../../utils/Colors';
 
 import MainHeader from '../../components/Header/MainHeader';
 import ListHeader from '../../components/Header/ListHeader';
 import SongCard from '../../components/Card/SongCard';
 import GernCard from '../../components/Card/GernCard';
-import { Font } from '../../utils/font';
+import {Font} from '../../utils/font';
 import Loading from '../../components/Modal/Loading';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
+import NetInfo from '@react-native-community/netinfo';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
 
-const Dashboard = ({ navigation }) => {
-  const [loading, setLoading] = useState(true)
+const Dashboard = ({navigation}) => {
+  const [loading, setLoading] = useState(true);
+  const [isConnected, setIsConnected] = useState(false);
   const PopularData = [
     {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/song1.jpg'),
 
-      Type: 'first'
+      Type: 'first',
     },
     {
       Song: 'Shivers',
@@ -45,7 +49,7 @@ const Dashboard = ({ navigation }) => {
       pop: 'Pop',
       lastGernText: 'Pop',
       source: require('../../assets/image/gradiant1.png'),
-      Type: 'first'
+      Type: 'first',
     },
     {
       Genre: 'Genre',
@@ -65,7 +69,7 @@ const Dashboard = ({ navigation }) => {
       Song: 'Ghost',
       Singer: 'Justin Bieber',
       source: require('../../assets/image/Recent1.jpg'),
-      Type: 'first'
+      Type: 'first',
     },
     {
       Song: 'Shivers',
@@ -79,17 +83,33 @@ const Dashboard = ({ navigation }) => {
     },
   ];
   setTimeout(() => {
-    setLoading(false)
+    setLoading(false);
   }, 2000);
   useFocusEffect(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useCallback(() => {
       navigation.getParent()?.setOptions({
-        tabBarStyle: GlobalStyle.showBar
-      })
+        tabBarStyle: GlobalStyle.showBar,
+      });
     }),
-  )
-  return loading ? <Loading /> : (
+  );
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+
+
+  console.log('isConnected ', isConnected);
+  return loading ? (
+    <Loading />
+  ) : (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
@@ -98,7 +118,7 @@ const Dashboard = ({ navigation }) => {
         source={require('../../assets/image/home.png')}
         Title
         Text="Dashboard"
-      // False
+        // False
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ListHeader
@@ -114,8 +134,13 @@ const Dashboard = ({ navigation }) => {
           horizontal
           showsHorizontalScrollIndicator={false}
           data={PopularData}
-          renderItem={({ item }) => {
-            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
+          renderItem={({item}) => {
+            return (
+              <SongCard
+                data={item}
+                onPress={() => navigation.navigate('PlayAll')}
+              />
+            );
           }}
         />
         <ListHeader Title="By Genre" Icon={true} Text="More" />
@@ -124,7 +149,7 @@ const Dashboard = ({ navigation }) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={GenreData}
-          renderItem={({ item }) => {
+          renderItem={({item}) => {
             return <GernCard data={item} />;
           }}
         />
@@ -134,8 +159,13 @@ const Dashboard = ({ navigation }) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={RecentData}
-          renderItem={({ item }) => {
-            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
+          renderItem={({item}) => {
+            return (
+              <SongCard
+                data={item}
+                onPress={() => navigation.navigate('PlayAll')}
+              />
+            );
           }}
         />
         <ListHeader
@@ -153,10 +183,17 @@ const Dashboard = ({ navigation }) => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           data={RecentData}
-          renderItem={({ item }) => {
-            return <SongCard data={item} onPress={() => navigation.navigate('PlayAll')} />;
+          renderItem={({item}) => {
+            return (
+              <SongCard
+                data={item}
+                onPress={() => navigation.navigate('PlayAll')}
+              />
+            );
           }}
         />
+          <ConnectionModal isVisible={!isConnected}/>
+        <View style={{height: verticalScale(10)}} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -166,7 +203,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.ThemeBlue,
-    // paddingLeft: moderateScale(12),
   },
 });
 

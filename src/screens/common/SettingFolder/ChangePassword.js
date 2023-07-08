@@ -14,8 +14,9 @@ import Error from '../../../components/Modal/Error';
 import {useSelector} from 'react-redux';
 import {update_password} from '../../../redux/actions/AuthActions';
 import {BaseUrl, token} from '../../../utils/url';
-import { Update } from '../../../redux/actions/UserAction';
+import {Update} from '../../../redux/actions/UserAction';
 import Loading from '../../../components/Modal/Loading';
+import Validation from '../../../components/Validation';
 
 const ChangePassword = ({navigation}) => {
   const [passwordChange, setPasswordChange] = useState(false);
@@ -23,17 +24,17 @@ const ChangePassword = ({navigation}) => {
   const [errorModal, setErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
   const userDetails = useSelector(state => state.userDetails);
-  // console.log('userDetails.password', userDetails.password);
+
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
 
   const onSubmit = data => {
     if (data.password == userDetails.password) {
       if (data.new_password == data.confirm_password) {
-        Update(data,setPasswordChange, userDetails,navigation,setLoading)
+        Update(data, setPasswordChange, userDetails, navigation, setLoading);
       } else {
         setErrorModal(true);
         setTimeout(() => {
@@ -47,7 +48,7 @@ const ChangePassword = ({navigation}) => {
       }, 2000);
     }
   };
- 
+
   useFocusEffect(
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useCallback(() => {
@@ -85,9 +86,7 @@ const ChangePassword = ({navigation}) => {
           maxLength={20}
           placeholderTextColor={'#32323266'}
         />
-        {errors.password && (
-          <Text style={GlobalStyle.error}>{errors.password.message}</Text>
-        )}
+        {errors.password && <Validation title={errors.password.message} />}
         <PasswordInput
           fontSize={scale(16)}
           control={control}
@@ -108,7 +107,7 @@ const ChangePassword = ({navigation}) => {
           placeholderTextColor={'#32323266'}
         />
         {errors.new_password && (
-          <Text style={GlobalStyle.error}>{errors.new_password.message}</Text>
+          <Validation title={errors.new_password.message} />
         )}
         <PasswordInput
           fontSize={scale(16)}
@@ -130,10 +129,12 @@ const ChangePassword = ({navigation}) => {
           placeholderTextColor={'#32323266'}
         />
         {errors.confirm_password && (
-          <Text style={GlobalStyle.error}>
-            {errors.confirm_password.message}
-          </Text>
+          <Validation title={errors.confirm_password.message} />
         )}
+        <Validation
+          restyle={{marginTop: verticalScale(20), width: '80%'}}
+          title="After Your change password Your account will be Logout from this "
+        />
         <CustomButton
           title="Change Password"
           textStyle={{color: Colors.White}}
@@ -148,13 +149,11 @@ const ChangePassword = ({navigation}) => {
         />
 
         <Error isVisible={errorModal} message={'Password is not matched'} />
-        <Loading
-            isVisible={loading}
-          />
+        <Loading isVisible={loading} />
         <CustomLotti
           isVisible={passwordError}
           source={require('../../../assets/lotti/passwrderror.json')}
-          Title="Password is not found in our data base"
+          Title="Password your gave is not Current"
           TextRestyle={{color: Colors.Danger}}
         />
       </View>

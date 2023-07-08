@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View, Image, ImageBackground} from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
@@ -11,17 +11,21 @@ import Error from '../../components/Modal/Error';
 import CustomLotti from '../../components/Modal/CustomLotti';
 import {update_password} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import  Netinfo from '@react-native-community/netinfo';
+import Validation from '../../components/Validation';
+
 const Reset = ({route, navigation}) => {
   const {user_id} = route.params;
   const [loading, setLoading] = useState(false);
-  console.log('user_id reset Screen', user_id);
   const [errorModal, setErrorModal] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
 
   const type = 'auth';
@@ -42,6 +46,16 @@ const Reset = ({route, navigation}) => {
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
     <View style={GlobalStyle.Container}>
       <ImageBackground
@@ -79,7 +93,7 @@ const Reset = ({route, navigation}) => {
             placeholderTextColor={'#32323266'}
           />
           {errors.password && (
-            <Text style={GlobalStyle.error}>{errors.password.message}</Text>
+             <Validation message={errors.password.message}/>
           )}
           <PasswordInput
             control={control}
@@ -101,9 +115,7 @@ const Reset = ({route, navigation}) => {
             placeholderTextColor={'#32323266'}
           />
           {errors.confirm_password && (
-            <Text style={GlobalStyle.error}>
-              {errors.confirm_password.message}
-            </Text>
+            <Validation message={errors.password.message}/>
           )}
           <CustomButton
             onPress={handleSubmit(onSubmit)}
@@ -127,6 +139,7 @@ const Reset = ({route, navigation}) => {
           TextRestyle={{color: Colors.ThemeBlue}}
         />
         <Loading isVisible={loading} />
+        <ConnectionModal isVisible={!isConnected}/>
       </ImageBackground>
     </View>
   );

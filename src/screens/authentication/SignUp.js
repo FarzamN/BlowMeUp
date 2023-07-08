@@ -7,7 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -17,12 +17,18 @@ import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PasswordInput from '../../components/PasswordInput';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
-import {launchImageLibrary} from 'react-native-image-picker';
+// import {launchImageLibrary} from 'react-native-image-picker';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
 import {useDispatch} from 'react-redux';
 import {verify_email_before_registration} from '../../redux/actions/AuthActions';
 import Loading from '../../components/Modal/Loading';
+import Toast from 'react-native-simple-toast';
+import NetInfo from '@react-native-community/netinfo';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import Validation from '../../components/Validation';
+import ImagePicker from 'react-native-image-crop-picker';
+
 const SignUp = ({navigation, route}) => {
   const {social, data, socialData} = route.params;
   const dispatch = useDispatch();
@@ -38,36 +44,44 @@ const SignUp = ({navigation, route}) => {
     formState: {errors, isValid},
   } = useForm({mode: 'all'});
 
-  const [saveimage, setsaveimage] = useState({});
-  const [show2, setShow2] = useState(true);
+  const [saveimage, setsaveimage] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
+
+  // const photosave = () => {
+  //   let options = {
+  //     storageOptions: {
+  //       mediaType: 'photo',
+  //       path: 'image',
+  //       includeExtra: true,
+  //     },
+  //     selectionLimit: 1,
+  //   };
+  //   console.log(photosave.path);
+
+  //   launchImageLibrary(options, res => {
+  //     if (res.didCancel) {
+  //       Toast.show('You have cancelled Image picker');
+  //     } else if (res.error) {
+  //       console.log('ImagePicker',res.error);
+  //     }  else {
+  //       setsaveimage({
+  //         name: res.assets?.[0]?.fileName,
+  //         uri: res.assets?.[0]?.uri,
+  //         type: res.assets?.[0]?.type,
+  //       });
+  //       setShow2(false);
+  //     }
+  //   });
+  // };
 
   const photosave = () => {
-    let options = {
-      storageOptions: {
-        mediaType: 'photo',
-        path: 'image',
-        includeExtra: true,
-      },
-      selectionLimit: 1,
-    };
-    console.log(photosave.path);
-
-    launchImageLibrary(options, res => {
-      if (res.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (res.error) {
-        console.log('ImagePicker Error: ', res.error);
-      } else if (res.customButton) {
-        console.log('User tapped custom button: ', res.customButton);
-        // alert(res.customButton);
-      } else {
-        setsaveimage({
-          name: res.assets?.[0]?.fileName,
-          uri: res.assets?.[0]?.uri,
-          type: res.assets?.[0]?.type,
-        });
-        setShow2(false);
-      }
+    ImagePicker.openPicker({
+      width: 300,
+      height: 300,
+      cropping: true,
+    }).then(image => {
+      console.log(image);
+      setsaveimage(image.path);
     });
   };
 
@@ -105,6 +119,16 @@ const SignUp = ({navigation, route}) => {
       }, 2000);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   return (
     <View style={GlobalStyle.Container}>
       <ImageBackground
@@ -117,6 +141,17 @@ const SignUp = ({navigation, route}) => {
             source={require('../../assets/image/logo.png')}
           />
           <Text style={styles.SignUpText}>Sign Up</Text>
+          <View
+            style={styles.ImageBox}>
+            <Image
+              style={styles.Image}
+              source={
+                saveimage
+                  ? {uri: saveimage}
+                  : require('../../assets/image/defaultdark.png')
+              }
+            />
+          </View>
           <View style={{paddingHorizontal: moderateScale(20)}}>
             <CustomInput
               fontSize={scale(16)}
@@ -135,9 +170,7 @@ const SignUp = ({navigation, route}) => {
               }}
               placeholder="User Name"
             />
-            {errors.name && (
-              <Text style={GlobalStyle.error}>{errors.name.message}</Text>
-            )}
+            {errors.name && <Validation title={errors.name.message} />}
             <CustomInput
               fontSize={scale(16)}
               MaterialIcons={true}
@@ -157,9 +190,7 @@ const SignUp = ({navigation, route}) => {
               }}
               placeholder="Email Address"
             />
-            {errors.email && (
-              <Text style={GlobalStyle.error}>{errors.email.message}</Text>
-            )}
+            {errors.email && <Validation title={errors.email.message} />}
             <CustomInput
               FontAwesome={true}
               FontAwesome_Name="phone"
@@ -182,9 +213,7 @@ const SignUp = ({navigation, route}) => {
               fontSize={scale(16)}
             />
             {errors.phone_number && (
-              <Text style={GlobalStyle.error}>
-                {errors.phone_number.message}
-              </Text>
+              <Validation title={errors.phone_number.message} />
             )}
 
             {social == 'social' ? null : (
@@ -204,14 +233,11 @@ const SignUp = ({navigation, route}) => {
                     },
                   }}
                   placeholder="Password"
-                  maxLength={16}
                   placeholderTextColor={'#32323266'}
                   fontSize={scale(16)}
                 />
                 {errors.password && (
-                  <Text style={GlobalStyle.error}>
-                    {errors.password.message}
-                  </Text>
+                  <Validation title={errors.password.message} />
                 )}
 
                 <PasswordInput
@@ -229,14 +255,11 @@ const SignUp = ({navigation, route}) => {
                     },
                   }}
                   placeholder="Confirm Password"
-                  maxLength={16}
                   fontSize={scale(16)}
                   placeholderTextColor={'#32323266'}
                 />
                 {errors.confirm_password && (
-                  <Text style={GlobalStyle.error}>
-                    {errors.confirm_password.message}
-                  </Text>
+                  <Validation title={errors.confirm_password.message} />
                 )}
               </>
             )}
@@ -267,6 +290,7 @@ const SignUp = ({navigation, route}) => {
           <Error isVisible={photoModal} message={'please Upload a Photo'} />
           <Loading isVisible={loading} />
           <View style={{height: verticalScale(10)}} />
+          <ConnectionModal isVisible={!isConnected} />
         </ScrollView>
       </ImageBackground>
     </View>
@@ -305,6 +329,15 @@ const styles = StyleSheet.create({
     fontFamily: Font.Gilroy500,
     fontSize: scale(16),
   },
+  ImageBox:{
+    width: scale(150),
+    aspectRatio: 1 / 1,
+    borderRadius: 100,
+    alignSelf: 'center',
+    borderWidth: scale(1),
+    borderColor: Colors.Black,
+  },
+  Image:{width: '100%', height: '100%', borderRadius: 100}
 });
 
 export default SignUp;

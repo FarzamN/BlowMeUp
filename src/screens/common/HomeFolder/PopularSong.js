@@ -69,7 +69,6 @@ const PopularSong = ({ navigation }) => {
         styles.bubbleBox,
         {
           backgroundColor: select == item.id ? Colors.Main : Colors.White,
-          // backgroundColor: 'red',
           marginLeft: item.id == 1 ? scale(15) : 0
         },
       ]}

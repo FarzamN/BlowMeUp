@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -20,11 +20,13 @@ import {useDispatch} from 'react-redux';
 import {register} from '../../redux/actions/AuthActions';
 import Error from '../../components/Modal/Error';
 import Loading from '../../components/Modal/Loading';
+import ConnectionModal from '../../components/Modal/ConnectionModal';
+import  Netinfo from '@react-native-community/netinfo';
+
 const AccountType = ({navigation, route}) => {
   const {data, saveimage,socialData} = route.params;
 
-
-
+  const [isConnected, setIsConnected] = useState(false);
   const [isArtist, setIsArtist] = useState(false);
   const [isListener, setIsListener] = useState(false);
   const [isNull, setIsNull] = useState(false);
@@ -51,6 +53,17 @@ const AccountType = ({navigation, route}) => {
       dispatch(register(data, select, setIsArtist, setIsListener, navigation, setLoading,saveimage,socialData));
     }
   };
+
+    
+  useEffect(() => {
+    const unsubscribe = Netinfo.addEventListener(state => {
+      setIsConnected(state.isConnected);
+    });
+  
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   const renderItem = ({item}) => {
     return (
       <View style={styles.Box}>
@@ -119,6 +132,7 @@ const AccountType = ({navigation, route}) => {
       />
       <Error isVisible={isNull} message="Please select One" />
       <Loading isVisible={loading}/>
+      <ConnectionModal isVisible={!isConnected}/>
     </View>
   );
 };
