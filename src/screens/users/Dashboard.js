@@ -106,7 +106,6 @@ const Dashboard = ({navigation}) => {
 
 
 
-  console.log('isConnected ', isConnected);
   return loading ? (
     <Loading />
   ) : (
@@ -118,7 +117,6 @@ const Dashboard = ({navigation}) => {
         source={require('../../assets/image/home.png')}
         Title
         Text="Dashboard"
-        // False
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <ListHeader

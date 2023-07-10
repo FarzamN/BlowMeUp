@@ -21,6 +21,8 @@ import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.reactnativegooglesignin.RNGoogleSigninPackage;
 // lottie-react-native
 import com.airbnb.android.react.lottie.LottiePackage;
+// react-native-fast-image
+import com.dylanvann.fastimage.FastImageViewPackage;
 // react-native-image-crop-picker
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 // react-native-image-picker
@@ -29,14 +31,20 @@ import com.imagepicker.ImagePickerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-onesignal
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
+// react-native-orientation-locker
+import org.wonday.orientation.OrientationPackage;
 // react-native-safe-area-context
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 // react-native-screens
 import com.swmansion.rnscreens.RNScreensPackage;
 // react-native-sound
 import com.zmxv.RNSound.RNSoundPackage;
+// react-native-track-player
+import com.doublesymmetry.trackplayer.TrackPlayer;
 // react-native-vector-icons
 import com.oblador.vectoricons.VectorIconsPackage;
+// react-native-video
+import com.brentvatne.react.ReactVideoPackage;
 
 public class PackageList {
   private Application application;
@@ -87,14 +95,18 @@ public class PackageList {
       new ReactSliderPackage(),
       new RNGoogleSigninPackage(),
       new LottiePackage(),
+      new FastImageViewPackage(),
       new PickerPackage(),
       new ImagePickerPackage(),
       new LinearGradientPackage(),
       new ReactNativeOneSignalPackage(),
+      new OrientationPackage(),
       new SafeAreaContextPackage(),
       new RNScreensPackage(),
       new RNSoundPackage(),
-      new VectorIconsPackage()
+      new TrackPlayer(),
+      new VectorIconsPackage(),
+      new ReactVideoPackage()
     ));
   }
 }

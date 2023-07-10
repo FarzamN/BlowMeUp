@@ -1,5 +1,3 @@
-
-
 import React, {useEffect, useState} from 'react';
 import AuthNavigator from './src/navigation/AuthNavigator';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,7 +5,7 @@ import UserNavigator from './src/navigation/UserNavigator';
 import ArtistNavigator from './src/navigation/ArtistNavigator';
 import SpalshScreen from './src/screens/SpalshScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ROLE_ID, USER_DETAILS } from './src/redux/reducer/Holder';
+import {ROLE_ID, USER_DETAILS} from './src/redux/reducer/Holder';
 import OneSignal from 'react-native-onesignal';
 const App = () => {
   const userData = useSelector(state => state.userDetails);
@@ -16,21 +14,21 @@ const App = () => {
   const [loading, setLoading] = useState(true);
 
   const checkStatus = async () => {
-   const data = await AsyncStorage.getItem('user_details');
-   const userData = JSON.parse(data)
-   if(userData != null){
-    dispatch({type: USER_DETAILS, payload: userData});
-    dispatch({type: ROLE_ID, payload: userData.role});
-   }else{
-    console.log('Please login')
-   }
-  }
+    const data = await AsyncStorage.getItem('user_details');
+    const userData = JSON.parse(data);
+    if (userData != null) {
+      dispatch({type: USER_DETAILS, payload: userData});
+      dispatch({type: ROLE_ID, payload: userData.role});
+    } else {
+      console.log('Please login');
+    }
+  };
 
-  console.log('userData ==>', userData)
+  console.log('userData ==>', userData);
 
   useEffect(() => {
-    checkStatus()
-  },[])
+    checkStatus();
+  }, []);
 
   useEffect(() => {
     OneSignal.setLogLevel(6, 0);
@@ -49,18 +47,15 @@ const App = () => {
         notificationReceivedEvent.complete(notification);
       },
     );
-    OneSignal.setNotificationOpenedHandler(notification => { });
+    OneSignal.setNotificationOpenedHandler(notification => {});
     OneSignal.addSubscriptionObserver(async event => {
       if (event.to.isSubscribed) {
         const state = await OneSignal.getDeviceState();
         console.log('state.userId=======>', state.userId);
         await AsyncStorage.setItem('onesignaltoken', state.userId);
-        console.log('token', state.userId)
+        console.log('token', state.userId);
       }
     });
-
-
-
   }, []);
 
   setTimeout(() => {
@@ -74,8 +69,8 @@ const App = () => {
       ) : (
         <>
           {userData == null && <AuthNavigator />}
-          {userData && role_id == 1  && <UserNavigator />}
-          {userData && role_id == 2  && <ArtistNavigator />}
+          {userData && role_id == 1 && <UserNavigator />}
+          {userData && role_id == 2 && <ArtistNavigator />}
         </>
       )}
     </>
@@ -83,4 +78,3 @@ const App = () => {
 };
 
 export default App;
-

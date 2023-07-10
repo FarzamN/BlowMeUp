@@ -60,7 +60,7 @@ export const Like = ({item, style}) => {
           opacity: reverseOpacity,
           transform: [{scale}],
         }}
-        color="#B00000"
+        color="#0FA549"
         onPress={() => like(!liked)}
       />
       <AnimatedIcon

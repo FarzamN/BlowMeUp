@@ -71,5 +71,10 @@ export const GlobalStyle = {
     marginTop: verticalScale(20),
     paddingVertical: moderateVerticalScale(12),
   },
-  LottieView:{ height: verticalScale(150), alignSelf: 'center' }
+  LottieView:{ height: verticalScale(150), alignSelf: 'center' },
+  UploadTitle: {
+    color: Colors.White,
+    fontFamily: Font.Gilroy500,
+    fontSize: scale(16),
+  },
 }

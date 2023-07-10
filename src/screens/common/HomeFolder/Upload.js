@@ -14,11 +14,20 @@ import {create_Video} from '../../../redux/actions/UserAction';
 import {useSelector} from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
+import UploadHeader from '../../../components/Header/UploadHeader';
+import Error from '../../../components/Modal/Error';
+import Success from '../../../components/Modal/Success';
+
 const Upload = ({select, setSelect}) => {
   console.log('select', select);
   // const userDetails = useSelector(state => state.userDetails);
-  const [type, setType] = useState('');
+  const [type, setType] = useState();
   const [saveVideo, setsaveVideo] = useState();
+  const [saveImage, setsaveImage] = useState();
+  const [SelectImage, setSelectImage] = useState(false);
+  const [SelectVideo, setSelectVideo] = useState(false);
+  const [SelectType, setSelectType] = useState(false);
+  const [Done, setDone] = useState(false);
   const data = [
     {key: '1', value: 'PodCast'},
     {key: '2', value: 'Music Video'},
@@ -39,29 +48,73 @@ const Upload = ({select, setSelect}) => {
 
     launchImageLibrary(options, response => {
       if (response.didCancel) {
-        Toast.show('User cancelled Video picker');
+        Toast.show('Select a video to upload');
       } else if (response.error) {
         console.log('VideoPicker Error: ', response.error);
       } else {
-        const source = {
+        const VideoSource = {
           name: response.assets?.[0]?.fileName,
           uri: response.assets?.[0]?.uri,
           type: response.assets?.[0]?.type,
         };
-        setsaveVideo(source);
-        console.log('source', source);
+        setsaveVideo(VideoSource);
+        console.log('source', VideoSource);
+      }
+    });
+  };
+
+  const UploadImage = () => {
+    let options = {
+      storageOptions: {
+        mediaType: 'photo',
+        path: 'image',
+        includeExtra: true,
+      },
+      selectionLimit: 1,
+    };
+
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        Toast.show('Image picker is canceled');
+      } else if (res.error) {
+        console.log('ImagePicker Error: ', res.error);
+      } else {
+        const ImageSource = {
+          name: res.assets?.[0]?.fileName,
+          uri: res.assets?.[0]?.uri,
+          type: res.assets?.[0]?.type,
+        };
+        setsaveImage(ImageSource);
+        console.log('ImageSource', ImageSource);
       }
     });
   };
 
   const onSubmit = data => {
-    create_Video(data, type, saveVideo, setSelect);
+    if (saveImage == null) {
+      setSelectImage(true);
+      setTimeout(() => {
+        setSelectImage(false);
+      }, 2000);
+    } else if (saveVideo == null) {
+      setSelectVideo(true);
+      setTimeout(() => {
+        setSelectVideo(false);
+      }, 2000);
+    } else if (type == null) {
+      setSelectType(true);
+      setTimeout(() => {
+        setSelectType(false);
+      }, 2000);
+    } else {
+      create_Video(data, type, saveVideo, saveImage, setSelect, setDone);
+    }
   };
   return (
-    <View style={{height: '100%'}}>
+    <View style={{height: '100%', marginHorizontal: scale(15)}}>
       <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
         <View style={styles.Container}>
-          <Text style={styles.Title}>Tittle of the Video</Text>
+          <Text style={GlobalStyle.UploadTitle}>Title of the Video</Text>
           <CustomInput
             control={control}
             keyboardType="default"
@@ -76,8 +129,38 @@ const Upload = ({select, setSelect}) => {
           />
           {errors.title && <Validation title={errors.title.message} />}
         </View>
+
         <View style={styles.Container}>
-          <Text style={styles.Title}>
+          <Text style={GlobalStyle.UploadTitle}>Description of the Video</Text>
+          <CustomInput
+            control={control}
+            keyboardType="default"
+            name="description"
+            placeholder="Description of the video"
+            Gapp={styles.Gapp}
+            style={styles.inputBoxRestyle}
+            fontSize={scale(16)}
+            // rules={{
+            //  
+            // }}
+            rules={{
+              required: '*Description is required',
+              minLength: {
+                value: 20,
+                message: '*Description is Too small',
+              },
+              maxLength: {
+                value: 300,
+                message: '*Description is Too big',
+              },
+            }}
+          />
+          {errors.description && (
+            <Validation title={errors.description.message} />
+          )}
+        </View>
+        <View style={styles.Container}>
+          <Text style={GlobalStyle.UploadTitle}>
             Type of the video which will be either PODcast or Music Video
           </Text>
           <View style={styles.DropdownBox}>
@@ -110,19 +193,28 @@ const Upload = ({select, setSelect}) => {
           </View>
         </View>
         <View style={styles.Container}>
-          <View style={styles.Row}>
-            <Text style={styles.Title}>Upload file</Text>
-            <Image
-              resizeMode="contain"
-              style={styles.Image}
-              source={require('../../../assets/image/photo.png')}
-            />
-          </View>
+          <UploadHeader
+            title={'Image'}
+            source={require('../../../assets/image/photo.png')}
+          />
+          <CustomButton
+            onPress={() => UploadImage()}
+            containerStyle={styles.containerStyle}
+            textStyle={styles.textStyle}
+            title={saveImage ? saveImage.name : 'Tap to select a Thumbnail'}
+          />
+        </View>
+
+        <View style={styles.Container}>
+          <UploadHeader
+            title={'Video'}
+            source={require('../../../assets/image/video.png')}
+          />
           <CustomButton
             onPress={() => UploadVideo()}
             containerStyle={styles.containerStyle}
             textStyle={styles.textStyle}
-            title={saveVideo ? saveVideo.name : 'Tab to select a video'}
+            title={saveVideo ? saveVideo.name : 'Tap to select a video'}
           />
         </View>
         <CustomButton
@@ -131,31 +223,21 @@ const Upload = ({select, setSelect}) => {
           textStyle={{color: Colors.White}}
           title="Upload"
         />
-        <View style={{height: verticalScale(110)}} />
+        <View style={{height: verticalScale(120)}} />
       </ScrollView>
+      <Error isVisible={SelectImage} message={'Please select Thumbnail'} />
+      <Error isVisible={SelectVideo} message={'Please select a Video'} />
+      <Error isVisible={SelectType} message={'Please explain your Video type'} />
+      <Success isVisible={Done} message={'Your Video has been uploaded'} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  Title: {
-    color: Colors.White,
-    fontFamily: Font.Gilroy500,
-    fontSize: scale(16),
-  },
   Container: {
     marginTop: verticalScale(30),
   },
-  Image: {
-    width: scale(25),
-    height: scale(25),
-  },
-  Row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginRight: scale(20),
-  },
+
   Gapp: {
     paddingHorizontal: 0,
   },

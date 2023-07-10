@@ -15,11 +15,13 @@ import Upload from './Upload';
 import Video from './Video';
 import {useFocusEffect} from '@react-navigation/native';
 import {GlobalStyle} from '../../../Constants/GlobalStyle';
-import { ManageData } from '../../../Constants/ArrayofObject'
 
 const Manage = ({navigation}) => {
 
-
+  const Data = [
+    {title: 'Upload', id: 1},
+    {title: 'Video', id: 2},
+  ];
   const [select, setSelect] = useState(1);
 
   const handelChange = (data) => {
@@ -45,11 +47,11 @@ const Manage = ({navigation}) => {
         TextRestyle={styles.TextRestyle}
       />
       <View style={[GlobalStyle.Row, styles.Row]}>
-        {ManageData?.map((data, index) => (
+        {Data?.map((data, index) => (
           <>
             <TouchableOpacity
               data={data}
-              key={data.id}
+              key={index}
               activeOpacity={0.8}
               onPress={() => handelChange(data)}
               style={[styles.ChangeBox, {backgroundColor: select == data.id ? Colors.Main : '#556084'}]}>
@@ -58,10 +60,8 @@ const Manage = ({navigation}) => {
           </>
         ))}
       </View>
-      <View style={{marginHorizontal: scale(15)}}>
         {select == 1 && <Upload select={select} setSelect={setSelect}/>}
         {select == 2 && <Video />}
-      </View>
     </SafeAreaView>
   );
 };

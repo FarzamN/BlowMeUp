@@ -1,51 +1,36 @@
-import {FlatList, View} from 'react-native';
-import React from 'react';
-import SectionCard from '../../../components/Card/SectionCard';
+import React, {useState, useCallback} from 'react';
+import {FlatList} from 'react-native';
+
+import {useFocusEffect} from '@react-navigation/native';
+import {show_own_video} from '../../../redux/actions/UserAction';
+
+import VideoCard from '../../../components/Card/VideoCard';
+import EmptyCard from '../../../components/Card/EmptyCard';
 
 const Video = () => {
-  const VideoData = [
-    {
-      Name:"Olivia Mā Ddy",
-          Time:"52 minute ago",
-          source:require('../../../assets/image/section1.jpg'),
-          LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
-          Number:"36",
-          avatar:require('../../../assets/image/dp1.png'),
-          id:1
-    },
-    {
-      Name:"Olivia Mā Ddy",
-      Time:"52 minute ago",
-      source:require('../../../assets/image/section1.jpg'),
-      LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
-      Number:"36",
-      avatar:require('../../../assets/image/dp1.png'),
-      id:2
-    },
-    {
-      Name:"Olivia Mā Ddy",
-          Time:"52 minute ago",
-          source:require('../../../assets/image/section1.jpg'),
-          LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
-          Number:"36",
-          avatar:require('../../../assets/image/dp1.png'),
-          id:3
-    },
-  ];
+  const [VideoData, setVideoData] = useState('');
+
+  useFocusEffect(
+    useCallback(() => {
+      show_own_video(setVideoData);
+    }, []),
+  );
   return (
-    <View>
+    <>
       <FlatList
-          scrollEnabled={true}
-          keyExtractor={VideoData.id}
-          showsVerticalScrollIndicator={false}
-          data={VideoData}
-          renderItem={({item}) => {
-            return <SectionCard data={item} />;
-          }}
-        />
-    </View>
+        scrollEnabled
+        showsVerticalScrollIndicator={false}
+        data={VideoData}
+        keyExtractor={VideoData.id}
+        ListEmptyComponent={() => {
+          return <EmptyCard />;
+        }}
+        renderItem={({item}) => {
+          return <VideoCard key={item.id} data={item} LikeWork={false}/>
+       }}
+      />
+    </>
   );
 };
 
 export default Video;
-
