@@ -87,10 +87,11 @@ export const Update = async (
   }
 };
 
-export const create_Video = async (userDetails, data, type, saveVideo) => {
-  console.log('userDetails', userDetails.user_id)
+export const create_Video = async ( data, type, saveVideo, setSelect ) => {
+  console.log('data', data.title,type,saveVideo,setSelect)
+  const user_id = 1
   try {
-    let base_url = `${BaseUrl}create-video${userDetails.user_id}`;
+    let base_url = `${BaseUrl}create-video${user_id}`;
     let myData = new FormData();
 
     myData.append('video_title', data.title);
@@ -105,6 +106,7 @@ export const create_Video = async (userDetails, data, type, saveVideo) => {
 
     if (responseData.success.status === 200) {
       console.log('responseData', responseData);
+      setSelect(2)
     } else {
       console.log('error');
     }

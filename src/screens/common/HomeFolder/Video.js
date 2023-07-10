@@ -11,6 +11,7 @@ const Video = () => {
           LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
           Number:"36",
           avatar:require('../../../assets/image/dp1.png'),
+          id:1
     },
     {
       Name:"Olivia Mā Ddy",
@@ -18,7 +19,8 @@ const Video = () => {
       source:require('../../../assets/image/section1.jpg'),
       LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
       Number:"36",
-      avatar:require('../../../assets/image/dp1.png')
+      avatar:require('../../../assets/image/dp1.png'),
+      id:2
     },
     {
       Name:"Olivia Mā Ddy",
@@ -26,13 +28,15 @@ const Video = () => {
           source:require('../../../assets/image/section1.jpg'),
           LongText:"One good thing about music, when it hits you, you feel no pain. ❤️",
           Number:"36",
-          avatar:require('../../../assets/image/dp1.png')
+          avatar:require('../../../assets/image/dp1.png'),
+          id:3
     },
   ];
   return (
     <View>
       <FlatList
           scrollEnabled={true}
+          keyExtractor={VideoData.id}
           showsVerticalScrollIndicator={false}
           data={VideoData}
           renderItem={({item}) => {

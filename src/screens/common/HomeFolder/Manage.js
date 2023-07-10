@@ -15,13 +15,10 @@ import Upload from './Upload';
 import Video from './Video';
 import {useFocusEffect} from '@react-navigation/native';
 import {GlobalStyle} from '../../../Constants/GlobalStyle';
+import { ManageData } from '../../../Constants/ArrayofObject'
 
 const Manage = ({navigation}) => {
 
-  const Data = [
-    {title: 'Upload', id: 1},
-    {title: 'Video', id: 2},
-  ];
 
   const [select, setSelect] = useState(1);
 
@@ -41,18 +38,18 @@ const Manage = ({navigation}) => {
     <SafeAreaView style={GlobalStyle.Container}>
       <StatusBar backgroundColor={Colors.ThemeBlue} />
       <MainHeader
-        Notification={true}
-        BackArrow={true}
-        Title={true}
+        Notification
+        BackArrow
+        Title
         Text="Manage Podcast/Music Videos"
         TextRestyle={styles.TextRestyle}
       />
       <View style={[GlobalStyle.Row, styles.Row]}>
-        {Data?.map((data, index) => (
+        {ManageData?.map((data, index) => (
           <>
             <TouchableOpacity
               data={data}
-              key={index}
+              key={data.id}
               activeOpacity={0.8}
               onPress={() => handelChange(data)}
               style={[styles.ChangeBox, {backgroundColor: select == data.id ? Colors.Main : '#556084'}]}>
@@ -62,7 +59,7 @@ const Manage = ({navigation}) => {
         ))}
       </View>
       <View style={{marginHorizontal: scale(15)}}>
-        {select == 1 && <Upload />}
+        {select == 1 && <Upload select={select} setSelect={setSelect}/>}
         {select == 2 && <Video />}
       </View>
     </SafeAreaView>

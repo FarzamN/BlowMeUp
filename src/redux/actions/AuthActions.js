@@ -47,22 +47,22 @@ export const login = (
       console.log('response of login ki api', response);
 
       const responseData = await response.json();
-      console.log('responseData', responseData.data);
-      if (responseData.status == true) {
-        dispatch({type: USER_DETAILS, payload: responseData.data});
-        dispatch({type: ROLE_ID, payload: responseData.data.role});
+      console.log('responseData', responseData.success.data);
+      if (responseData.success.status === 200) {
+        dispatch({type: USER_DETAILS, payload: responseData.success.data});
+        dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
         await AsyncStorage.setItem(
           'user_details',
           JSON.stringify(responseData.data),
         );
-        setSuccessMessage(responseData.message);
+        setSuccessMessage(responseData.success.message);
         setLoading(false);
         setSuccessModal(true);
         setTimeout(() => {
           setSuccessModal(false);
         }, 2000);
       } else {
-        setErrorMessage(responseData.message);
+        setErrorMessage(responseData.success.message);
         setLoading(false);
         setErrorModal(true);
         setTimeout(() => {
@@ -117,13 +117,13 @@ export const googleSignin = navigation => {
   };
 };
 const social_signin = (data, navigation) => {
-  // console.log('data.uID', data.uID)
+ 
   return async dispatch => {
     try {
-      let base_url = `${BaseUrl}Authentication/social_login.php`;
+      let base_url = `${BaseUrl}/social_login`;
       let myData = new FormData();
 
-      myData.append('token', token);
+      // myData.append('token', token);
       myData.append('social_id', data.uID);
 
       const response = await fetch(base_url, {
@@ -136,8 +136,8 @@ const social_signin = (data, navigation) => {
       const responseData = await response.json();
       console.log('responseData', responseData);
       if (responseData.status == true) {
-        dispatch({type: USER_DETAILS, payload: responseData.data});
-        dispatch({type: ROLE_ID, payload: responseData.data.role});
+        dispatch({type: USER_DETAILS, payload: responseData.success.data});
+        dispatch({type: ROLE_ID, payload: responseData.success.data.role});
         await AsyncStorage.setItem(
           'user_details',
           JSON.stringify(responseData.data),
@@ -184,7 +184,7 @@ export const verify_email_before_registration = (
 
       if (responseData.status == true) {
         console.log('responseData', responseData);
-        await dispatch({type: OTP, payload: responseData.Code});
+        await dispatch({type: OTP, payload: responseData.success.Code});
 
         if (type == 'signup') {
           setLoading(false);
@@ -201,7 +201,7 @@ export const verify_email_before_registration = (
           setSuccessModal(10);
         }
       } else {
-        console.log('else error', responseData.message);
+        console.log('else error', responseData.success.message);
         if (type == 'signup') {
           setLoading(false);
           setIsEmailExist(true);
@@ -271,10 +271,10 @@ export const register = (
           }, 3000);
           await AsyncStorage.setItem(
             'user_details',
-            JSON.stringify(responseData.Data),
+            JSON.stringify(responseData.success.Data),
           );
-          dispatch({type: USER_DETAILS, payload: responseData.Data});
-          dispatch({type: ROLE_ID, payload: responseData.Data.role});
+          dispatch({type: USER_DETAILS, payload: responseData.success.Data});
+          dispatch({type: ROLE_ID, payload: responseData.success.Data.role});
         } else {
           setIsArtist(true);
           setTimeout(() => {
@@ -282,10 +282,10 @@ export const register = (
           }, 3000);
           await AsyncStorage.setItem(
             'user_details',
-            JSON.stringify(responseData.Data),
+            JSON.stringify(responseData.success.Data),
           );
-          dispatch({type: USER_DETAILS, payload: responseData.Data});
-          dispatch({type: ROLE_ID, payload: responseData.Data.role});
+          dispatch({type: USER_DETAILS, payload: responseData.success.Data});
+          dispatch({type: ROLE_ID, payload: responseData.success.Data.role});
         }
       } else {
         console.log('else error');
@@ -343,7 +343,7 @@ export const verify_email_before_password = (
           setSuccessModal(10);
         }
       } else {
-        console.log('else error', responseData.message);
+        console.log('else error', responseData.success.message);
         if (type == 'forgot') {
           setLoading(false);
           setIsEmailExist(true);
@@ -385,7 +385,7 @@ export const update_password = async (
     console.log('responseData', responseData);
 
     if (responseData.status == true) {
-      console.log('new_password', data.password);
+      
       setLoading(false);
       setPasswordChange(true);
       setTimeout(() => {

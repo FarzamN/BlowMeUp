@@ -14,18 +14,14 @@ import {create_Video} from '../../../redux/actions/UserAction';
 import {useSelector} from 'react-redux';
 import {launchImageLibrary} from 'react-native-image-picker';
 import Toast from 'react-native-simple-toast';
-const Upload = () => {
-  const userDetails = useSelector(state => state.userDetails);
+const Upload = ({select, setSelect}) => {
+  console.log('select', select);
+  // const userDetails = useSelector(state => state.userDetails);
   const [type, setType] = useState('');
   const [saveVideo, setsaveVideo] = useState();
   const data = [
-    {key: '1', value: 'MP4 '},
-    {key: '2', value: 'MOV'},
-    {key: '3', value: 'WMV'},
-    {key: '4', value: 'AVI'},
-    {key: '5', value: 'AVCHD'},
-    {key: '6', value: 'FLV'},
-    {key: '7', value: 'F4V'},
+    {key: '1', value: 'PodCast'},
+    {key: '2', value: 'Music Video'},
   ];
   const {
     control,
@@ -53,12 +49,13 @@ const Upload = () => {
           type: response.assets?.[0]?.type,
         };
         setsaveVideo(source);
+        console.log('source', source);
       }
     });
   };
 
   const onSubmit = data => {
-    create_Video(userDetails, data, type, saveVideo);
+    create_Video(data, type, saveVideo, setSelect);
   };
   return (
     <View style={{height: '100%'}}>
@@ -121,12 +118,11 @@ const Upload = () => {
               source={require('../../../assets/image/photo.png')}
             />
           </View>
-          {/* <VideoPicker /> */}
           <CustomButton
             onPress={() => UploadVideo()}
             containerStyle={styles.containerStyle}
             textStyle={styles.textStyle}
-            title="Tab to select a video"
+            title={saveVideo ? saveVideo.name : 'Tab to select a video'}
           />
         </View>
         <CustomButton
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.ThemeBlue,
   },
   dropdownStyles: {
-    backgroundColor: Colors.Main,
+    backgroundColor: Colors.ThemeBlue,
     borderWidth: scale(1),
     borderColor: Colors.Main,
   },
