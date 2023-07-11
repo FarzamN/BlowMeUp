@@ -17,7 +17,7 @@ import CustomButton from '../../components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import PasswordInput from '../../components/PasswordInput';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
-// import {launchImageLibrary} from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 import Success from '../../components/Modal/Success';
 import Error from '../../components/Modal/Error';
 import {useDispatch} from 'react-redux';
@@ -28,9 +28,10 @@ import NetInfo from '@react-native-community/netinfo';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import Validation from '../../components/Validation';
 import ImagePicker from 'react-native-image-crop-picker';
+import { EmailRegix } from '../../utils/url';
 
 const SignUp = ({navigation, route}) => {
-  const {social, data, socialData} = route.params;
+  const {social, socialData} = route.params;
   const dispatch = useDispatch();
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
@@ -41,7 +42,7 @@ const SignUp = ({navigation, route}) => {
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
 
   const [saveimage, setsaveimage] = useState('');
@@ -56,7 +57,6 @@ const SignUp = ({navigation, route}) => {
   //     },
   //     selectionLimit: 1,
   //   };
-  //   console.log(photosave.path);
 
   //   launchImageLibrary(options, res => {
   //     if (res.didCancel) {
@@ -69,7 +69,6 @@ const SignUp = ({navigation, route}) => {
   //         uri: res.assets?.[0]?.uri,
   //         type: res.assets?.[0]?.type,
   //       });
-  //       setShow2(false);
   //     }
   //   });
   // };
@@ -80,10 +79,15 @@ const SignUp = ({navigation, route}) => {
       height: 300,
       cropping: true,
     }).then(image => {
-      console.log(image);
-      setsaveimage(image.path);
+      console.log('image ==>',image);
+      setsaveimage({
+        uri: image.path,
+        type: image.mime
+      });
     });
   };
+  
+  console.log('saveimage', saveimage)
 
   const type = 'signup';
   const onSubmit = data => {
@@ -147,7 +151,7 @@ const SignUp = ({navigation, route}) => {
               style={styles.Image}
               source={
                 saveimage
-                  ? {uri: saveimage}
+                  ? {uri: saveimage?.uri}
                   : require('../../assets/image/defaultdark.png')
               }
             />
@@ -165,7 +169,7 @@ const SignUp = ({navigation, route}) => {
               value={social == 'social' ? socialData?.user_name : ''}
               rules={{
                 required: 'User Name is required',
-                value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                value: EmailRegix,
                 message: 'Enter a User Name',
               }}
               placeholder="User Name"
@@ -184,7 +188,7 @@ const SignUp = ({navigation, route}) => {
               rules={{
                 required: '*Email is required',
                 pattern: {
-                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                  value: EmailRegix,
                   message: 'Email is not valid',
                 },
               }}

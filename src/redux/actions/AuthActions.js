@@ -166,25 +166,29 @@ export const verify_email_before_registration = (
   if (type == 'signup') {
     setLoading(true);
   }
+  // console.log('data in api', data)
   return async dispatch => {
     try {
-      let base_url = `${BaseUrl}verify_email_before_registration`;
-      // let base_url = `${BaseUrl}register`;
+      let base_url = `${BaseUrl}verify_email_before_register`;
       let myData = new FormData();
 
-      myData.append('token', token);
+      // myData.append('token', token);
       myData.append('email', data.email);
+      myData.append('phone_number', data.phone_number);
+      myData.append('password', data.confirm_password);
+      myData.append('image', saveimage);
+      myData.append('name', data.name);
 
       const response = await fetch(base_url, {
         body: myData,
-        method: 'post',
+        method: 'POST',
       });
 
       const responseData = await response.json();
-
-      if (responseData.status == true) {
-        console.log('responseData', responseData);
-        await dispatch({type: OTP, payload: responseData.success.Code});
+console.log('responseData ==>',responseData)
+      if (responseData.success.status === 200) {
+        // console.log('responseData', responseData);
+        await dispatch({type: OTP, payload: responseData.success.OTP});
 
         if (type == 'signup') {
           setLoading(false);
@@ -325,7 +329,7 @@ export const verify_email_before_password = (
       const responseData = await response.json();
       if (responseData.status == true) {
         console.log('responseData', responseData);
-        await dispatch({type: OTP, payload: responseData.Code});
+        await dispatch({type: OTP, payload: responseData.OTP});
 
         if (type == 'forgot') {
           setLoading(false);
@@ -335,7 +339,7 @@ export const verify_email_before_password = (
             navigation.navigate('OTP', {
               type: type,
               data: data,
-              // OTP: responseData.Code,
+              // OTP: responseData.OTP,
               user_id: responseData.user_id,
             });
           }, 2000);
