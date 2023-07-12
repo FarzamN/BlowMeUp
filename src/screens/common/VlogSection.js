@@ -111,7 +111,7 @@ const VlogSection = ({navigation}) => {
         onPress={handleSubmit(onSubmit)}
       />
       {errors.on_mind && (
-        <Validation restyle={{marginLeft: scale(40), marginBottom: 0}} message={errors.on_mind.message}/>
+        <Validation restyle={{marginLeft: scale(40), marginBottom: 0}} title={errors.on_mind.message}/>
       )}
       <FlatList
         scrollEnabled={true}

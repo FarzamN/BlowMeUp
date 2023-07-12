@@ -98,7 +98,6 @@ const TermsAndConditions = ({navigation, route}) => {
               height: verticalScale(100),
               width: '80%',
               alignSelf: 'center',
-              // marginTop: scale(30),
             }}>
             <Image
               source={require('../../../assets/image/logo.png')}

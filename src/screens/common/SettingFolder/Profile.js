@@ -16,7 +16,6 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {Colors} from '../../../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Zocial from 'react-native-vector-icons/Zocial';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Font} from '../../../utils/font';
 import CustomButton from '../../../components/CustomButton';
 import CustomInput from '../../../components/CustomInput';
@@ -24,33 +23,34 @@ import {useForm} from 'react-hook-form';
 import {GlobalStyle} from '../../../Constants/GlobalStyle';
 import {useFocusEffect} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Image_BaseUrl} from '../../../utils/url';
+import Toast from 'react-native-simple-toast';
 
-import Modal from 'react-native-modal';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-
-import {Update_profile} from '../../../redux/actions/UserAction';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import ImagePickerModal from '../../../components/Modal/ImagePickerModal';
+import {EmailRegix, NameRegix} from '../../../utils/url';
+import Validation from '../../../components/Validation';
+import { Edit_profile } from '../../../redux/actions/UserAction';
+import ReactNativeModal from 'react-native-modal';
+import Loading from '../../../components/Modal/Loading';
 const Profile = ({navigation}) => {
   const userDetails = useSelector(state => state.userDetails);
-  console.log('userDetails ==>', userDetails);
   const dispatch = useDispatch();
 
-  const [saveimage, setsaveimage] = useState();
+  const [saveImage, setSaveImage] = useState();
   const [show, setShow] = useState(true);
-  const [isModalVisible3, setModalVisible3] = useState(false);
+  const [pickerModal, setPickerModal] = useState(false);
   const [activeLoading, setActiveLoading] = useState(false);
 
+  const togglePickerModal = () => {
+    setPickerModal(!pickerModal);
+  };
   const {
     control,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm({mode: 'all'});
   const [edit, setEdit] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [showForName, setShowForName] = useState(false);
-
 
   useFocusEffect(
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,10 +60,6 @@ const Profile = ({navigation}) => {
       });
     }),
   );
-
-  const toggleModal3 = () => {
-    setModalVisible3(!isModalVisible3);
-  };
 
   const requestCameraPermission = async () => {
     try {
@@ -79,9 +75,9 @@ const Profile = ({navigation}) => {
       );
       if (granted == PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the camera');
-        toggleModal3();
+        togglePickerModal();
       } else {
-        console.log('Camera permission denied');
+        Toast.showWithGravity('Camera permission denied');
       }
     } catch (err) {
       console.warn(err);
@@ -100,13 +96,13 @@ const Profile = ({navigation}) => {
 
     launchImageLibrary(options, res => {
       if (res.didCancel) {
-        console.log('=====> camera');
+        Toast.show('Picker is Canceled');
       } else if (res.error) {
         console.log('====> imagePicker');
       } else if (res.customButton) {
         alert(res.customButton);
       } else {
-        setsaveimage({
+        setSaveImage({
           name: res.assets?.[0]?.fileName,
           uri: res.assets?.[0]?.uri,
           type: res.assets?.[0]?.type,
@@ -135,7 +131,7 @@ const Profile = ({navigation}) => {
         console.log('User tapped custom button: ', res.customButton);
         alert(res.customButton);
       } else {
-        setsaveimage({
+        setSaveImage({
           name: res.assets?.[0]?.fileName,
           uri: res.assets?.[0]?.uri,
           type: res.assets?.[0]?.type,
@@ -146,8 +142,7 @@ const Profile = ({navigation}) => {
   };
 
   const onSubmit = data => {
-    // console.log('data change of edit', data);
-    dispatch(Update_profile(data, userDetails, saveimage, setActiveLoading));
+    dispatch(Edit_profile(data, saveImage, setActiveLoading));
     setEdit(!edit);
     setShowInput(false);
   };
@@ -166,77 +161,30 @@ const Profile = ({navigation}) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <>
-          <TouchableOpacity disabled={!edit ? true : false}  onPress={toggleModal3}>
-            {show ? (
-              <Image
-                resizeMode="contain"
-                style={styles.circle}
-                source={{uri: Image_BaseUrl + userDetails.profile_image}}
-              />
-            ) : (
-              <Image
-                resizeMode="contain"
-                style={styles.circle}
-                source={{uri: saveimage.uri}}
-              />
-            )}
-          </TouchableOpacity>
+        <TouchableOpacity
+          disabled={!edit ? true : false}
+          onPress={() => setPickerModal(true)}>
+          {show ? (
+            <Image
+              resizeMode="contain"
+              style={styles.circle}
+              source={{uri: userDetails.image}}
+            />
+          ) : (
+            <Image
+              resizeMode="contain"
+              style={styles.circle}
+              source={{uri: saveImage.uri}}
+            />
+          )}
+        </TouchableOpacity>
 
-          <Modal
-            backdropOpacity={0.3}
-            onBackdropPress={() => setModalVisible3(false)}
-            isVisible={isModalVisible3}
-            style={{
-              width: '100%',
-              margin: 0,
-            }}>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'flex-end',
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity
-                onPress={() => setModalVisible3(false)}
-                style={styles.CrossBOx}>
-                <Entypo name="cross" size={scale(25)} color={Colors.White} />
-              </TouchableOpacity>
-
-              <View style={styles.SecCon}>
-                <TouchableOpacity
-                  onPress={() => {
-                    photosave();
-                    toggleModal3();
-                  }}
-                  style={styles.ModalBtn}>
-                  <MaterialIcons
-                    // style={styles.tinyLogo}
-                    name="photo"
-                    size={scale(32)}
-                    color={Colors.Main}
-                  />
-                  <Text style={styles.Text1}>Upload picture</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    cameraLaunch();
-                    toggleModal3();
-                  }}
-                  style={styles.ModalBtn}>
-                  <Entypo name="camera" size={scale(30)} color={Colors.Main} />
-                  <Text style={styles.Text1}>Take a picture</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-        </>
         <View
           style={[
             GlobalStyle.Row,
             {justifyContent: 'center', marginTop: verticalScale(10)},
           ]}>
-          <Text style={styles.Name}>{userDetails.userName}</Text>
+          <Text style={styles.Name}>{userDetails.name}</Text>
         </View>
 
         <View style={[GlobalStyle.Row, styles.margins]}>
@@ -247,18 +195,26 @@ const Profile = ({navigation}) => {
               color={Colors.White}
             />
             {showInput == true ? (
-              <CustomInput
-                Hello={styles.CustomInputRestyle}
-                Gapp={styles.Gapp}
-                control={control}
-                keyboardType="default"
-                name="name"
-                placeholder="Enter Your Name"
-                defaultValue={userDetails.userName}
-                value={userDetails.userName}
-              />
+              <>
+                <CustomInput
+                  Hello={styles.CustomInputRestyle}
+                  Gapp={styles.Gapp}
+                  control={control}
+                  keyboardType="default"
+                  name="name"
+                  placeholder="Enter Your Name"
+                  defaultValue={userDetails.name}
+                  value={userDetails.name}
+                  rules={{
+                    required: 'User Name is required',
+                    value: NameRegix,
+                    message: 'Enter a User Name',
+                  }}
+                />
+                {errors.name && <Validation title={errors.name.message} />}
+              </>
             ) : (
-              <Text style={styles.Text}>{userDetails.userName}</Text>
+              <Text style={styles.Text}>{userDetails.name}</Text>
             )}
           </View>
           {showInput == false ? (
@@ -280,16 +236,26 @@ const Profile = ({navigation}) => {
           <View style={GlobalStyle.Row}>
             <Zocial name="email" size={scale(20)} color={Colors.White} />
             {showInput == true ? (
-              <CustomInput
-                Hello={styles.CustomInputRestyle}
-                Gapp={styles.Gapp}
-                control={control}
-                keyboardType="email-address"
-                name="email"
-                placeholder="Enter Your Email"
-                defaultValue={userDetails.email}
-                value={userDetails.email}
-              />
+              <>
+                <CustomInput
+                  Hello={styles.CustomInputRestyle}
+                  Gapp={styles.Gapp}
+                  control={control}
+                  keyboardType="email-address"
+                  name="email"
+                  placeholder="Enter Your Email"
+                  defaultValue={userDetails.email}
+                  value={userDetails.email}
+                  rules={{
+                    required: '*Email is required',
+                    pattern: {
+                      value: EmailRegix,
+                      message: 'Email is not valid',
+                    },
+                  }}
+                />
+                {errors.email && <Validation title={errors.email.message} />}
+              </>
             ) : (
               <Text style={styles.Text}>{userDetails.email}</Text>
             )}
@@ -317,18 +283,32 @@ const Profile = ({navigation}) => {
               color={Colors.White}
             />
             {showInput == true ? (
-              <CustomInput
-                Hello={styles.CustomInputRestyle}
-                Gapp={styles.Gapp}
-                control={control}
-                keyboardType="number-pad"
-                name="phone"
-                placeholder="Enter Phone Number"
-                defaultValue={userDetails.phone}
-                value={userDetails.phone}
-              />
+              <>
+                <CustomInput
+                  Hello={styles.CustomInputRestyle}
+                  Gapp={styles.Gapp}
+                  control={control}
+                  keyboardType="number-pad"
+                  name="phone"
+                  placeholder="Enter Phone Number"
+                  defaultValue={userDetails.phone_number}
+                  value={userDetails.phone_number}
+                  rules={{
+                    required: '*Password is required',
+                    minLength: {
+                      value: 10,
+                      message: '*Phone Number is not valid',
+                    },
+                    maxLength: {
+                      value: 16,
+                      message: '*Phone Number is not valid',
+                    },
+                  }}
+                />
+                {errors.phone && <Validation title={errors.phone.message} />}
+              </>
             ) : (
-              <Text style={styles.Text}>{userDetails.phone}</Text>
+              <Text style={styles.Text}>{userDetails.phone_number}</Text>
             )}
           </View>
           {showInput == false ? (
@@ -357,9 +337,22 @@ const Profile = ({navigation}) => {
         )}
         <View style={{height: verticalScale(10)}} />
 
-        {/* <Modal isVisible={activeLoading} style={GlobalStyle.MainModal}>
+        {/* <ReactNativeModal isVisible={activeLoading} style={GlobalStyle.MainModal}>
           <ActivityIndicator size={scale(50)} color={Colors.White} />
-        </Modal> */}
+        </ReactNativeModal> */}
+        <Loading  isVisible={activeLoading}/>
+        <ImagePickerModal
+          isVisible={pickerModal}
+          onClose={togglePickerModal}
+          PressPicture={() => {
+            photosave();
+            togglePickerModal();
+          }}
+          PressCamera={() => {
+            cameraLaunch();
+            togglePickerModal();
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -422,41 +415,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.White,
     borderRadius: scale(100),
     alignSelf: 'center',
-  },
-  Text1: {
-    fontSize: scale(11),
-    fontFamily: Font.Gilroy700,
-    color: Colors.placeholderTextColor,
-  },
-  ModalBtn: {
-    flex: 1,
-    margin: verticalScale(2),
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderTopLeftRadius: scale(15),
-    borderTopRightRadius: scale(15),
-  },
-  SecCon: {
-    paddingVertical: moderateScale(15),
-    width: '100%',
-    backgroundColor: Colors.ThemeBlue,
-    borderTopLeftRadius: scale(10),
-    borderTopRightRadius: scale(10),
-    flexDirection: 'row',
-  },
-  tinyLogo: {
-    height: verticalScale(50),
-    width: scale(50),
-    resizeMode: 'contain',
-  },
-  CrossBOx: {
-    backgroundColor: Colors.Main,
-    width: scale(25),
-    borderRadius: 100,
-    alignItems: 'center',
-    marginBottom: verticalScale(-10),
-    zIndex: 9,
-    aspectRatio: 1 / 1,
   },
 });
 export default Profile;

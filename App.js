@@ -7,9 +7,12 @@ import SpalshScreen from './src/screens/SpalshScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ROLE_ID, USER_DETAILS} from './src/redux/reducer/Holder';
 import OneSignal from 'react-native-onesignal';
+import Toast from 'react-native-simple-toast'
+
 const App = () => {
   const userData = useSelector(state => state.userDetails);
   const role_id = useSelector(state => state.role_id);
+  console.log('role_id', role_id);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
 
@@ -20,11 +23,10 @@ const App = () => {
       dispatch({type: USER_DETAILS, payload: userData});
       dispatch({type: ROLE_ID, payload: userData.role});
     } else {
-      console.log('Please login');
+      Toast.show('Please login');
     }
   };
 
-  console.log('userData ==>', userData);
 
   useEffect(() => {
     checkStatus();
@@ -69,8 +71,8 @@ const App = () => {
       ) : (
         <>
           {userData == null && <AuthNavigator />}
-          {userData && role_id == 1 && <UserNavigator />}
-          {userData && role_id == 2 && <ArtistNavigator />}
+          {userData !== null && userData.role_id == 1 && <UserNavigator />}
+          {userData !== null && userData.role_id == 2 && <ArtistNavigator />}
         </>
       )}
     </>

@@ -24,6 +24,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {GlobalStyle} from '../../Constants/GlobalStyle';
 import {useDispatch} from 'react-redux';
 import {googleSignin} from '../../redux/actions/AuthActions';
+import LogoCard from '../../components/Card/LogoCard';
 
 const W = Dimensions.get('window').width;
 const Splash = ({navigation}) => {
@@ -39,10 +40,7 @@ const Splash = ({navigation}) => {
         resizeMode="cover"
         style={{flex: 1}}>
         <View style={{flex: 1, marginTop: '15%'}}>
-          <Image
-            style={{alignSelf: 'center'}}
-            source={require('../../assets/image/logo.png')}
-          />
+        <LogoCard style={{marginTop: 0}}/>
         </View>
         <View style={{flex: 1}}>
           <View style={{paddingHorizontal: moderateScale(20)}}>

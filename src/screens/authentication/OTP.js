@@ -28,11 +28,13 @@ import { verify_email_before_password, verify_email_before_registration } from '
 import { useDispatch, useSelector } from 'react-redux';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import  Netinfo from '@react-native-community/netinfo';
+import LogoCard from '../../components/Card/LogoCard';
 
 const windowHeight = Dimensions.get('window').height;
 const CELL_COUNT = 4;
 const OTP = ({route, navigation}) => {
-  const {type, data, saveimage,user_id} = route.params;
+  const {type, data, saveImage,user_id} = route.params;
+  console.log('user_id ==> ', user_id)
   const dispatch = useDispatch()
   const OTP = useSelector(state => state.otp)
 
@@ -87,7 +89,7 @@ const OTP = ({route, navigation}) => {
           setSuccessModal(false);
           navigation.navigate('AccountType', {
             data: data,
-            saveimage: saveimage,
+            saveImage: saveImage,
           });
         }, 2000);
       } else {
@@ -117,10 +119,7 @@ const OTP = ({route, navigation}) => {
           source={require('../../assets/image/Bacground/otp.png')}
           resizeMode="cover"
           style={GlobalStyle.Container}>
-          <Image
-            style={{alignSelf: 'center', marginTop: '12%'}}
-            source={require('../../assets/image/logo.png')}
-          />
+          <LogoCard />
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.MainBox}>
               <Text style={styles.Find}>Reset Your Password</Text>

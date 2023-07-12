@@ -22,9 +22,10 @@ import Error from '../../components/Modal/Error';
 import Loading from '../../components/Modal/Loading';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import  Netinfo from '@react-native-community/netinfo';
+import LogoCard from '../../components/Card/LogoCard';
 
-const AccountType = ({navigation, route}) => {
-  const {data, saveimage,socialData} = route.params;
+const AccountType = ({route}) => {
+  const {data, saveImage,socialData} = route.params;
 
   const [isConnected, setIsConnected] = useState(false);
   const [isArtist, setIsArtist] = useState(false);
@@ -40,7 +41,7 @@ const AccountType = ({navigation, route}) => {
   const [select, setSelect] = useState('');
   const handelItem = item => {
     setSelect(item.id);
-    console.log('item.id handelItem', item.id);
+    console.log('item.id handelItem', item.title);
   };
 
   const handelBtn = () => {
@@ -50,7 +51,7 @@ const AccountType = ({navigation, route}) => {
         setIsNull(false);
       }, 2000);
     } else  {
-      dispatch(register(data, select, setIsArtist, setIsListener, navigation, setLoading,saveimage,socialData));
+      dispatch(register(data, select, setIsArtist, setIsListener, setLoading,saveImage,socialData));
     }
   };
 
@@ -109,10 +110,7 @@ const AccountType = ({navigation, route}) => {
         source={require('../../assets/image/Bacground/otp.png')}
         resizeMode="cover"
         style={[GlobalStyle.Container, {justifyContent: 'space-between'}]}>
-        <Image
-          style={{marginTop: '15%'}}
-          source={require('../../assets/image/logo.png')}
-        />
+       <LogoCard />
         <View style={{alignItems: 'center'}}>
           <FlatList
             data={DATA}

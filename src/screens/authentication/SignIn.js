@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   ScrollView,
   TouchableOpacity,
   ImageBackground,
@@ -35,13 +34,12 @@ import Loading from '../../components/Modal/Loading';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import  Netinfo from '@react-native-community/netinfo';
 import Validation from '../../components/Validation';
+import LogoCard from '../../components/Card/LogoCard';
 
 const SignIn = ({ navigation }) => {
   const [successModal, setSuccessModal] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [ErrorMessage,setErrorMessage] =useState('')
-  const [SuccessMessage,setSuccessMessage] =useState('')
   const [isConnected, setIsConnected] = useState(false);
    
   const dispatch = useDispatch();
@@ -52,7 +50,7 @@ const SignIn = ({ navigation }) => {
   } = useForm({ mode: 'all' });
 
   const Submit = data => {
-    dispatch(login(data,setSuccessModal, setErrorModal, setErrorMessage,setSuccessMessage,setLoading));
+    dispatch(login(data,setSuccessModal, setErrorModal, setLoading));
   };
 
 
@@ -76,10 +74,7 @@ const SignIn = ({ navigation }) => {
           source={require('../../assets/image/Bacground/splash.png')}
           resizeMode="cover"
           style={GlobalStyle.Container}>
-          <Image
-            style={{ alignSelf: 'center', marginTop: '12%' }}
-            source={require('../../assets/image/logo.png')}
-          />
+        <LogoCard />
           <Text style={styles.SignUpText}>Sign In</Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <View style={{ paddingHorizontal: moderateScale(20) }}>
@@ -201,11 +196,11 @@ const SignIn = ({ navigation }) => {
             </View>
             <Success
               isVisible={successModal}
-              message={SuccessMessage}
+              message='Success fully Sign In'
             />
             <Error
               isVisible={errorModal}
-              message={ErrorMessage}
+              message='Email or password is invalid'
             />
             <Loading
               isVisible={loading}

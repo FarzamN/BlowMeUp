@@ -28,7 +28,8 @@ import NetInfo from '@react-native-community/netinfo';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import Validation from '../../components/Validation';
 import ImagePicker from 'react-native-image-crop-picker';
-import { EmailRegix } from '../../utils/url';
+import {EmailRegix, NameRegix} from '../../utils/url';
+import LogoCard from '../../components/Card/LogoCard';
 
 const SignUp = ({navigation, route}) => {
   const {social, socialData} = route.params;
@@ -45,57 +46,55 @@ const SignUp = ({navigation, route}) => {
     formState: {errors},
   } = useForm({mode: 'all'});
 
-  const [saveimage, setsaveimage] = useState('');
+  const [saveImage, setSaveImage] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 
-  // const photosave = () => {
-  //   let options = {
-  //     storageOptions: {
-  //       mediaType: 'photo',
-  //       path: 'image',
-  //       includeExtra: true,
-  //     },
-  //     selectionLimit: 1,
-  //   };
+  const photosave = () => {
+    let options = {
+      storageOptions: {
+        mediaType: 'photo',
+        path: 'image',
+        includeExtra: true,
+      },
+      selectionLimit: 1,
+    };
 
-  //   launchImageLibrary(options, res => {
-  //     if (res.didCancel) {
-  //       Toast.show('You have cancelled Image picker');
-  //     } else if (res.error) {
-  //       console.log('ImagePicker',res.error);
-  //     }  else {
-  //       setsaveimage({
-  //         name: res.assets?.[0]?.fileName,
-  //         uri: res.assets?.[0]?.uri,
-  //         type: res.assets?.[0]?.type,
-  //       });
-  //     }
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        Toast.show('You have cancelled Image picker');
+      } else if (res.error) {
+        console.log('ImagePicker', res.error);
+      } else {
+        setSaveImage({
+          name: res.assets?.[0]?.fileName,
+          uri: res.assets?.[0]?.uri,
+          type: res.assets?.[0]?.type,
+        });
+      }
+    });
+  };
+
+  // const photosave = () => {
+  //   ImagePicker.openPicker({
+  //     width: 300,
+  //     height: 300,
+  //     cropping: true,
+  //   }).then(image => {
+  //     // console.log('image ==>',image);
+  //     setSaveImage({
+  //       uri: image.path,
+  //       type: image.mime
+  //     });
   //   });
   // };
 
-  const photosave = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 300,
-      cropping: true,
-    }).then(image => {
-      console.log('image ==>',image);
-      setsaveimage({
-        uri: image.path,
-        type: image.mime
-      });
-    });
-  };
-  
-  console.log('saveimage', saveimage)
-
   const type = 'signup';
   const onSubmit = data => {
-    if (saveimage?.uri) {
+    if (saveImage?.uri) {
       if (social == 'social') {
         navigation.navigate('AccountType', {
           socialData: socialData,
-          saveimage: saveimage,
+          saveImage: saveImage,
           data: data,
         });
       } else if (data.password == data.confirm_password) {
@@ -105,7 +104,7 @@ const SignUp = ({navigation, route}) => {
             type,
             setSuccessModal,
             navigation,
-            saveimage,
+            saveImage,
             setIsEmailExist,
             setLoading,
           ),
@@ -140,18 +139,14 @@ const SignUp = ({navigation, route}) => {
         resizeMode="cover"
         style={GlobalStyle.Container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Image
-            style={{alignSelf: 'center', marginTop: '12%'}}
-            source={require('../../assets/image/logo.png')}
-          />
+          <LogoCard />
           <Text style={styles.SignUpText}>Sign Up</Text>
-          <View
-            style={styles.ImageBox}>
+          <View style={styles.ImageBox}>
             <Image
               style={styles.Image}
               source={
-                saveimage
-                  ? {uri: saveimage?.uri}
+                saveImage
+                  ? {uri: saveImage?.uri}
                   : require('../../assets/image/defaultdark.png')
               }
             />
@@ -169,7 +164,7 @@ const SignUp = ({navigation, route}) => {
               value={social == 'social' ? socialData?.user_name : ''}
               rules={{
                 required: 'User Name is required',
-                value: EmailRegix,
+                value: NameRegix,
                 message: 'Enter a User Name',
               }}
               placeholder="User Name"
@@ -285,7 +280,7 @@ const SignUp = ({navigation, route}) => {
               textStyle={{color: Colors.White, fontSize: scale(23)}}
             />
           </View>
-          <Success isVisible={successModal} />
+          <Success isVisible={successModal} message="Thanks for email" />
           <Error isVisible={errorModal} message={'Password is not matched'} />
           <Error
             isVisible={isEmailExist}
@@ -333,7 +328,7 @@ const styles = StyleSheet.create({
     fontFamily: Font.Gilroy500,
     fontSize: scale(16),
   },
-  ImageBox:{
+  ImageBox: {
     width: scale(150),
     aspectRatio: 1 / 1,
     borderRadius: 100,
@@ -341,7 +336,7 @@ const styles = StyleSheet.create({
     borderWidth: scale(1),
     borderColor: Colors.Black,
   },
-  Image:{width: '100%', height: '100%', borderRadius: 100}
+  Image: {width: '100%', height: '100%', borderRadius: 100},
 });
 
 export default SignUp;

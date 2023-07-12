@@ -12,8 +12,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import CustomLotti from '../../../components/Modal/CustomLotti';
 import Error from '../../../components/Modal/Error';
 import {useSelector} from 'react-redux';
-import {update_password} from '../../../redux/actions/AuthActions';
-import {BaseUrl, token} from '../../../utils/url';
+
 import {Update} from '../../../redux/actions/UserAction';
 import Loading from '../../../components/Modal/Loading';
 import Validation from '../../../components/Validation';
@@ -23,7 +22,7 @@ const ChangePassword = ({navigation}) => {
   const [passwordError, setPasswordError] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const userDetails = useSelector(state => state.userDetails);
+
 
   const {
     control,
@@ -32,20 +31,20 @@ const ChangePassword = ({navigation}) => {
   } = useForm({mode: 'all'});
 
   const onSubmit = data => {
-    if (data.password == userDetails.password) {
+    // if (data.password == userDetails.password) {
       if (data.new_password == data.confirm_password) {
-        Update(data, setPasswordChange, userDetails, navigation, setLoading);
+        Update(data, setPasswordChange,  navigation, setLoading);
       } else {
         setErrorModal(true);
         setTimeout(() => {
           setErrorModal(false);
         }, 2000);
-      }
-    } else {
-      setPasswordError(true);
-      setTimeout(() => {
-        setPasswordError(false);
-      }, 2000);
+      // }
+    // } else {
+    //   setPasswordError(true);
+    //   setTimeout(() => {
+    //     setPasswordError(false);
+    //   }, 2000);
     }
   };
 

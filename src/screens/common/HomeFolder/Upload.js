@@ -140,9 +140,6 @@ const Upload = ({select, setSelect}) => {
             Gapp={styles.Gapp}
             style={styles.inputBoxRestyle}
             fontSize={scale(16)}
-            // rules={{
-            //  
-            // }}
             rules={{
               required: '*Description is required',
               minLength: {

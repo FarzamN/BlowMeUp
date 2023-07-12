@@ -20,58 +20,44 @@ import {BaseUrl, token} from '../../utils/url';
 //   };
 // };
 
-export const login = (
-  data,
-  setSuccessModal,
-  setErrorModal,
-  setErrorMessage,
-  setSuccessMessage,
-  setLoading,
-) => {
+export const login = (data, setSuccessModal, setErrorModal, setLoading) => {
   return async dispatch => {
     setLoading(true);
+    // let base_url = `${BaseUrl}login`;
+    let base_url = `https://sassolution.org/BlowMeUp/api/login`;
+    let myData = new FormData();
+    myData.append('email', data.email);
+    myData.append('password', data.password);
     try {
-      let base_url = `${BaseUrl}login`;
-      let myData = new FormData();
-
-      // myData.append('token', token);
-      myData.append('email', data.email);
-      myData.append('password', data.password);
-
       const response = await fetch(base_url, {
         body: myData,
         method: 'POST',
-        headers: 'bearer' 
+        headers: 'bearer',
       });
 
-      console.log('response of login ki api', response);
-
       const responseData = await response.json();
-      console.log('responseData', responseData.success.data);
       if (responseData.success.status === 200) {
-        dispatch({type: USER_DETAILS, payload: responseData.success.data});
-        dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
-        await AsyncStorage.setItem(
-          'user_details',
-          JSON.stringify(responseData.data),
-        );
-        setSuccessMessage(responseData.success.message);
         setLoading(false);
         setSuccessModal(true);
+        await AsyncStorage.setItem(
+          'user_details',
+          JSON.stringify(responseData.success.data),
+        );
         setTimeout(() => {
           setSuccessModal(false);
-        }, 2000);
+          dispatch({type: USER_DETAILS, payload: responseData.success.data});
+          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
+        }, 1500);
       } else {
-        setErrorMessage(responseData.success.message);
-        setLoading(false);
-        setErrorModal(true);
-        setTimeout(() => {
-          setErrorModal(false);
-        }, 2000);
+        console.log('else error login api');
       }
     } catch (error) {
-      console.log('error', error);
+      console.log('catch error login ', error);
       setLoading(false);
+      setErrorModal(true);
+      setTimeout(() => {
+        setErrorModal(false);
+      }, 2000);
     }
   };
 };
@@ -117,7 +103,6 @@ export const googleSignin = navigation => {
   };
 };
 const social_signin = (data, navigation) => {
- 
   return async dispatch => {
     try {
       let base_url = `${BaseUrl}/social_login`;
@@ -140,7 +125,7 @@ const social_signin = (data, navigation) => {
         dispatch({type: ROLE_ID, payload: responseData.success.data.role});
         await AsyncStorage.setItem(
           'user_details',
-          JSON.stringify(responseData.data),
+          JSON.stringify(responseData.success.data),
         );
       } else {
         navigation.navigate('SignUp', {
@@ -159,25 +144,24 @@ export const verify_email_before_registration = (
   type,
   setSuccessModal,
   navigation,
-  saveimage,
+  saveImage,
   setIsEmailExist,
   setLoading,
 ) => {
+  console.log('saveImage', saveImage);
   if (type == 'signup') {
-    setLoading(true);
+    setLoading(true); 
   }
-  // console.log('data in api', data)
   return async dispatch => {
     try {
       let base_url = `${BaseUrl}verify_email_before_register`;
       let myData = new FormData();
 
-      // myData.append('token', token);
       myData.append('email', data.email);
       myData.append('phone_number', data.phone_number);
       myData.append('password', data.confirm_password);
-      myData.append('image', saveimage);
       myData.append('name', data.name);
+      myData.append('image', saveImage);
 
       const response = await fetch(base_url, {
         body: myData,
@@ -185,9 +169,8 @@ export const verify_email_before_registration = (
       });
 
       const responseData = await response.json();
-console.log('responseData ==>',responseData)
+      console.log('sign up', responseData)
       if (responseData.success.status === 200) {
-        // console.log('responseData', responseData);
         await dispatch({type: OTP, payload: responseData.success.OTP});
 
         if (type == 'signup') {
@@ -198,7 +181,7 @@ console.log('responseData ==>',responseData)
             navigation.navigate('OTP', {
               type: type,
               data: data,
-              saveimage: saveimage,
+              saveImage: saveImage,
             });
           }, 2000);
         } else {
@@ -226,46 +209,34 @@ export const register = (
   select,
   setIsListener,
   setIsArtist,
-  navigation,
   setLoading,
-  saveimage,
+  saveImage,
   socialData,
 ) => {
-  // console.log('socialData', socialData)
-  console.log('data ==>', data);
-
   setLoading(true);
   return async dispatch => {
+    let base_url = `${BaseUrl}register`;
+    let myData = new FormData();
+    myData.append('name', data?.name ? data?.name : socialData?.user_name);
+    myData.append('role_id', select);
+    myData.append('email', data.email);
+    myData.append('phone_number', data?.phone_number);
+    myData.append('password', data?.confirm_password);
+    myData.append('image', saveImage);
+
+    {
+      socialData?.uID && myData.append('social_id', socialData?.uID);
+    }
+
     try {
-      let base_url = `${BaseUrl}register`;
-      let myData = new FormData();
-
-      // myData.append(
-      //   'token',
-      //   'as23rlkjadsnlkcj23qkjnfsDKJcnzdfb3353ads54vd3favaeveavgbqaerbVEWDSC',
-      // );
-      myData.append('name', data?.name ? data?.name : socialData?.user_name);
-      myData.append('role_id', select);
-      myData.append('email', data.email);
-      myData.append('phone_number', data?.phone_number);
-      myData.append('password', data?.confirm_password);
-      myData.append('image', saveimage);
-
-      {
-        socialData?.uID && myData.append('social_id', socialData?.uID);
-      }
-
       const response = await fetch(base_url, {
         method: 'POST',
         body: myData,
       });
-      console.log('response', response);
 
       const responseData = await response.json();
-      console.log('responseData', responseData);
-
-      if (responseData.success.data.status === 200) {
-        REGISTER({type: register, payload: responseData.success.data});
+      if (responseData.success.status === 200) {
+        dispatch({type: REGISTER, payload: responseData.success.data});
 
         setLoading(false);
         if (select == 1) {
@@ -275,10 +246,10 @@ export const register = (
           }, 3000);
           await AsyncStorage.setItem(
             'user_details',
-            JSON.stringify(responseData.success.Data),
+            JSON.stringify(responseData.success.data),
           );
-          dispatch({type: USER_DETAILS, payload: responseData.success.Data});
-          dispatch({type: ROLE_ID, payload: responseData.success.Data.role});
+          dispatch({type: USER_DETAILS, payload: responseData.success.data});
+          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
         } else {
           setIsArtist(true);
           setTimeout(() => {
@@ -286,10 +257,10 @@ export const register = (
           }, 3000);
           await AsyncStorage.setItem(
             'user_details',
-            JSON.stringify(responseData.success.Data),
+            JSON.stringify(responseData.success.data),
           );
-          dispatch({type: USER_DETAILS, payload: responseData.success.Data});
-          dispatch({type: ROLE_ID, payload: responseData.success.Data.role});
+          dispatch({type: USER_DETAILS, payload: responseData.success.data});
+          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
         }
       } else {
         console.log('else error');
@@ -297,6 +268,7 @@ export const register = (
       }
     } catch (error) {
       console.log('catch error in register', error);
+
       setLoading(false);
     }
   };
@@ -315,21 +287,19 @@ export const verify_email_before_password = (
   }
   return async dispatch => {
     try {
-      let base_url = `${BaseUrl}Authentication/verify_email_before_password.php`;
+      let base_url = `${BaseUrl}verifyemail`;
       let myData = new FormData();
 
-      myData.append('token', token);
       myData.append('email', data.email);
 
       const response = await fetch(base_url, {
         body: myData,
-        method: 'post',
+        method: 'POST',
       });
 
       const responseData = await response.json();
-      if (responseData.status == true) {
-        console.log('responseData', responseData);
-        await dispatch({type: OTP, payload: responseData.OTP});
+      if (responseData.success.status === 200) {
+        await dispatch({type: OTP, payload: responseData.success.OTP});
 
         if (type == 'forgot') {
           setLoading(false);
@@ -339,12 +309,11 @@ export const verify_email_before_password = (
             navigation.navigate('OTP', {
               type: type,
               data: data,
-              // OTP: responseData.OTP,
-              user_id: responseData.user_id,
+              user_id: responseData.success.id,
             });
           }, 2000);
         } else {
-          setSuccessModal(10);
+          setSuccessModal(true);
         }
       } else {
         console.log('else error', responseData.success.message);
@@ -358,6 +327,7 @@ export const verify_email_before_password = (
       }
     } catch (error) {
       console.log('verify_email_before_password catch error -->', error);
+      setLoading(false);
     }
   };
 };
@@ -369,27 +339,24 @@ export const update_password = async (
   user_id,
   setLoading,
 ) => {
-  console.log('user_id', user_id);
-  console.log('data', data);
+  console.log('user_id ===?', user_id,data);
   setLoading(true);
+
   try {
-    let base_url = `${BaseUrl}Authentication/update_password.php`;
+    let base_url = `${BaseUrl}resetpassword/${user_id}`;
     let myData = new FormData();
 
-    myData.append('token', token);
-    myData.append('new_password', data.password);
-    myData.append('user_id', user_id);
+    myData.append('password', data.confirm_password);
 
     const response = await fetch(base_url, {
-      method: 'post',
+      method: 'POST',
       body: myData,
     });
     console.log('response', response);
     const responseData = await response.json();
     console.log('responseData', responseData);
 
-    if (responseData.status == true) {
-      
+    if (responseData.success.status === 200) {
       setLoading(false);
       setPasswordChange(true);
       setTimeout(() => {
@@ -402,5 +369,6 @@ export const update_password = async (
     }
   } catch (error) {
     console.log('update_password error -->', error);
+    setLoading(false);
   }
 };

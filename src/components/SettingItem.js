@@ -13,9 +13,9 @@ const SettingItem = props => {
       style={styles.Container}>
       <Text style={styles.Text}>{props.Title}</Text>
       <View style={styles.Row}>
-        {props.Notificatin ? (
+        {props.Notification ? (
           <View style={styles.Circle2}>
-            <Text style={styles.Number}>35</Text>
+            <Text style={styles.Number}>{props.Notification}</Text>
           </View>
         ) : null}
         <View style={styles.Circle}>

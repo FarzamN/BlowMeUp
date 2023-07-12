@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, ImageBackground} from 'react-native';
+import {StyleSheet, Text, View, Image, ImageBackground, ScrollView} from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
 import {scale, verticalScale} from 'react-native-size-matters';
@@ -14,9 +14,11 @@ import Loading from '../../components/Modal/Loading';
 import ConnectionModal from '../../components/Modal/ConnectionModal';
 import  Netinfo from '@react-native-community/netinfo';
 import Validation from '../../components/Validation';
+import LogoCard from '../../components/Card/LogoCard';
 
 const Reset = ({route, navigation}) => {
   const {user_id} = route.params;
+  console.log('user_id', user_id)
   const [loading, setLoading] = useState(false);
   const [errorModal, setErrorModal] = useState(false);
   const [passwordChange, setPasswordChange] = useState(false);
@@ -62,10 +64,8 @@ const Reset = ({route, navigation}) => {
         source={require('../../assets/image/Bacground/reset.png')}
         resizeMode="cover"
         style={{flex: 1}}>
-        <Image
-          style={{alignSelf: 'center', marginTop: '12%'}}
-          source={require('../../assets/image/logo.png')}
-        />
+       <LogoCard />
+          <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.MainBox}>
           <Text style={styles.Find}>Reset Your Password</Text>
           <Text style={styles.Search}>
@@ -92,9 +92,7 @@ const Reset = ({route, navigation}) => {
             fontSize={scale(16)}
             placeholderTextColor={'#32323266'}
           />
-          {errors.password && (
-             <Validation message={errors.password.message}/>
-          )}
+         {errors.password && <Validation title={errors.password.message} />}
           <PasswordInput
             control={control}
             name="confirm_password"
@@ -114,9 +112,8 @@ const Reset = ({route, navigation}) => {
             fontSize={scale(16)}
             placeholderTextColor={'#32323266'}
           />
-          {errors.confirm_password && (
-            <Validation message={errors.password.message}/>
-          )}
+     
+           {errors.confirm_password && <Validation title={errors.confirm_password.message} />}
           <CustomButton
             onPress={handleSubmit(onSubmit)}
             title="Confirm"
@@ -127,6 +124,7 @@ const Reset = ({route, navigation}) => {
             textStyle={{color: Colors.ThemeBlue}}
           />
         </View>
+        </ScrollView>
         <Error
           isVisible={errorModal}
           onClose={() => setErrorModal(false)}

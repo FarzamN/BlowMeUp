@@ -8,7 +8,7 @@ import { GlobalStyle } from '../../Constants/GlobalStyle';
 const Error = ({ message, isVisible }) => {
   return (
     <Modal
-      visible={isVisible}
+      isVisible={isVisible}
       style={GlobalStyle.MainModal}>
       <SafeAreaView style={GlobalStyle.ModalContainer}>
         <LottieView

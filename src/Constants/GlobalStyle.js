@@ -7,14 +7,7 @@ export const GlobalStyle = {
     flex: 1,
     backgroundColor: Colors.ThemeBlue
   },
-  error: {
-    color: Colors.Danger,
-    fontSize: scale(14),
-    marginLeft: scale(10),
-    marginBottom: verticalScale(-5),
-    fontFamily: Font.NunitoSans700,
-    letterSpacing: -1.2
-  },
+
   CustomButtonRestyle: {
     backgroundColor: 'transparent',
     borderColor: Colors.White,
