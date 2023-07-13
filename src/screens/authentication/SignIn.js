@@ -138,7 +138,7 @@ const SignIn = ({ navigation }) => {
             </View>
             <View
               style={[
-                styles.Row,
+                GlobalStyle.Row,
                 {
                   justifyContent: 'center',
                   marginTop: '12%',
@@ -149,7 +149,7 @@ const SignIn = ({ navigation }) => {
               <Text style={styles.Sign_in_with}>or Sign in with</Text>
               <View style={[styles.Border, { marginLeft: scale(15) }]} />
             </View>
-            <View style={[styles.Row, { justifyContent: 'space-evenly' }]}>
+            <View style={[GlobalStyle.Row, { justifyContent: 'space-evenly' }]}>
               <TouchableOpacity onPress={() => {
                   googleLoginHandler();
                 }} style={[GlobalStyle.SocialSignInButton,{width: '42%'}]} activeOpacity={0.6}>
@@ -169,7 +169,7 @@ const SignIn = ({ navigation }) => {
             </View>
             <View
               style={[
-                styles.Row,
+                GlobalStyle.Row,
                 { justifyContent: 'space-evenly', marginTop: '20%' },
               ]}>
               <TouchableOpacity
@@ -184,16 +184,20 @@ const SignIn = ({ navigation }) => {
                 <Text
                   style={[
                     styles.Term,
-                    {
-                      textShadowColor: 'rgb(0, 0, 0)',
-                      textShadowOffset: { width: 2, height: 2 },
-                      textShadowRadius: scale(10),
-                    },
+                    styles.Policy,
                   ]}>
                   Privacy Policy
                 </Text>
               </TouchableOpacity>
             </View>
+            <Text style={styles.Account}>
+            {`Don't`} have an account?{' '}
+            <Text
+              style={styles.SignIn}
+              onPress={() => navigation.navigate('SignUp', {social: 'oay'})}>
+              Sign Un
+            </Text>
+          </Text>
             <Success
               isVisible={successModal}
               message='Success fully Sign In'
@@ -229,10 +233,6 @@ const styles = StyleSheet.create({
     fontSize: scale(13),
   },
 
-  Row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   Sign_in_with: {
     fontFamily: Font.Gilroy500,
     fontSize: scale(18),
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.White,
     width: '40%',
   },
-  // width: '42%',
+
   Box: {
     borderRadius: scale(20),
     borderWidth: 1,
@@ -256,6 +256,21 @@ const styles = StyleSheet.create({
     fontFamily: Font.Gilroy700,
     fontSize: scale(14),
     color: Colors.White,
+  },
+  Policy:{
+    textShadowColor: 'rgb(0, 0, 0)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: scale(10),
+  },
+  Account: {
+    textAlign: 'center',
+    color: Colors.White,
+    marginTop: verticalScale(15),
+    fontSize: scale(13),
+    fontFamily: Font.Gilroy700,
+  },
+  SignIn: {
+    color: Colors.Yellow,
   },
 });
 export default SignIn;

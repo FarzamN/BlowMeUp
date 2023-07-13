@@ -47,11 +47,11 @@ const Manage = ({navigation}) => {
         TextRestyle={styles.TextRestyle}
       />
       <View style={[GlobalStyle.Row, styles.Row]}>
-        {Data?.map((data, index) => (
+        {Data?.map((data) => (
           <>
             <TouchableOpacity
               data={data}
-              key={index}
+              key={data.id}
               activeOpacity={0.8}
               onPress={() => handelChange(data)}
               style={[styles.ChangeBox, {backgroundColor: select == data.id ? Colors.Main : '#556084'}]}>

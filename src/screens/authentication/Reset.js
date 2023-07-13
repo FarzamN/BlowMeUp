@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, ImageBackground, ScrollView} from 'react-native';
+import {StyleSheet, Text, View,  ImageBackground, ScrollView} from 'react-native';
 import {Colors} from '../../utils/Colors';
 import {Font} from '../../utils/font';
 import {scale, verticalScale} from 'react-native-size-matters';

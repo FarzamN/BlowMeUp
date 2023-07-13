@@ -7,8 +7,12 @@ import {Colors} from '../utils/Colors';
 const CustomButton = props => {
   return (
     <Pressable
-    android_ripple={{color: 'rgba(20, 24, 36, 1)',borderless: true, foreground: true }}
-    disabled={props.disabled}
+      android_ripple={{
+        color: 'rgba(20, 24, 36, 1)',
+        borderless: true,
+        foreground: true,
+      }}
+      disabled={props.disabled}
       onPress={props.onPress}
       style={[styles.containerStyle, props.containerStyle]}>
       {props.Play ? (
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
     borderWidth: scale(1),
     borderColor: Colors.Yellow,
     flexDirection: 'row',
-    overflow: 'hidden'
+    overflow: 'hidden',
   },
 
   font: {

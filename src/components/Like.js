@@ -5,7 +5,7 @@ import {Colors} from '../utils/Colors';
 
 const AnimatedIcon = Animated.createAnimatedComponent(AntDesign);
 
-export const Like = ({item, style}) => {
+export const Like = ({style}) => {
   const scale = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(1)).current;
   const reverseOpacity = useRef(new Animated.Value(0)).current;

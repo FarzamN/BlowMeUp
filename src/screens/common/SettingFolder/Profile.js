@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
   StatusBar,
   PermissionsAndroid,
-  ActivityIndicator,
 } from 'react-native';
 import MainHeader from '../../../components/Header/MainHeader';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -30,11 +29,13 @@ import ImagePickerModal from '../../../components/Modal/ImagePickerModal';
 import {EmailRegix, NameRegix} from '../../../utils/url';
 import Validation from '../../../components/Validation';
 import { Edit_profile } from '../../../redux/actions/UserAction';
-import ReactNativeModal from 'react-native-modal';
 import Loading from '../../../components/Modal/Loading';
+import IndicatorModal from '../../../components/Modal/IndicatorModal';
 const Profile = ({navigation}) => {
   const userDetails = useSelector(state => state.userDetails);
+
   const dispatch = useDispatch();
+
 
   const [saveImage, setSaveImage] = useState();
   const [show, setShow] = useState(true);
@@ -142,9 +143,8 @@ const Profile = ({navigation}) => {
   };
 
   const onSubmit = data => {
-    dispatch(Edit_profile(data, saveImage, setActiveLoading));
-    setEdit(!edit);
-    setShowInput(false);
+    dispatch(Edit_profile(data, saveImage, setActiveLoading,setEdit, setShowInput));
+
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -337,10 +337,9 @@ const Profile = ({navigation}) => {
         )}
         <View style={{height: verticalScale(10)}} />
 
-        {/* <ReactNativeModal isVisible={activeLoading} style={GlobalStyle.MainModal}>
-          <ActivityIndicator size={scale(50)} color={Colors.White} />
-        </ReactNativeModal> */}
+       
         <Loading  isVisible={activeLoading}/>
+        {/* <IndicatorModal Visible={}/> */}
         <ImagePickerModal
           isVisible={pickerModal}
           onClose={togglePickerModal}

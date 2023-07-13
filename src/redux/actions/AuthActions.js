@@ -1,12 +1,12 @@
 import {Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {OTP, REGISTER, ROLE_ID, USER_DETAILS} from '../reducer/Holder';
+import {OTP, REGISTER, TOKEN, USER_DETAILS} from '../reducer/Holder';
 
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {BaseUrl, token} from '../../utils/url';
+import {BaseUrl} from '../../utils/url';
 
 // export const sign_in = (email, password) => {
 //   return async dispatch => {
@@ -23,12 +23,12 @@ import {BaseUrl, token} from '../../utils/url';
 export const login = (data, setSuccessModal, setErrorModal, setLoading) => {
   return async dispatch => {
     setLoading(true);
-    // let base_url = `${BaseUrl}login`;
-    let base_url = `https://sassolution.org/BlowMeUp/api/login`;
-    let myData = new FormData();
-    myData.append('email', data.email);
-    myData.append('password', data.password);
     try {
+      let base_url = `${BaseUrl}login`;
+      let myData = new FormData();
+
+      myData.append('email', data.email);
+      myData.append('password', data.password);
       const response = await fetch(base_url, {
         body: myData,
         method: 'POST',
@@ -39,14 +39,23 @@ export const login = (data, setSuccessModal, setErrorModal, setLoading) => {
       if (responseData.success.status === 200) {
         setLoading(false);
         setSuccessModal(true);
+
         await AsyncStorage.setItem(
           'user_details',
           JSON.stringify(responseData.success.data),
         );
+        
+        await AsyncStorage.setItem(
+          'token',
+          JSON.stringify(responseData.success.token),
+        );
+        
         setTimeout(() => {
           setSuccessModal(false);
+          
           dispatch({type: USER_DETAILS, payload: responseData.success.data});
-          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
+          dispatch({type: TOKEN, payload: responseData.success.token});
+
         }, 1500);
       } else {
         console.log('else error login api');
@@ -122,7 +131,6 @@ const social_signin = (data, navigation) => {
       console.log('responseData', responseData);
       if (responseData.status == true) {
         dispatch({type: USER_DETAILS, payload: responseData.success.data});
-        dispatch({type: ROLE_ID, payload: responseData.success.data.role});
         await AsyncStorage.setItem(
           'user_details',
           JSON.stringify(responseData.success.data),
@@ -150,7 +158,7 @@ export const verify_email_before_registration = (
 ) => {
   console.log('saveImage', saveImage);
   if (type == 'signup') {
-    setLoading(true); 
+    setLoading(true);
   }
   return async dispatch => {
     try {
@@ -169,7 +177,7 @@ export const verify_email_before_registration = (
       });
 
       const responseData = await response.json();
-      console.log('sign up', responseData)
+      console.log('sign up', responseData);
       if (responseData.success.status === 200) {
         await dispatch({type: OTP, payload: responseData.success.OTP});
 
@@ -249,7 +257,6 @@ export const register = (
             JSON.stringify(responseData.success.data),
           );
           dispatch({type: USER_DETAILS, payload: responseData.success.data});
-          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
         } else {
           setIsArtist(true);
           setTimeout(() => {
@@ -260,7 +267,6 @@ export const register = (
             JSON.stringify(responseData.success.data),
           );
           dispatch({type: USER_DETAILS, payload: responseData.success.data});
-          dispatch({type: ROLE_ID, payload: responseData.success.data.role_id});
         }
       } else {
         console.log('else error');
@@ -339,7 +345,6 @@ export const update_password = async (
   user_id,
   setLoading,
 ) => {
-  console.log('user_id ===?', user_id,data);
   setLoading(true);
 
   try {

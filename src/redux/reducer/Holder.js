@@ -1,15 +1,15 @@
 export const USER_DETAILS = 'USER_DETAILS';
 export const IS_SIGN_IN = 'IS_SIGN_IN';
 export const OTP = 'OTP';
-export const ROLE_ID = 'ROLE_ID';
 export const REGISTER = 'REGISTER';
+export const TOKEN = 'TOKEN';
 
 const initial_state = {
   userDetails: null,
   isSignin: false,
   otp: null,
-  role_id: null,
-  register: null
+  register: null,
+  token: null
 };
 
 const holderReducer = (state = initial_state, action) => {
@@ -29,15 +29,15 @@ const holderReducer = (state = initial_state, action) => {
         ...state,
         otp: action.payload,
       };
-    case ROLE_ID:
-      return {
-        ...state,
-        role_id: action.payload,
-      };
     case REGISTER:
       return {
         ...state,
         register: action.payload,
+      };
+    case TOKEN:
+      return {
+        ...state,
+        token: action.payload,
       };
     default: {
       return state;

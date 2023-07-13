@@ -17,9 +17,9 @@ import Toast from 'react-native-simple-toast';
 import UploadHeader from '../../../components/Header/UploadHeader';
 import Error from '../../../components/Modal/Error';
 import Success from '../../../components/Modal/Success';
+import Loading from '../../../components/Modal/Loading';
 
 const Upload = ({select, setSelect}) => {
-  console.log('select', select);
   // const userDetails = useSelector(state => state.userDetails);
   const [type, setType] = useState();
   const [saveVideo, setsaveVideo] = useState();
@@ -28,6 +28,8 @@ const Upload = ({select, setSelect}) => {
   const [SelectVideo, setSelectVideo] = useState(false);
   const [SelectType, setSelectType] = useState(false);
   const [Done, setDone] = useState(false);
+  const [Load, setLoad] = useState(false);
+
   const data = [
     {key: '1', value: 'PodCast'},
     {key: '2', value: 'Music Video'},
@@ -58,7 +60,6 @@ const Upload = ({select, setSelect}) => {
           type: response.assets?.[0]?.type,
         };
         setsaveVideo(VideoSource);
-        console.log('source', VideoSource);
       }
     });
   };
@@ -85,7 +86,6 @@ const Upload = ({select, setSelect}) => {
           type: res.assets?.[0]?.type,
         };
         setsaveImage(ImageSource);
-        console.log('ImageSource', ImageSource);
       }
     });
   };
@@ -107,7 +107,8 @@ const Upload = ({select, setSelect}) => {
         setSelectType(false);
       }, 2000);
     } else {
-      create_Video(data, type, saveVideo, saveImage, setSelect, setDone);
+      create_Video(data, type, saveVideo, saveImage, setSelect, setDone, setLoad);
+      Toast.show('Please Wait')
     }
   };
   return (
@@ -224,8 +225,12 @@ const Upload = ({select, setSelect}) => {
       </ScrollView>
       <Error isVisible={SelectImage} message={'Please select Thumbnail'} />
       <Error isVisible={SelectVideo} message={'Please select a Video'} />
-      <Error isVisible={SelectType} message={'Please explain your Video type'} />
+      <Error
+        isVisible={SelectType}
+        message={'Please explain your Video type'}
+      />
       <Success isVisible={Done} message={'Your Video has been uploaded'} />
+      <Loading isVisible={Load}/>
     </View>
   );
 };
