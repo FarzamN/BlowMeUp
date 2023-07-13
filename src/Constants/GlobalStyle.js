@@ -9,7 +9,7 @@ export const GlobalStyle = {
   },
 
   CustomButtonRestyle: {
-    backgroundColor: 'transparent',
+    backgroundColor: Colors.Non,
     borderColor: Colors.White,
     borderRadius: scale(30),
     marginTop: verticalScale(30),
