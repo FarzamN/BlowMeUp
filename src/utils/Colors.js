@@ -1,0 +1,23 @@
+export const Colors = {
+  Main: '#8EBCFE',
+  ThemeBlue: '#232A3E',
+  ThemeSky: '#33A3F4',
+  ThemeGrey: '#3D4663',
+  White: '#fff',
+  Black: '#000',
+  placeholderTextColor: '#E3E4E7',
+  Green: '#0F9804',
+  Grey: '#919191',
+  Yellow: '#FFB800',
+  LightYellow: '#FFCA28',
+  ThemePurple: '#7770FF',
+  ThemeOrange: '#FF8228',
+  ThemeCream: '#F4F4F4',
+  ThemeGreen: '#00821D',
+  ThemeLightGreen: '#4BFF53',
+  ThemeRed: '#820000',
+  Danger: '#990000',
+  Ash: '#141824',
+  AshGrey: '#242424',
+  Non: 'transparent'
+};

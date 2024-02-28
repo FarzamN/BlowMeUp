@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>786806587743-v10rinnvpec2t8qdbkbr8hq71b8n93ns.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.786806587743-v10rinnvpec2t8qdbkbr8hq71b8n93ns</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>786806587743-2u950vhs3ced12v490vefc87qvnuloh6.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA5KgtFdT2ZoEo9paX1H6UoA3vY5p8MlTA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>786806587743</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.blowmeup</string>
+	<key>PROJECT_ID</key>
+	<string>blowmeup-ddbd8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>blowmeup-ddbd8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:786806587743:ios:3dfba9f45b0b8d92c1b6ea</string>
+</dict>
+</plist>
